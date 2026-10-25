@@ -2,90 +2,100 @@
   <style>
 @font-face { font-family: 'Syne'; src: url('assets/fonts/syne.woff2') format('woff2'); font-weight: 400 800; }
 @font-face { font-family: 'Bricolage Grotesque'; src: url('assets/fonts/bricolage.woff2') format('woff2'); font-weight: 200 800; }
-#root { position: absolute; inset: 0; background: #000; color: #fff; overflow: hidden;
+#root { position: absolute; inset: 0; background: #07080D; color: #fff; overflow: hidden;
   font-family: 'Bricolage Grotesque', sans-serif; }
-#root .syne { font-family: 'Syne', sans-serif; letter-spacing: -0.01em; line-height: 1.04; }
-#root .q { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 60px; line-height: 1.12; }
-#root .g { background: linear-gradient(90deg, #38A8F5 0%, #8E8CF6 55%, #B98AF5 100%);
-  -webkit-background-clip: text; background-clip: text; color: transparent; }
+#root .t { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 72px; line-height: 1.14; letter-spacing: -0.01em; }
+#root .lbl { font-family: 'Bricolage Grotesque'; font-weight: 600; font-size: 28px; letter-spacing: 0.32em; text-transform: uppercase; }
+#root .g { background: linear-gradient(90deg, #38A8F5 0%, #8E8CF6 55%, #B98AF5 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 #root .w { display: inline-block; white-space: pre; }
-#root .grey { color: #9A9AA0; }
+#root .grey { color: #8C8F9C; }
 #root .abs { position: absolute; }
 #root .center { left: 0; right: 0; text-align: center; }
-#root .card { position: absolute; background: #111113; border-radius: 32px; }
-#root .card::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 2px;
-  background: linear-gradient(135deg, #38A8F5, #8E8CF6 55%, #B98AF5);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
-#root .tile { width: 110px; height: 110px; border-radius: 30px; display: flex; align-items: center;
-  justify-content: center; background: linear-gradient(135deg, #38A8F5, #8E8CF6 55%, #B98AF5); }
-#root .tile svg { width: 50%; height: 50%; }
-#root .arc { position: absolute; left: 50%; width: 2200px; height: 2200px; margin-left: -1100px;
-  border-radius: 50%; border: 2px solid rgba(142, 140, 246, 0.16); }
-#root .cursor { position: absolute; width: 72px; height: 72px; z-index: 50; }
+#root .c2 { position: absolute; background: rgba(15, 17, 25, 0.94); border: 1px solid #232634; border-radius: 28px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55); }
+#root .tag { font-size: 28px; font-weight: 600; letter-spacing: 0.22em; color: #8C8F9C; text-transform: uppercase; }
+#root .tile { border-radius: 16px; display: flex; align-items: center; justify-content: center; background: linear-gradient(90deg, #38A8F5 0%, #8E8CF6 55%, #B98AF5 100%); }
+#root .tile svg { width: 56%; height: 56%; }
+#root .arc { position: absolute; width: 2600px; height: 2600px; border-radius: 50%; border: 2px solid rgba(120, 140, 246, 0.16); }
+#root .arc.a1 { left: -1900px; top: 1330px; } #root .arc.a2 { left: 380px; top: 1330px; }
+#root .cursor { position: absolute; left: 0; top: 0; width: 72px; height: 72px; z-index: 50; }
+#root .vig { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 55% at 50% 42%, rgba(7,8,13,0) 0%, rgba(7,8,13,0.75) 70%, #07080D 100%); }
 
-#s1-t1 { top: 300px; } #s1-t2 { top: 368px; }
-#s1-t3 { top: 450px; font-size: 124px; font-weight: 800; }
-#s1-box { left: 70px; top: 720px; width: 940px; height: 132px; border-radius: 40px; }
-#s1-box .ico { position: absolute; left: 40px; top: 42px; width: 48px; height: 48px; color: #9A9AA0; }
-#s1-text { position: absolute; left: 112px; top: 36px; font-size: 44px; white-space: pre; display: flex; align-items: center; height: 60px; }
+#s1-field { position: absolute; inset: 0; perspective: 1700px; perspective-origin: 50% 35%; }
+#s1-plane { position: absolute; left: 50%; top: 50%; width: 3000px; height: 3600px; margin-left: -1500px; margin-top: -1800px;
+  display: grid; grid-template-columns: repeat(7, 360px); gap: 70px 60px; }
+#s1-plane img { width: 360px; height: 627px; object-fit: cover; object-position: top; border-radius: 22px; opacity: 0.38;
+  border: 1px solid #262A38; }
+
+#s1-lbl { top: 300px; }
+#s1-t1 { top: 360px; } #s1-t2 { top: 442px; } #s1-t3 { top: 524px; }
+#s1-box { left: 80px; top: 700px; width: 920px; height: 116px; border-radius: 24px; }
+#s1-box .ico { position: absolute; left: 34px; top: 36px; width: 44px; height: 44px; }
+#s1-text { position: absolute; left: 100px; top: 30px; height: 56px; font-size: 40px; white-space: pre; display: flex; align-items: center; }
 #s1-text .ch { opacity: 0; }
-#s1-caret { display: inline-block; width: 4px; height: 50px; margin-left: 4px; background: #8E8CF6; }
-#s1-btn { position: absolute; right: 20px; top: 20px; width: 92px; height: 92px; border-radius: 28px;
-  background: linear-gradient(135deg, #38A8F5, #8E8CF6 55%, #B98AF5); display: flex; align-items: center; justify-content: center; }
-#s1-btn svg { width: 46px; height: 46px; }
-#s1-drop { left: 70px; top: 872px; width: 940px; height: 300px; border-radius: 32px; transform-origin: 50% 0; }
-#s1-drop .row { position: absolute; left: 30px; right: 30px; height: 84px; border-radius: 20px; display: flex; align-items: center;
-  gap: 26px; padding-left: 20px; font-size: 38px; color: #9A9AA0; }
-#s1-drop .row svg { width: 34px; height: 34px; color: #6A6A70; flex: none; }
+#s1-caret { display: inline-block; width: 3px; height: 46px; margin-left: 4px; background: #8E8CF6; }
+#s1-btn { position: absolute; right: 18px; top: 18px; width: 80px; height: 80px; border-radius: 50%; }
+#s1-drop { left: 80px; top: 832px; width: 920px; height: 272px; border-radius: 24px; }
+#s1-drop .row { position: absolute; left: 20px; right: 20px; height: 76px; border-radius: 16px; display: flex; align-items: center;
+  gap: 22px; padding-left: 22px; font-size: 34px; color: #8C8F9C; }
+#s1-drop .row svg { width: 30px; height: 30px; flex: none; }
 #s1-drop .row b { color: #fff; font-weight: 500; }
-#s1-r0 { top: 24px; } #s1-r1 { top: 108px; } #s1-r2 { top: 192px; }
-#s1-hl { position: absolute; left: 30px; right: 30px; top: 24px; height: 84px; border-radius: 20px; background: #1E1E25; }
+#s1-r0 { top: 20px; } #s1-r1 { top: 98px; } #s1-r2 { top: 176px; }
+#s1-hl { position: absolute; left: 20px; right: 20px; top: 98px; height: 76px; border-radius: 16px; background: #1A1D2A; }
 </style>
-  <div id="root" data-composition-id="s1" data-start="0" data-duration="3.9" data-width="1080" data-height="1920">
+  <div id="root" data-composition-id="s1" data-start="0" data-duration="4.6" data-width="1080" data-height="1920">
+    <div class="arc a1"></div><div class="arc a2"></div>
 
-    <div class="arc" style="top:1500px"></div>
-    <div id="s1-t1" class="abs center q"><span class="w" id="s1-a0">Vos </span><span class="w" id="s1-a1">futurs </span><span class="w" id="s1-a2">clients</span></div>
-    <div id="s1-t2" class="abs center q"><span class="w" id="s1-b0">vous </span><span class="w" id="s1-b1">cherchent</span></div>
-    <div id="s1-t3" class="abs center syne"><span class="w g" id="s1-c0">en </span><span class="w g" id="s1-c1">ligne.</span></div>
-    <div id="s1-box" class="card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></div>
+    <div id="s1-field" data-layout-ignore><div id="s1-plane"><img src="assets/shots/services.jpg" alt=""><img src="assets/shots/form.jpg" alt=""><img src="assets/shots/tarifs3.jpg" alt=""><img src="assets/shots/faq.jpg" alt=""><img src="assets/shots/contact.jpg" alt=""><img src="assets/shots/tarifs2.jpg" alt=""><img src="assets/shots/rdv.jpg" alt=""><img src="assets/shots/demos.jpg" alt=""><img src="assets/shots/services2.jpg" alt=""><img src="assets/shots/method.jpg" alt=""><img src="assets/shots/estim.jpg" alt=""><img src="assets/shots/services.jpg" alt=""><img src="assets/shots/form.jpg" alt=""><img src="assets/shots/tarifs3.jpg" alt=""><img src="assets/shots/faq.jpg" alt=""><img src="assets/shots/contact.jpg" alt=""><img src="assets/shots/tarifs2.jpg" alt=""><img src="assets/shots/rdv.jpg" alt=""><img src="assets/shots/demos.jpg" alt=""><img src="assets/shots/services2.jpg" alt=""><img src="assets/shots/method.jpg" alt=""><img src="assets/shots/estim.jpg" alt=""><img src="assets/shots/services.jpg" alt=""><img src="assets/shots/form.jpg" alt=""><img src="assets/shots/tarifs3.jpg" alt=""><img src="assets/shots/faq.jpg" alt=""><img src="assets/shots/contact.jpg" alt=""><img src="assets/shots/tarifs2.jpg" alt=""><img src="assets/shots/rdv.jpg" alt=""><img src="assets/shots/demos.jpg" alt=""><img src="assets/shots/services2.jpg" alt=""><img src="assets/shots/method.jpg" alt=""><img src="assets/shots/estim.jpg" alt=""><img src="assets/shots/services.jpg" alt=""><img src="assets/shots/form.jpg" alt=""></div></div><div class="vig"></div>
+    <div id="s1-lbl" class="abs center lbl g">Aujourd'hui</div>
+    <div id="s1-t1" class="abs center t"><span class="w">Vos </span><span class="w">futurs </span><span class="w">clients</span></div>
+    <div id="s1-t2" class="abs center t"><span class="w">vous </span><span class="w">cherchent</span></div>
+    <div id="s1-t3" class="abs center t"><span class="w g lt">e</span><span class="w g lt">n</span><span class="w g lt"> </span><span class="w g lt">l</span><span class="w g lt">i</span><span class="w g lt">g</span><span class="w g lt">n</span><span class="w g lt">e</span><span class="w g lt">.</span></div>
+    <div id="s1-box" class="c2">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#8C8F9C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></div>
       <div id="s1-text"><span class="ch">c</span><span class="ch">o</span><span class="ch">u</span><span class="ch">v</span><span class="ch">r</span><span class="ch">e</span><span class="ch">u</span><span class="ch">r</span><span class="ch"> </span><span class="ch">p</span><span class="ch">r</span><span class="ch">è</span><span class="ch">s</span><span class="ch"> </span><span class="ch">d</span><span class="ch">e</span><span class="ch"> </span><span class="ch">c</span><span class="ch">h</span><span class="ch">e</span><span class="ch">z</span><span class="ch"> </span><span class="ch">m</span><span class="ch">o</span><span class="ch">i</span><span id="s1-caret"></span></div>
-      <div id="s1-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div id="s1-btn" class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
     </div>
-    <div id="s1-drop" class="card">
+    <div id="s1-drop" class="c2">
       <div id="s1-hl"></div>
-      <div id="s1-r0" class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span><b>couvreur près de chez moi</b></span></div>
-      <div id="s1-r1" class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span>couvreur <b>avis clients</b></span></div>
-      <div id="s1-r2" class="row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span>couvreur <b>devis gratuit</b></span></div>
+      <div id="s1-r0" class="row"><svg viewBox="0 0 24 24" fill="none" stroke="#5D6070" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span><b>couvreur</b> près de chez moi</span></div>
+      <div id="s1-r1" class="row"><svg viewBox="0 0 24 24" fill="none" stroke="#5D6070" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span><b>couvreur</b> avis clients</span></div>
+      <div id="s1-r2" class="row"><svg viewBox="0 0 24 24" fill="none" stroke="#5D6070" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span><b>couvreur</b> devis rapide</span></div>
     </div>
-    <div id="s1-cursor" class="cursor" style="left:0;top:0"><svg viewBox="0 0 24 24" width="72" height="72"><path d="M4 2.5 L4 19.5 L8.6 15.3 L11.6 22 L14.6 20.7 L11.7 14.1 L18 14.1 Z" fill="#fff" stroke="#000" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+    <div id="s1-cursor" class="cursor"><svg viewBox="0 0 24 24" width="72" height="72"><path d="M4 2.5 L4 19.5 L8.6 15.3 L11.6 22 L14.6 20.7 L11.7 14.1 L18 14.1 Z" fill="#fff" stroke="#000" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
 
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
+    // word / line entrances: blur to sharp, no slide
     const W_IN = (sel, t, st = 0.07) => tl.fromTo(sel, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.35, ease: "power4.out", stagger: st }, t);
+    // accent letters drop in one by one
+    const L_IN = (sel, t) => tl.fromTo(sel, { opacity: 0, y: -34, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.45, ease: "expo.out", stagger: 0.035 }, t);
     const OUT = (sel, t, st = 0) => tl.to(sel, { opacity: 0, filter: "blur(10px)", duration: 0.25, ease: "power3.in", stagger: st }, t);
+    const CLICK = (cur, target, t) => {
+      tl.to(cur, { scale: 0.85, duration: 0.07, ease: "power2.in" }, t); tl.to(cur, { scale: 1, duration: 0.1, ease: "power2.out" }, t + 0.07);
+      tl.to(target, { scale: 0.94, duration: 0.07, ease: "power2.in" }, t); tl.to(target, { scale: 1, duration: 0.12, ease: "power2.out" }, t + 0.07);
+    };
 
-    // hook: first line + empty search box are on screen at frame 0
-    tl.fromTo("#s1-box", { y: 30 }, { y: 0, duration: 0.6, ease: "expo.out" }, 0);
-    const ch = document.querySelectorAll("#s1-text .ch");
-    ch.forEach((c, i) => tl.set(c, { opacity: 1 }, 0.3 + i * 0.045));
-    W_IN("#s1-t2 .w", 0.75, 0.08);
-    tl.fromTo("#s1-t3 .w", { opacity: 0, filter: "blur(10px)", scale: 1.06 }, { opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.5, ease: "expo.out", stagger: 0.09 }, 1.35);
-    tl.fromTo("#s1-drop", { opacity: 0, scaleY: 0.6 }, { opacity: 1, scaleY: 1, duration: 0.45, ease: "expo.out" }, 1.55);
-    tl.fromTo("#s1-drop .row", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.4, ease: "power4.out", stagger: 0.06 }, 1.62);
-    tl.fromTo("#s1-hl", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 1.62);
-    // cursor flies to the search button and clicks it
-    tl.fromTo("#s1-cursor", { x: 1150, y: 1500 }, { x: 930, y: 790, duration: 0.85, ease: "expo.out" }, 2.05);
-    tl.to("#s1-cursor", { scale: 0.85, duration: 0.08, ease: "power2.in" }, 3.0);
-    tl.to("#s1-cursor", { scale: 1, duration: 0.12, ease: "power2.out" }, 3.08);
-    tl.to("#s1-btn", { scale: 0.88, duration: 0.08, ease: "power2.in" }, 3.0);
-    tl.to("#s1-btn", { scale: 1, duration: 0.12, ease: "power2.out" }, 3.08);
-    // blur swap out
-    OUT(["#s1-t1", "#s1-t2", "#s1-t3"], 3.3, 0.04);
-    tl.to(["#s1-box", "#s1-drop"], { opacity: 0, scale: 0.94, filter: "blur(12px)", duration: 0.3, ease: "power3.in", stagger: 0.04 }, 3.35);
-    tl.to("#s1-cursor", { opacity: 0, duration: 0.2 }, 3.35);
+    // the camera drifts slowly over the field of pages for the whole shot
+    tl.fromTo("#s1-plane", { rotationX: 55, rotationZ: -32, x: 120, y: 200 }, { rotationX: 55, rotationZ: -32, x: -60, y: -160, duration: 4.6, ease: "none" }, 0);
+    // frame 0: search box and label already on screen
+    tl.fromTo("#s1-box", { scale: 0.96 }, { scale: 1, duration: 0.7, ease: "expo.out" }, 0);
+    document.querySelectorAll("#s1-text .ch").forEach((c, i) => tl.set(c, { opacity: 1 }, 0.25 + i * 0.045));
+    W_IN("#s1-t1 .w", 0.55, 0.08);
+    W_IN("#s1-t2 .w", 1.05, 0.08);
+    L_IN("#s1-t3 .lt", 1.5);
+    tl.fromTo("#s1-drop", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 1.45);
+    tl.fromTo("#s1-drop .row", { opacity: 0 }, { opacity: 1, duration: 0.3, stagger: 0.06 }, 1.5);
+    tl.fromTo("#s1-cursor", { x: 1150, y: 1500 }, { x: 640, y: 960, duration: 0.8, ease: "expo.out" }, 1.9);
+    tl.fromTo("#s1-hl", { opacity: 0 }, { opacity: 1, duration: 0.15 }, 2.5);
+    tl.to("#s1-cursor", { x: 930, y: 760, duration: 0.55, ease: "expo.out" }, 2.95);
+    CLICK("#s1-cursor", "#s1-btn", 3.6);
+    tl.to("#s1-cursor", { opacity: 0, duration: 0.15 }, 3.8);
+    // push through the search bar into the next scene
+    OUT(["#s1-lbl", "#s1-t1", "#s1-t2", "#s1-t3"], 3.8, 0.03);
+    tl.to(["#s1-box", "#s1-drop"], { scale: 1.25, opacity: 0, filter: "blur(14px)", duration: 0.4, ease: "power3.in", stagger: 0.03 }, 3.85);
+    tl.to("#s1-field", { opacity: 0, duration: 0.4, ease: "power2.in" }, 3.9);
 
     window.__timelines["s1"] = tl;
   </script>

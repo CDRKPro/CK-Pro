@@ -2,108 +2,129 @@
   <style>
 @font-face { font-family: 'Syne'; src: url('assets/fonts/syne.woff2') format('woff2'); font-weight: 400 800; }
 @font-face { font-family: 'Bricolage Grotesque'; src: url('assets/fonts/bricolage.woff2') format('woff2'); font-weight: 200 800; }
-#root { position: absolute; inset: 0; background: #000; color: #fff; overflow: hidden;
+#root { position: absolute; inset: 0; background: #07080D; color: #fff; overflow: hidden;
   font-family: 'Bricolage Grotesque', sans-serif; }
-#root .syne { font-family: 'Syne', sans-serif; letter-spacing: -0.01em; line-height: 1.04; }
-#root .q { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 60px; line-height: 1.12; }
-#root .g { background: linear-gradient(90deg, #38A8F5 0%, #8E8CF6 55%, #B98AF5 100%);
-  -webkit-background-clip: text; background-clip: text; color: transparent; }
+#root .t { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 72px; line-height: 1.14; letter-spacing: -0.01em; }
+#root .lbl { font-family: 'Bricolage Grotesque'; font-weight: 600; font-size: 28px; letter-spacing: 0.32em; text-transform: uppercase; }
+#root .g { background: linear-gradient(90deg, #38A8F5 0%, #8E8CF6 55%, #B98AF5 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 #root .w { display: inline-block; white-space: pre; }
-#root .grey { color: #9A9AA0; }
+#root .grey { color: #8C8F9C; }
 #root .abs { position: absolute; }
 #root .center { left: 0; right: 0; text-align: center; }
-#root .card { position: absolute; background: #111113; border-radius: 32px; }
-#root .card::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 2px;
-  background: linear-gradient(135deg, #38A8F5, #8E8CF6 55%, #B98AF5);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
-#root .tile { width: 110px; height: 110px; border-radius: 30px; display: flex; align-items: center;
-  justify-content: center; background: linear-gradient(135deg, #38A8F5, #8E8CF6 55%, #B98AF5); }
-#root .tile svg { width: 50%; height: 50%; }
-#root .arc { position: absolute; left: 50%; width: 2200px; height: 2200px; margin-left: -1100px;
-  border-radius: 50%; border: 2px solid rgba(142, 140, 246, 0.16); }
-#root .cursor { position: absolute; width: 72px; height: 72px; z-index: 50; }
+#root .c2 { position: absolute; background: rgba(15, 17, 25, 0.94); border: 1px solid #232634; border-radius: 28px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55); }
+#root .tag { font-size: 28px; font-weight: 600; letter-spacing: 0.22em; color: #8C8F9C; text-transform: uppercase; }
+#root .tile { border-radius: 16px; display: flex; align-items: center; justify-content: center; background: linear-gradient(90deg, #38A8F5 0%, #8E8CF6 55%, #B98AF5 100%); }
+#root .tile svg { width: 56%; height: 56%; }
+#root .arc { position: absolute; width: 2600px; height: 2600px; border-radius: 50%; border: 2px solid rgba(120, 140, 246, 0.16); }
+#root .arc.a1 { left: -1900px; top: 1330px; } #root .arc.a2 { left: 380px; top: 1330px; }
+#root .cursor { position: absolute; left: 0; top: 0; width: 72px; height: 72px; z-index: 50; }
+#root .vig { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 55% at 50% 42%, rgba(7,8,13,0) 0%, rgba(7,8,13,0.75) 70%, #07080D 100%); }
 
-#s5-t1 { left: 96px; top: 200px; font-size: 124px; font-weight: 800; }
-#s5-roll { left: 96px; top: 350px; height: 76px; width: 960px; overflow: hidden; }
-#s5-roll .rw { position: absolute; left: 0; top: 0; font-size: 56px; font-weight: 700; white-space: nowrap; }
-#s5-a { left: 70px; top: 470px; width: 940px; height: 196px; }
-#s5-a .fav { position: absolute; left: 40px; top: 40px; width: 64px; height: 64px; border-radius: 50%;
-  background: linear-gradient(135deg, #38A8F5, #B98AF5); color: #000; font: 800 32px 'Syne'; display: flex; align-items: center; justify-content: center; }
-#s5-a .url { position: absolute; left: 128px; top: 34px; font-size: 28px; color: #9A9AA0; }
-#s5-a .ttl { position: absolute; left: 128px; top: 70px; font-size: 38px; font-weight: 700; font-family: 'Syne'; }
-#s5-a .rt { position: absolute; left: 128px; top: 126px; font-size: 30px; color: #9A9AA0; display: flex; gap: 14px; align-items: center; }
-#s5-a .stars { letter-spacing: 4px; font-size: 32px; }
-#s5-a .open { color: #4ADE80; }
-#s5-b { left: 70px; top: 690px; width: 940px; height: 290px; overflow: hidden; }
-#s5-map { position: absolute; inset: 2px; border-radius: 30px; background: #15151A; overflow: hidden; }
-#s5-map svg path { fill: none; stroke: #2B2B33; stroke-width: 14; stroke-linecap: round; }
-#s5-pin { position: absolute; left: 440px; top: 70px; width: 60px; height: 78px; }
-#s5-plabel { position: absolute; left: 520px; top: 84px; padding: 8px 22px; border-radius: 16px; background: #fff; color: #000; font-size: 30px; font-weight: 600; }
-#s5-c { left: 70px; top: 1004px; width: 940px; height: 316px; }
-#s5-q { position: absolute; right: 36px; top: 36px; padding: 18px 28px; border-radius: 26px 26px 6px 26px; background: #24242C; font-size: 32px; }
-#s5-ai { position: absolute; left: 36px; top: 140px; width: 64px; height: 64px; border-radius: 20px; background: linear-gradient(135deg, #38A8F5, #B98AF5);
-  display: flex; align-items: center; justify-content: center; }
-#s5-ai svg { width: 34px; height: 34px; }
-#s5-dots { position: absolute; left: 124px; top: 160px; display: flex; gap: 10px; }
-#s5-dots i { display: block; width: 14px; height: 14px; border-radius: 50%; background: #6A6A72; }
-#s5-ans { position: absolute; left: 124px; top: 138px; width: 780px; font-size: 32px; line-height: 1.4; color: #D8D8DE; }
-#s5-ans b { color: #fff; font-weight: 700; }
+#s5-t1 { left: 90px; top: 210px; font-size: 92px; }
+#s5-roll { left: 90px; top: 326px; width: 960px; height: 70px; overflow: hidden; }
+#s5-roll .rw { position: absolute; left: 0; top: 0; font-size: 52px; white-space: nowrap; }
+#s5-a { left: 90px; top: 440px; width: 900px; height: 176px; }
+#s5-b { left: 90px; top: 636px; width: 900px; height: 236px; }
+#s5-c { left: 90px; top: 892px; width: 900px; height: 196px; }
+#root .hd { position: absolute; left: 28px; top: 20px; display: flex; gap: 12px; align-items: center; }
+#root .hd svg { width: 26px; height: 26px; }
+#root .hq { position: absolute; right: 28px; top: 16px; padding: 4px 16px; border-radius: 12px; background: #1A1D2A; font-size: 28px; color: #8C8F9C; }
+#s5-a .num { position: absolute; left: 28px; top: 84px; width: 60px; height: 60px; border-radius: 14px; font: 700 30px 'Syne'; color: #000; }
+#s5-a .nm { position: absolute; left: 110px; top: 72px; font-size: 38px; font-weight: 600; }
+#s5-a .rt { position: absolute; left: 110px; top: 122px; font-size: 28px; color: #8C8F9C; white-space: nowrap; }
+#s5-a .rt .st { letter-spacing: 3px; }
+#s5-map { position: absolute; left: 20px; right: 20px; top: 72px; bottom: 20px; border-radius: 18px; background: #E9EBF1; overflow: hidden; }
+#s5-map svg.rd { position: absolute; inset: 0; }
+#s5-map svg.rd path { fill: none; stroke: #C9CDD8; stroke-width: 10; stroke-linecap: round; }
+#s5-pin { position: absolute; left: 400px; top: 34px; width: 46px; height: 60px; }
+#s5-pl { position: absolute; left: 462px; top: 42px; padding: 6px 18px; border-radius: 12px; background: #0B0C12; color: #fff; font-size: 28px; font-weight: 600; white-space: nowrap; }
+#s5-q { position: absolute; right: 28px; top: 70px; padding: 12px 22px; border-radius: 20px 20px 6px 20px; background: #1E2130; font-size: 30px; }
+#s5-ans { position: absolute; left: 28px; top: 134px; font-size: 30px; color: #C9CBD6; white-space: nowrap; }
+#s5-ans b { color: #fff; }
+#s5-hub { position: absolute; left: 540px; top: 1250px; width: 0; height: 0; }
+#s5-hub .ring { position: absolute; border-radius: 50%; border: 1px solid rgba(142, 140, 246, 0.28); }
+#s5-orb { position: absolute; left: 0; top: 0; }
+#root .sat { position: absolute; left: -32px; top: -32px; }
+#root .sb { width: 64px; height: 64px; border-radius: 50%; background: #0F1119; border: 1px solid #262A38; display: flex; align-items: center; justify-content: center; }
+#root .sb svg { width: 30px; height: 30px; }
+#s5-node { position: absolute; left: -130px; top: -80px; width: 260px; height: 160px; border-radius: 30px; background: #0F1119; border: 1px solid #2E3242;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+#s5-node svg { width: 56px; height: 56px; }
+#s5-node span { font-size: 28px; color: #C9CBD6; }
+#s5-comet { position: absolute; left: 0; top: 0; }
+#s5-comet i { position: absolute; left: 172px; top: -6px; width: 12px; height: 12px; border-radius: 50%; background: #8E8CF6; }
 </style>
-  <div id="root" data-composition-id="s5" data-start="0" data-duration="6.2" data-width="1080" data-height="1920">
+  <div id="root" data-composition-id="s5" data-start="0" data-duration="5.6" data-width="1080" data-height="1920">
+    <div class="arc a1"></div><div class="arc a2"></div>
 
-    <div class="arc" style="top:1560px"></div>
-    <div id="s5-t1" class="abs syne"><span class="w">Visible</span></div>
+    <div id="s5-t1" class="abs t"><span class="w">Visible</span></div>
     <div id="s5-roll" class="abs" data-layout-allow-overflow>
-      <div id="s5-w0" class="rw syne g">sur Google.</div>
-      <div id="s5-w1" class="rw syne g">sur Maps.</div>
-      <div id="s5-w2" class="rw syne g">et même dans ChatGPT.</div>
+      <div id="s5-w0" class="rw t g">sur Google.</div>
+      <div id="s5-w1" class="rw t g">sur Maps.</div>
+      <div id="s5-w2" class="rw t g">et même dans ChatGPT.</div>
     </div>
-    <div id="s5-a" class="card">
-      <div class="fav">V</div><div class="url">votre-entreprise.fr</div>
-      <div class="ttl">Votre entreprise · Couvreur</div>
-      <div class="rt"><span class="stars g">★★★★★</span><span>5,0</span><span>·</span><span class="open">Ouvert</span></div>
+    <div id="s5-hub" data-layout-ignore>
+      <div class="ring" style="left:-180px;top:-180px;width:360px;height:360px"></div>
+      <div class="ring" style="left:-300px;top:-300px;width:600px;height:600px"></div>
+      <div id="s5-comet"><i></i></div>
+      <div id="s5-orb"><div class="sat" style="transform:rotate(200deg) translateX(300px) rotate(-200deg)"><div class="sb"><svg viewBox="0 0 24 24" fill="none" stroke="#9AA0B4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div></div><div class="sat" style="transform:rotate(255deg) translateX(300px) rotate(-255deg)"><div class="sb"><svg viewBox="0 0 24 24" fill="none" stroke="#9AA0B4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-7-7-12a7 7 0 0 1 14 0c0 5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg></div></div><div class="sat" style="transform:rotate(320deg) translateX(300px) rotate(-320deg)"><div class="sb"><svg viewBox="0 0 24 24" fill="none" stroke="#9AA0B4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-3-5.4 3 1.1-6L3.2 9.4l6.1-.8z"/></svg></div></div><div class="sat" style="transform:rotate(20deg) translateX(300px) rotate(-20deg)"><div class="sb"><svg viewBox="0 0 24 24" fill="none" stroke="#9AA0B4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></div></div><div class="sat" style="transform:rotate(145deg) translateX(300px) rotate(-145deg)"><div class="sb"><svg viewBox="0 0 24 24" fill="none" stroke="#9AA0B4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div></div></div>
+      <div id="s5-node"><svg viewBox="0 0 24 24" fill="none" stroke="#8E8CF6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><span>votre-entreprise.fr</span></div>
     </div>
-    <div id="s5-b" class="card">
-      <div id="s5-map"><svg width="936" height="286"><path d="M-20 60 C200 90 380 40 980 120" /><path d="M-20 200 C300 170 600 230 980 190" /><path d="M180 -20 C210 100 160 200 230 320" /><path d="M560 -20 C520 120 600 220 580 320" /><path d="M760 -20 C800 140 740 240 820 320" /><path d="M-20 270 C200 250 400 290 600 260" /></svg>
-        <svg id="s5-pin" viewBox="0 0 30 39"><defs><linearGradient id="s5pg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38A8F5"/><stop offset="1" stop-color="#B98AF5"/></linearGradient></defs><path d="M15 38C15 38 2 23 2 14a13 13 0 0 1 26 0c0 9-13 24-13 24z" fill="url(#s5pg)"/><circle cx="15" cy="14" r="5" fill="#000"/></svg>
-        <div id="s5-plabel">Votre entreprise</div>
-      </div>
+    <div id="s5-a" class="c2">
+      <div class="hd"><svg viewBox="0 0 24 24" fill="none" stroke="#8C8F9C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span class="tag">Google</span></div><div class="hq">couvreur près de chez moi</div>
+      <div class="num tile">1</div><div class="nm">Votre entreprise</div>
+      <div class="rt"><span class="st g">★★★★★</span>  Ouvert · Appeler · Itinéraire</div>
     </div>
-    <div id="s5-c" class="card">
+    <div id="s5-b" class="c2">
+      <div class="hd"><svg viewBox="0 0 24 24" fill="none" stroke="#8C8F9C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-7-7-12a7 7 0 0 1 14 0c0 5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg><span class="tag">Maps</span></div>
+      <div id="s5-map"><svg class="rd" width="860" height="144"><path d="M-20 50 C200 80 380 30 960 110"/><path d="M-20 180 C300 150 600 210 960 170"/><path d="M160 -20 C190 90 140 180 210 300"/><path d="M540 -20 C500 110 580 200 560 300"/><path d="M740 -20 C780 130 720 220 800 300"/></svg>
+        <svg id="s5-pin" viewBox="0 0 30 39"><defs><linearGradient id="s5pg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38A8F5"/><stop offset="1" stop-color="#B98AF5"/></linearGradient></defs><path d="M15 38C15 38 2 23 2 14a13 13 0 0 1 26 0c0 9-13 24-13 24z" fill="url(#s5pg)"/><circle cx="15" cy="14" r="5" fill="#fff"/></svg>
+        <div id="s5-pl">Votre entreprise · Ouvert</div></div>
+    </div>
+    <div id="s5-c" class="c2">
+      <div class="hd"><svg viewBox="0 0 24 24" fill="none" stroke="#8C8F9C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v6M12 15v6M3 12h6M15 12h6"/></svg><span class="tag">ChatGPT</span></div>
       <div id="s5-q">Un bon couvreur près de chez moi ?</div>
-      <div id="s5-ai"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-3-5.4 3 1.1-6L3.2 9.4l6.1-.8z"/></svg></div>
-      <div id="s5-dots"><i></i><i></i><i></i></div>
       <div id="s5-ans"><span class="w">Je </span><span class="w">vous </span><span class="w">recommande</span> <b><span class="w">Votre </span><span class="w">entreprise.</span></b></div>
     </div>
 
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
+    // word / line entrances: blur to sharp, no slide
     const W_IN = (sel, t, st = 0.07) => tl.fromTo(sel, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.35, ease: "power4.out", stagger: st }, t);
+    // accent letters drop in one by one
+    const L_IN = (sel, t) => tl.fromTo(sel, { opacity: 0, y: -34, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.45, ease: "expo.out", stagger: 0.035 }, t);
     const OUT = (sel, t, st = 0) => tl.to(sel, { opacity: 0, filter: "blur(10px)", duration: 0.25, ease: "power3.in", stagger: st }, t);
+    const CLICK = (cur, target, t) => {
+      tl.to(cur, { scale: 0.85, duration: 0.07, ease: "power2.in" }, t); tl.to(cur, { scale: 1, duration: 0.1, ease: "power2.out" }, t + 0.07);
+      tl.to(target, { scale: 0.94, duration: 0.07, ease: "power2.in" }, t); tl.to(target, { scale: 1, duration: 0.12, ease: "power2.out" }, t + 0.07);
+    };
 
-    tl.fromTo("#s5-t1 .w", { opacity: 0, filter: "blur(10px)", scale: 1.06 }, { opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.5, ease: "expo.out" }, 0.05);
+    // the hub keeps orbiting slowly (about 4 degrees a second)
+    tl.fromTo("#s5-orb", { rotation: 0 }, { rotation: 22, duration: 5.6, ease: "none" }, 0);
+    tl.fromTo("#s5-orb .sb", { rotation: 0 }, { rotation: -22, duration: 5.6, ease: "none" }, 0);
+    tl.fromTo("#s5-comet", { rotation: -40 }, { rotation: 320, duration: 5.6, ease: "none" }, 0);
+    tl.fromTo("#s5-hub", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.9, ease: "expo.out" }, 0.1);
+    tl.fromTo("#s5-t1 .w", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "power4.out" }, 0.05);
     tl.set(["#s5-w1", "#s5-w2"], { yPercent: 110, opacity: 0 }, 0);
-    tl.fromTo("#s5-w0", { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.45, ease: "expo.out" }, 0.3);
-    [[0, 1, 1.8], [1, 2, 3.4]].forEach(([a, b, t]) => {
+    tl.fromTo("#s5-w0", { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.45, ease: "expo.out" }, 0.35);
+    [[0, 1, 1.85], [1, 2, 3.35]].forEach(([a, b, t]) => {
       tl.to("#s5-w" + a, { yPercent: -110, opacity: 0, filter: "blur(6px)", duration: 0.3, ease: "power3.in" }, t);
       tl.fromTo("#s5-w" + b, { yPercent: 110, opacity: 0, filter: "blur(6px)" }, { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, t + 0.15);
     });
-    const CARD_IN = (sel, t) => tl.fromTo(sel, { y: 60, opacity: 0, filter: "blur(10px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.6, ease: "expo.out" }, t);
-    CARD_IN("#s5-a", 0.45);
-    tl.fromTo("#s5-a .stars", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 0.5, ease: "power2.out" }, 0.9);
-    CARD_IN("#s5-b", 1.95);
-    tl.fromTo("#s5-pin", { y: -120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "expo.out" }, 2.3);
-    tl.fromTo("#s5-plabel", { x: -20, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4, ease: "power4.out" }, 2.6);
-    CARD_IN("#s5-c", 3.4);
-    tl.fromTo("#s5-q", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power4.out" }, 3.55);
-    tl.fromTo(["#s5-ai", "#s5-dots"], { opacity: 0 }, { opacity: 1, duration: 0.2 }, 3.85);
-    tl.fromTo("#s5-dots i", { y: 0 }, { y: -8, duration: 0.15, ease: "power2.out", stagger: 0.08, yoyo: true, repeat: 1 }, 3.85);
-    tl.to("#s5-dots", { opacity: 0, duration: 0.1 }, 4.2);
-    tl.fromTo("#s5-ans .w", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power2.out", stagger: 0.06 }, 4.25);
-    OUT(["#s5-t1", "#s5-roll"], 5.85);
-    tl.to(["#s5-a", "#s5-b", "#s5-c"], { y: -80, opacity: 0, filter: "blur(10px)", duration: 0.3, ease: "power3.in", stagger: 0.04 }, 5.85);
+    // each card is sent out from the hub
+    const CARD = (sel, t) => tl.fromTo(sel, { y: 380, scale: 0.7, opacity: 0, filter: "blur(12px)" }, { y: 0, scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.7, ease: "expo.out" }, t);
+    CARD("#s5-a", 0.5);
+    tl.fromTo("#s5-a .st", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 0.5, ease: "power2.out" }, 0.95);
+    CARD("#s5-b", 2.0);
+    tl.fromTo("#s5-pin", { y: -70, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "expo.out" }, 2.4);
+    tl.fromTo("#s5-pl", { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 0.35, ease: "power4.out" }, 2.65);
+    CARD("#s5-c", 3.3);
+    tl.fromTo("#s5-q", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 3.5);
+    tl.fromTo("#s5-ans .w", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, stagger: 0.07 }, 3.8);
+    OUT(["#s5-t1", "#s5-roll", "#s5-hub"], 5.25);
+    tl.to(["#s5-a", "#s5-b", "#s5-c"], { y: -60, opacity: 0, filter: "blur(10px)", duration: 0.3, ease: "power3.in", stagger: 0.04 }, 5.25);
 
     window.__timelines["s5"] = tl;
   </script>

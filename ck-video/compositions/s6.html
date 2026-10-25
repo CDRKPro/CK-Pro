@@ -2,61 +2,66 @@
   <style>
 @font-face { font-family: 'Syne'; src: url('assets/fonts/syne.woff2') format('woff2'); font-weight: 400 800; }
 @font-face { font-family: 'Bricolage Grotesque'; src: url('assets/fonts/bricolage.woff2') format('woff2'); font-weight: 200 800; }
-#root { position: absolute; inset: 0; background: #000; color: #fff; overflow: hidden;
+#root { position: absolute; inset: 0; background: #07080D; color: #fff; overflow: hidden;
   font-family: 'Bricolage Grotesque', sans-serif; }
-#root .syne { font-family: 'Syne', sans-serif; letter-spacing: -0.01em; line-height: 1.04; }
-#root .q { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 60px; line-height: 1.12; }
-#root .g { background: linear-gradient(90deg, #38A8F5 0%, #8E8CF6 55%, #B98AF5 100%);
-  -webkit-background-clip: text; background-clip: text; color: transparent; }
+#root .t { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 72px; line-height: 1.14; letter-spacing: -0.01em; }
+#root .lbl { font-family: 'Bricolage Grotesque'; font-weight: 600; font-size: 28px; letter-spacing: 0.32em; text-transform: uppercase; }
+#root .g { background: linear-gradient(90deg, #38A8F5 0%, #8E8CF6 55%, #B98AF5 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 #root .w { display: inline-block; white-space: pre; }
-#root .grey { color: #9A9AA0; }
+#root .grey { color: #8C8F9C; }
 #root .abs { position: absolute; }
 #root .center { left: 0; right: 0; text-align: center; }
-#root .card { position: absolute; background: #111113; border-radius: 32px; }
-#root .card::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 2px;
-  background: linear-gradient(135deg, #38A8F5, #8E8CF6 55%, #B98AF5);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
-#root .tile { width: 110px; height: 110px; border-radius: 30px; display: flex; align-items: center;
-  justify-content: center; background: linear-gradient(135deg, #38A8F5, #8E8CF6 55%, #B98AF5); }
-#root .tile svg { width: 50%; height: 50%; }
-#root .arc { position: absolute; left: 50%; width: 2200px; height: 2200px; margin-left: -1100px;
-  border-radius: 50%; border: 2px solid rgba(142, 140, 246, 0.16); }
-#root .cursor { position: absolute; width: 72px; height: 72px; z-index: 50; }
+#root .c2 { position: absolute; background: rgba(15, 17, 25, 0.94); border: 1px solid #232634; border-radius: 28px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55); }
+#root .tag { font-size: 28px; font-weight: 600; letter-spacing: 0.22em; color: #8C8F9C; text-transform: uppercase; }
+#root .tile { border-radius: 16px; display: flex; align-items: center; justify-content: center; background: linear-gradient(90deg, #38A8F5 0%, #8E8CF6 55%, #B98AF5 100%); }
+#root .tile svg { width: 56%; height: 56%; }
+#root .arc { position: absolute; width: 2600px; height: 2600px; border-radius: 50%; border: 2px solid rgba(120, 140, 246, 0.16); }
+#root .arc.a1 { left: -1900px; top: 1330px; } #root .arc.a2 { left: 380px; top: 1330px; }
+#root .cursor { position: absolute; left: 0; top: 0; width: 72px; height: 72px; z-index: 50; }
+#root .vig { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 55% at 50% 42%, rgba(7,8,13,0) 0%, rgba(7,8,13,0.75) 70%, #07080D 100%); }
 
-#s6-t1 { left: 96px; top: 210px; } #s6-t2 { left: 96px; top: 278px; }
-#s6-t3 { left: 96px; top: 370px; font-size: 100px; font-weight: 800; }
+#s6-t1 { left: 90px; top: 210px; } #s6-t2 { left: 90px; top: 292px; } #s6-t3 { left: 90px; top: 374px; }
 #s6-vis { position: relative; }
-#s6-strike { position: absolute; left: 0; right: 10px; top: 54%; height: 7px; border-radius: 4px; background: linear-gradient(90deg, #38A8F5, #B98AF5); transform-origin: 0 50%; }
-#root .nrow { left: 70px; width: 940px; height: 120px; }
-#root .nrow .tile { position: absolute; left: 24px; top: 20px; width: 80px; height: 80px; border-radius: 22px; }
-#root .nrow .tx { position: absolute; left: 130px; top: 18px; }
-#root .nrow .a { font-size: 34px; font-weight: 600; }
-#root .nrow .b { font-size: 28px; margin-top: 4px; }
-#root .nrow .tm { position: absolute; right: 32px; top: 22px; font-size: 28px; }
+#s6-strike { position: absolute; left: 0; right: 14px; top: 56%; height: 5px; border-radius: 3px; background: linear-gradient(90deg, #38A8F5, #B98AF5); transform-origin: 0 50%; }
+#s6-win { position: absolute; left: 90px; top: 520px; width: 900px; height: 810px; overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 80%, transparent 100%); mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 80%, transparent 100%); }
+#s6-col { position: absolute; left: 0; top: 0; width: 900px; }
+#root .fr { left: 0; width: 900px; height: 102px; border-radius: 22px; }
+#root .fr .tile { position: absolute; left: 20px; top: 21px; width: 60px; height: 60px; }
+#root .fr .a { position: absolute; left: 104px; top: 14px; font-size: 32px; font-weight: 600; white-space: nowrap; }
+#root .fr .b { position: absolute; left: 104px; top: 56px; font-size: 28px; white-space: nowrap; }
+#root .fr .tm { position: absolute; right: 26px; top: 16px; font-size: 28px; }
 </style>
-  <div id="root" data-composition-id="s6" data-start="0" data-duration="4.0" data-width="1080" data-height="1920">
+  <div id="root" data-composition-id="s6" data-start="0" data-duration="3.8" data-width="1080" data-height="1920">
+    <div class="arc a1"></div><div class="arc a2"></div>
 
-    <div class="arc" style="top:1560px"></div>
-    <div id="s6-t1" class="abs q"><span class="w">Vos </span><span class="w" id="s6-vis">visiteurs<span id="s6-strike"></span></span></div>
-    <div id="s6-t2" class="abs q"><span class="w">deviennent</span></div>
-    <div id="s6-t3" class="abs syne"><span class="w g">des </span><span class="w g">clients.</span></div>
-    <div id="s6-n0" class="card nrow" style="top:580px"><div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg></div><div class="tx"><div class="a">Nouvelle demande de devis</div><div class="b grey">Site web · Formulaire</div></div><div class="tm grey">à l&#x27;instant</div></div><div id="s6-n1" class="card nrow" style="top:716px"><div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></div><div class="tx"><div class="a">Appel entrant</div><div class="b grey">Depuis votre fiche Google</div></div><div class="tm grey">2 min</div></div><div id="s6-n2" class="card nrow" style="top:852px"><div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></div><div class="tx"><div class="a">Rendez-vous réservé</div><div class="b grey">Jeu. 29 oct. · 10:00</div></div><div class="tm grey">5 min</div></div><div id="s6-n3" class="card nrow" style="top:988px"><div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg></div><div class="tx"><div class="a">Nouveau message</div><div class="b grey">Formulaire de contact</div></div><div class="tm grey">12 min</div></div><div id="s6-n4" class="card nrow" style="top:1124px"><div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg></div><div class="tx"><div class="a">Nouvelle demande de devis</div><div class="b grey">Recommandé par l&#x27;IA</div></div><div class="tm grey">20 min</div></div>
+    <div id="s6-t1" class="abs t"><span class="w">Vos </span><span class="w" id="s6-vis">visiteurs<span id="s6-strike"></span></span></div>
+    <div id="s6-t2" class="abs t"><span class="w">deviennent</span></div>
+    <div id="s6-t3" class="abs t"><span class="w g lt">d</span><span class="w g lt">e</span><span class="w g lt">s</span><span class="w g lt"> </span><span class="w g lt">c</span><span class="w g lt">l</span><span class="w g lt">i</span><span class="w g lt">e</span><span class="w g lt">n</span><span class="w g lt">t</span><span class="w g lt">s</span><span class="w g lt">.</span></div>
+    <div id="s6-win" data-layout-allow-overflow><div id="s6-col"><div class="fr c2" style="top:0px"><div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg></div><div class="a">Nouvelle demande de devis</div><div class="b grey">Site web · Formulaire</div><div class="tm grey">à l&#x27;instant</div></div><div class="fr c2" style="top:118px"><div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></div><div class="a">Appel entrant</div><div class="b grey">Depuis votre fiche Google</div><div class="tm grey">1 min</div></div><div class="fr c2" style="top:236px"><div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></div><div class="a">Rendez-vous réservé</div><div class="b grey">Jeudi · 10:00</div><div class="tm grey">3 min</div></div><div class="fr c2" style="top:354px"><div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-3-5.4 3 1.1-6L3.2 9.4l6.1-.8z"/></svg></div><div class="a">Nouvel avis 5 étoiles</div><div class="b grey">Google</div><div class="tm grey">6 min</div></div><div class="fr c2" style="top:472px"><div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg></div><div class="a">Nouvelle demande de devis</div><div class="b grey">Recommandé par ChatGPT</div><div class="tm grey">9 min</div></div><div class="fr c2" style="top:590px"><div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-7-7-12a7 7 0 0 1 14 0c0 5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg></div><div class="a">Demande d&#x27;itinéraire</div><div class="b grey">Google Maps</div><div class="tm grey">12 min</div></div><div class="fr c2" style="top:708px"><div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg></div><div class="a">Nouveau message</div><div class="b grey">Formulaire de contact</div><div class="tm grey">15 min</div></div><div class="fr c2" style="top:826px"><div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></div><div class="a">Rendez-vous réservé</div><div class="b grey">Lundi · 14:30</div><div class="tm grey">18 min</div></div><div class="fr c2" style="top:944px"><div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></div><div class="a">Appel entrant</div><div class="b grey">Depuis votre site</div><div class="tm grey">21 min</div></div><div class="fr c2" style="top:1062px"><div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg></div><div class="a">Nouvelle demande de devis</div><div class="b grey">Site web · Formulaire</div><div class="tm grey">25 min</div></div></div></div>
 
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
+    // word / line entrances: blur to sharp, no slide
     const W_IN = (sel, t, st = 0.07) => tl.fromTo(sel, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.35, ease: "power4.out", stagger: st }, t);
+    // accent letters drop in one by one
+    const L_IN = (sel, t) => tl.fromTo(sel, { opacity: 0, y: -34, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.45, ease: "expo.out", stagger: 0.035 }, t);
     const OUT = (sel, t, st = 0) => tl.to(sel, { opacity: 0, filter: "blur(10px)", duration: 0.25, ease: "power3.in", stagger: st }, t);
+    const CLICK = (cur, target, t) => {
+      tl.to(cur, { scale: 0.85, duration: 0.07, ease: "power2.in" }, t); tl.to(cur, { scale: 1, duration: 0.1, ease: "power2.out" }, t + 0.07);
+      tl.to(target, { scale: 0.94, duration: 0.07, ease: "power2.in" }, t); tl.to(target, { scale: 1, duration: 0.12, ease: "power2.out" }, t + 0.07);
+    };
 
+    // the feed scrolls up continuously: new requests keep arriving
+    tl.fromTo("#s6-col", { y: 760 }, { y: -380, duration: 3.8, ease: "none" }, 0);
     W_IN("#s6-t1 .w", 0.05, 0.08);
-    tl.fromTo("#s6-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: "power3.inOut" }, 0.75);
-    tl.to("#s6-vis", { color: "#55555C", duration: 0.3 }, 0.85);
-    W_IN("#s6-t2 .w", 0.95);
-    tl.fromTo("#s6-t3 .w", { opacity: 0, filter: "blur(10px)", scale: 1.06 }, { opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.5, ease: "expo.out", stagger: 0.1 }, 1.25);
-    tl.fromTo(".nrow", { y: -40, opacity: 0, filter: "blur(8px)", scale: 0.96 }, { y: 0, opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.5, ease: "expo.out", stagger: 0.32 }, 0.6);
-    OUT(["#s6-t1", "#s6-t2", "#s6-t3"], 3.6);
-    tl.to(".nrow", { x: -120, opacity: 0, filter: "blur(10px)", duration: 0.3, ease: "power3.in", stagger: 0.03 }, 3.6);
+    W_IN("#s6-t2 .w", 0.4);
+    tl.fromTo("#s6-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: "power3.inOut" }, 1.0);
+    tl.to("#s6-vis", { color: "#4A4D5A", duration: 0.3 }, 1.1);
+    L_IN("#s6-t3 .lt", 1.25);
+    OUT(["#s6-t1", "#s6-t2", "#s6-t3", "#s6-win"], 3.45, 0.03);
 
     window.__timelines["s6"] = tl;
   </script>
