@@ -11,17 +11,17 @@ W, H = 1080, 1920
 
 SCENES = [  # id, start, duration
     ("s1", 0.0, 3.9),
-    ("s2", 3.9, 2.4),
-    ("s3", 6.3, 4.7),
-    ("s4", 11.0, 5.0),
-    ("s5", 16.0, 6.2),
-    ("s6", 22.2, 4.0),
-    ("s7", 26.2, 4.6),
-    ("s8", 30.8, 4.4),
-    ("s9", 35.2, 4.8),
-    ("s10", 40.0, 4.5),
+    ("s2", 3.9, 3.0),
+    ("s3", 6.9, 4.7),
+    ("s4", 11.6, 5.0),
+    ("s5", 16.6, 6.2),
+    ("s6", 22.8, 4.0),
+    ("s7", 26.8, 4.6),
+    ("s8", 31.4, 4.4),
+    ("s9", 35.8, 4.8),
+    ("s10", 40.6, 5.5),
 ]
-TOTAL = 44.5
+TOTAL = 46.1
 
 BASE_CSS = """
 @font-face { font-family: 'Syne'; src: url('assets/fonts/syne.woff2') format('woff2'); font-weight: 400 800; }
@@ -160,22 +160,27 @@ files["s1"] = scene("s1", 3.9, """
 # ---------------- S2: logo reveal ----------------
 LOCK_CSS = """
 #{p}-lock { position: absolute; left: 0; right: 0; top: 560px; height: 500px; transform-origin: 50% 50%; }
-#{p}-lock .mk { position: absolute; left: 50%; margin-left: -160px; top: 0; }
+#{p}-lock .mk { position: absolute; left: 50%; margin-left: -190px; top: -69px; width: 380px; height: 380px; }
+#{p}-lock .mk video, #{p}-lock .mk img { position: absolute; left: 0; top: 0; width: 380px; height: 380px; }
 #{p}-lock .wm { position: absolute; left: 0; right: 0; top: 330px; text-align: center; font-size: 68px; font-weight: 800; white-space: nowrap; }
 """
-def lockup(p):
+def lockup(p, dur=None):
+    # the official animated logo (alpha WebM) plays where the mark is performed; a still of it elsewhere
     letters = "".join(f'<span class="w l">{html.escape(c)}</span>' for c in "CK Web Designer")
-    return f"""<div id="{p}-lock"><div class="mk">{logo_svg(p + "-logo", 320)}</div><div class="wm syne">{letters}</div></div>"""
+    if dur:
+        mark = f'<video id="{p}-logo" class="clip" src="assets/logo-anime.webm" data-start="0" data-duration="{dur}" data-track-index="2" muted playsinline></video>'
+    else:
+        mark = f'<img id="{p}-logo" src="assets/logo-still.png" alt="CK Web Designer">'
+    return f"""<div id="{p}-lock"><div class="mk">{mark}</div><div class="wm syne">{letters}</div></div>"""
 
-files["s2"] = scene("s2", 2.4, LOCK_CSS.replace("{p}","s2"), f"""
+files["s2"] = scene("s2", 3.0, LOCK_CSS.replace("{p}","s2"), f"""
     <div class="arc" style="top:1500px"></div>
-    {lockup("s2")}
+    {lockup("s2", 3.0)}
 """, """
-    tl.fromTo("#s2-logo .dash", { x: -260, opacity: 0 }, { x: 0, opacity: 1, duration: 0.55, ease: "expo.out", stagger: 0.05 }, 0.05);
-    tl.fromTo("#s2-logo .mark", { x: -70, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: "expo.out", stagger: 0.08 }, 0.15);
-    tl.fromTo("#s2-lock .l", { opacity: 0.0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.25, ease: "power2.out", stagger: 0.035 }, 0.55);
+    // the logo draws itself in the video (~1.3 s); the name follows
+    tl.fromTo("#s2-lock .l", { opacity: 0.0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.25, ease: "power2.out", stagger: 0.035 }, 1.1);
     // carry across: lockup shrinks to the top where the next scene keeps it
-    tl.to("#s2-lock", { scale: 0.3, y: -530, duration: 0.5, ease: "power2.inOut" }, 1.85);
+    tl.to("#s2-lock", { scale: 0.3, y: -530, duration: 0.5, ease: "power2.inOut" }, 2.45);
 """)
 
 # ---------------- S3: vitrine digitale + phone ----------------
@@ -536,7 +541,7 @@ files["s9"] = scene("s9", 4.8, """
 
 # ---------------- S10: end card ----------------
 marq = "  ›  ".join(["Sites vitrines", "Boutiques en ligne", "Portfolios", "Applications", "Référencement", "Identité visuelle"]) + "  ›  "
-files["s10"] = scene("s10", 4.5, LOCK_CSS.replace("{p}","s10") + """
+files["s10"] = scene("s10", 5.5, LOCK_CSS.replace("{p}","s10") + """
 #s10-lock { top: 470px; }
 #s10-tag { top: 950px; font-size: 56px; font-weight: 800; }
 #s10-ct { top: 1110px; font-size: 32px; color: #9A9AA0; letter-spacing: 0.04em; }
@@ -545,20 +550,18 @@ files["s10"] = scene("s10", 4.5, LOCK_CSS.replace("{p}","s10") + """
 #s10-mq { position: absolute; left: 0; top: 24px; white-space: pre; font-family: 'Syne'; font-weight: 700; font-size: 48px; }
 """, f"""
     <div class="arc" style="top:1560px"></div>
-    {lockup("s10")}
+    {lockup("s10", 5.5)}
     <div id="s10-tag" class="abs center syne">{words("Un site qui vous")}<br>{words("ressemble.", cls="w g")}</div>
     <div id="s10-ct" class="abs center">ckwebdesigner.fr  ·  06 34 36 61 70</div>
     <div id="s10-band" data-layout-allow-overflow><div class="ln" style="top:0"></div><div class="ln" style="bottom:0"></div>
       <div id="s10-mq" class="g">{marq * 4}</div></div>
 """, """
-    tl.fromTo("#s10-logo .dash", { x: -260, opacity: 0 }, { x: 0, opacity: 1, duration: 0.55, ease: "expo.out", stagger: 0.05 }, 0.05);
-    tl.fromTo("#s10-logo .mark", { x: -70, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: "expo.out", stagger: 0.08 }, 0.15);
-    tl.fromTo("#s10-lock .l", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.25, ease: "power2.out", stagger: 0.035 }, 0.5);
-    tl.fromTo("#s10-tag .w", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.35, ease: "power4.out", stagger: 0.08 }, 1.1);
-    tl.fromTo("#s10-ct", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 1.6);
-    tl.fromTo("#s10-band .ln", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 1.0);
-    tl.fromTo("#s10-mq", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 1.3);
-    tl.fromTo("#s10-mq", { x: 0 }, { x: -1400, duration: 4.5, ease: "none" }, 0);
+    tl.fromTo("#s10-lock .l", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.25, ease: "power2.out", stagger: 0.035 }, 1.1);
+    tl.fromTo("#s10-tag .w", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.35, ease: "power4.out", stagger: 0.08 }, 1.7);
+    tl.fromTo("#s10-ct", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 2.2);
+    tl.fromTo("#s10-band .ln", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 1.5);
+    tl.fromTo("#s10-mq", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 1.8);
+    tl.fromTo("#s10-mq", { x: 0 }, { x: -1700, duration: 5.5, ease: "none" }, 0);
 """)
 
 # ---------------- index ----------------
