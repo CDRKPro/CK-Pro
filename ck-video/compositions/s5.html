@@ -55,7 +55,7 @@
 #s5-comet { position: absolute; left: 0; top: 0; }
 #s5-comet i { position: absolute; left: 172px; top: -6px; width: 12px; height: 12px; border-radius: 50%; background: #8E8CF6; }
 </style>
-  <div id="root" data-composition-id="s5" data-start="0" data-duration="5.6" data-width="1080" data-height="1920">
+  <div id="root" data-composition-id="s5" data-start="0" data-duration="7.6" data-width="1080" data-height="1920">
     <div class="arc a1"></div><div class="arc a2"></div>
 
     <div id="s5-t1" class="abs t"><span class="w">Visible</span></div>
@@ -102,29 +102,29 @@
     };
 
     // the hub keeps orbiting slowly (about 4 degrees a second)
-    tl.fromTo("#s5-orb", { rotation: 0 }, { rotation: 22, duration: 5.6, ease: "none" }, 0);
-    tl.fromTo("#s5-orb .sb", { rotation: 0 }, { rotation: -22, duration: 5.6, ease: "none" }, 0);
-    tl.fromTo("#s5-comet", { rotation: -40 }, { rotation: 320, duration: 5.6, ease: "none" }, 0);
+    tl.fromTo("#s5-orb", { rotation: 0 }, { rotation: 30, duration: 7.6, ease: "none" }, 0);
+    tl.fromTo("#s5-orb .sb", { rotation: 0 }, { rotation: -30, duration: 7.6, ease: "none" }, 0);
+    tl.fromTo("#s5-comet", { rotation: -40 }, { rotation: 440, duration: 7.6, ease: "none" }, 0);
     tl.fromTo("#s5-hub", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.9, ease: "expo.out" }, 0.1);
-    tl.fromTo("#s5-t1 .w", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "power4.out" }, 0.05);
+    tl.fromTo("#s5-t1 .w", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "power4.out" }, 2.05);
     tl.set(["#s5-w1", "#s5-w2"], { yPercent: 110, opacity: 0 }, 0);
-    tl.fromTo("#s5-w0", { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.45, ease: "expo.out" }, 0.35);
-    [[0, 1, 1.85], [1, 2, 3.35]].forEach(([a, b, t]) => {
+    tl.fromTo("#s5-w0", { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.45, ease: "expo.out" }, 3.6);
+    [[0, 1, 4.45], [1, 2, 5.6]].forEach(([a, b, t]) => {
       tl.to("#s5-w" + a, { yPercent: -110, opacity: 0, filter: "blur(6px)", duration: 0.3, ease: "power3.in" }, t);
       tl.fromTo("#s5-w" + b, { yPercent: 110, opacity: 0, filter: "blur(6px)" }, { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, t + 0.15);
     });
     // each card is sent out from the hub
     const CARD = (sel, t) => tl.fromTo(sel, { y: 380, scale: 0.7, opacity: 0, filter: "blur(12px)" }, { y: 0, scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.7, ease: "expo.out" }, t);
-    CARD("#s5-a", 0.5);
-    tl.fromTo("#s5-a .st", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 0.5, ease: "power2.out" }, 0.95);
-    CARD("#s5-b", 2.0);
-    tl.fromTo("#s5-pin", { y: -70, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "expo.out" }, 2.4);
-    tl.fromTo("#s5-pl", { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 0.35, ease: "power4.out" }, 2.65);
-    CARD("#s5-c", 3.3);
-    tl.fromTo("#s5-q", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 3.5);
-    tl.fromTo("#s5-ans .w", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, stagger: 0.07 }, 3.8);
-    OUT(["#s5-t1", "#s5-roll", "#s5-hub"], 5.25);
-    tl.to(["#s5-a", "#s5-b", "#s5-c"], { y: -60, opacity: 0, filter: "blur(10px)", duration: 0.3, ease: "power3.in", stagger: 0.04 }, 5.25);
+    CARD("#s5-a", 3.65);
+    tl.fromTo("#s5-a .st", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 0.5, ease: "power2.out" }, 4.05);
+    CARD("#s5-b", 4.55);
+    tl.fromTo("#s5-pin", { y: -70, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "expo.out" }, 4.9);
+    tl.fromTo("#s5-pl", { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 0.35, ease: "power4.out" }, 5.1);
+    CARD("#s5-c", 5.7);
+    tl.fromTo("#s5-q", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 5.9);
+    tl.fromTo("#s5-ans .w", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, stagger: 0.07 }, 6.2);
+    OUT(["#s5-t1", "#s5-roll", "#s5-hub"], 7.25);
+    tl.to(["#s5-a", "#s5-b", "#s5-c"], { y: -60, opacity: 0, filter: "blur(10px)", duration: 0.3, ease: "power3.in", stagger: 0.04 }, 7.25);
 
     window.__timelines["s5"] = tl;
   </script>

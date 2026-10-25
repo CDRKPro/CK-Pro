@@ -37,7 +37,7 @@
 #root .sd i { display: block; width: 20px; height: 20px; margin-left: -10px; border-radius: 50%; background: #262A38; }
 #root .sd span { position: absolute; left: 50%; top: 40px; transform: translateX(-50%); font-size: 30px; white-space: nowrap; color: #8C8F9C; }
 </style>
-  <div id="root" data-composition-id="s7" data-start="0" data-duration="4.4" data-width="1080" data-height="1920">
+  <div id="root" data-composition-id="s7" data-start="0" data-duration="3.2" data-width="1080" data-height="1920">
     <div class="arc a1"></div><div class="arc a2"></div>
 
     <div id="s7-lbl" class="abs center lbl g">Votre interlocuteur</div>
@@ -64,18 +64,18 @@
     };
 
     W_IN("#s7-lbl", 0.0);
-    tl.fromTo("#s7-card", { y: 60, opacity: 0, filter: "blur(10px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.7, ease: "expo.out" }, 0.1);
-    tl.fromTo("#s7-card", { borderColor: "#232634" }, { borderColor: "#5D5BC9", duration: 0.5 }, 0.6);
-    tl.fromTo("#s7-q .w", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.22, stagger: 0.07 }, 0.6);
-    tl.fromTo("#s7-big", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.6, ease: "expo.out" }, 1.6);
-    W_IN("#s7-bl", 1.8);
-    tl.fromTo("#s7-line", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 2.0);
-    tl.fromTo("#s7-fill", { scaleX: 0 }, { scaleX: 1, duration: 1.4, ease: "power2.inOut" }, 2.1);
+    tl.fromTo("#s7-card", { y: 60, opacity: 0, filter: "blur(10px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.6, ease: "expo.out" }, 0.0);
+    tl.fromTo("#s7-q .w", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, stagger: 0.05 }, 0.3);
+    tl.fromTo("#s7-big", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.6, ease: "expo.out" }, 0.15);
+    W_IN("#s7-bl", 0.3);
+    tl.fromTo("#s7-card", { borderColor: "#232634" }, { borderColor: "#5D5BC9", duration: 0.5 }, 1.0);
+    tl.fromTo("#s7-line", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 1.2);
+    tl.fromTo("#s7-fill", { scaleX: 0 }, { scaleX: 1, duration: 1.2, ease: "power2.inOut" }, 1.3);
     [0, 1, 2, 3].forEach((i) => {
-      tl.to(`#s7-d${i} i`, { background: "#8E8CF6", scale: 1.3, duration: 0.2 }, 2.1 + i * 0.45);
-      tl.to(`#s7-d${i} span`, { color: "#ffffff", duration: 0.2 }, 2.1 + i * 0.45);
+      tl.to(`#s7-d${i} i`, { background: "#8E8CF6", scale: 1.3, duration: 0.2 }, 1.3 + i * 0.38);
+      tl.to(`#s7-d${i} span`, { color: "#ffffff", duration: 0.2 }, 1.3 + i * 0.38);
     });
-    OUT(["#s7-lbl", "#s7-card", "#s7-big", "#s7-bl", "#s7-line"], 4.05, 0.03);
+    OUT(["#s7-lbl", "#s7-card", "#s7-big", "#s7-bl", "#s7-line"], 2.9, 0.03);
 
     window.__timelines["s7"] = tl;
   </script>

@@ -34,11 +34,11 @@
 #s9-sub { top: 990px; font-size: 30px; }
 #s9-cursor { z-index: 50; }
 </style>
-  <div id="root" data-composition-id="s9" data-start="0" data-duration="4.2" data-width="1080" data-height="1920">
+  <div id="root" data-composition-id="s9" data-start="0" data-duration="4.8" data-width="1080" data-height="1920">
     <div class="arc a1"></div><div class="arc a2"></div>
 
-    <div id="s9-e1" class="abs center t"><span class="w">Envie </span><span class="w">d&#x27;en </span><span class="w">faire</span></div>
-    <div id="s9-e2" class="abs center t"><span class="w g lt">a</span><span class="w g lt">u</span><span class="w g lt">t</span><span class="w g lt">a</span><span class="w g lt">n</span><span class="w g lt">t</span><span class="w g lt"> </span><span class="w g lt">?</span></div>
+    <div id="s9-e1" class="abs center t"><span class="w">Prêt </span><span class="w">à </span><span class="w">passer </span><span class="w">au</span></div>
+    <div id="s9-e2" class="abs center t"><span class="w g lt">n</span><span class="w g lt">i</span><span class="w g lt">v</span><span class="w g lt">e</span><span class="w g lt">a</span><span class="w g lt">u</span><span class="w g lt"> </span><span class="w g lt">s</span><span class="w g lt">u</span><span class="w g lt">p</span><span class="w g lt">é</span><span class="w g lt">r</span><span class="w g lt">i</span><span class="w g lt">e</span><span class="w g lt">u</span><span class="w g lt">r</span><span class="w g lt"> </span><span class="w g lt">?</span></div>
     <div id="s9-stage" data-layout-allow-overflow><div id="s9-phone"><div><img src="assets/shots/projets.jpg" alt=""></div></div></div>
     <div id="s9-r1" class="abs center t"><span class="w">Réservez </span><span class="w">votre</span></div>
     <div id="s9-r2" class="abs center t"><span class="w g lt">r</span><span class="w g lt">e</span><span class="w g lt">n</span><span class="w g lt">d</span><span class="w g lt">e</span><span class="w g lt">z</span><span class="w g lt">-</span><span class="w g lt">v</span><span class="w g lt">o</span><span class="w g lt">u</span><span class="w g lt">s</span><span class="w g lt">.</span></div>
@@ -59,22 +59,22 @@
       tl.to(target, { scale: 0.94, duration: 0.07, ease: "power2.in" }, t); tl.to(target, { scale: 1, duration: 0.12, ease: "power2.out" }, t + 0.07);
     };
 
-    W_IN("#s9-e1 .w", 0.05, 0.08);
-    L_IN("#s9-e2 .lt", 0.3);
-    tl.fromTo("#s9-phone", { y: 900, rotationX: 55 }, { y: 0, rotationX: 0, duration: 1.0, ease: "expo.out" }, 0.25);
-    OUT(["#s9-e1", "#s9-e2"], 1.35, 0.03);
-    tl.to("#s9-phone", { y: 700, rotationX: 40, opacity: 0, filter: "blur(10px)", duration: 0.4, ease: "power3.in" }, 1.35);
-    W_IN("#s9-r1 .w", 1.6, 0.08);
-    L_IN("#s9-r2 .lt", 1.8);
-    tl.fromTo("#s9-btn", { opacity: 0, scale: 0.8, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.6, ease: "expo.out" }, 2.0);
-    W_IN("#s9-sub .w", 2.2, 0.05);
+    W_IN("#s9-e1 .w", 0.15, 0.08);
+    L_IN("#s9-e2 .lt", 0.7);
+    tl.fromTo("#s9-phone", { y: 900, rotationX: 55 }, { y: 0, rotationX: 0, duration: 1.0, ease: "expo.out" }, 0.3);
+    OUT(["#s9-e1", "#s9-e2"], 2.25, 0.03);
+    tl.to("#s9-phone", { y: 700, rotationX: 40, opacity: 0, filter: "blur(10px)", duration: 0.4, ease: "power3.in" }, 2.25);
+    W_IN("#s9-r1 .w", 2.6, 0.08);
+    L_IN("#s9-r2 .lt", 2.85);
+    tl.fromTo("#s9-btn", { opacity: 0, scale: 0.8, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.6, ease: "expo.out" }, 2.9);
+    W_IN("#s9-sub .w", 3.05, 0.04);
     tl.set("#s9-b2", { opacity: 0 }, 0);
-    tl.fromTo("#s9-cursor", { x: 1150, y: 1550 }, { x: 620, y: 900, duration: 0.6, ease: "expo.out" }, 2.25);
-    CLICK("#s9-cursor", "#s9-btn", 3.0);
-    tl.to("#s9-b1", { opacity: 0, duration: 0.12 }, 3.05);
-    tl.to("#s9-b2", { opacity: 1, duration: 0.2 }, 3.1);
-    tl.to("#s9-cursor", { opacity: 0, duration: 0.2 }, 3.45);
-    OUT(["#s9-r1", "#s9-r2", "#s9-btn", "#s9-sub"], 3.95, 0.03);
+    tl.fromTo("#s9-cursor", { x: 1150, y: 1550 }, { x: 620, y: 900, duration: 0.5, ease: "expo.out" }, 3.0);
+    CLICK("#s9-cursor", "#s9-btn", 3.55);
+    tl.to("#s9-b1", { opacity: 0, duration: 0.12 }, 3.6);
+    tl.to("#s9-b2", { opacity: 1, duration: 0.2 }, 3.65);
+    tl.to("#s9-cursor", { opacity: 0, duration: 0.2 }, 3.95);
+    OUT(["#s9-r1", "#s9-r2", "#s9-btn", "#s9-sub"], 4.55, 0.03);
 
     window.__timelines["s9"] = tl;
   </script>

@@ -33,7 +33,7 @@
 #root .fr .b { position: absolute; left: 104px; top: 56px; font-size: 28px; white-space: nowrap; }
 #root .fr .tm { position: absolute; right: 26px; top: 16px; font-size: 28px; }
 </style>
-  <div id="root" data-composition-id="s6" data-start="0" data-duration="3.8" data-width="1080" data-height="1920">
+  <div id="root" data-composition-id="s6" data-start="0" data-duration="3.6" data-width="1080" data-height="1920">
     <div class="arc a1"></div><div class="arc a2"></div>
 
     <div id="s6-t1" class="abs t"><span class="w">Vos </span><span class="w" id="s6-vis">visiteurs<span id="s6-strike"></span></span></div>
@@ -55,13 +55,13 @@
     };
 
     // the feed scrolls up continuously: new requests keep arriving
-    tl.fromTo("#s6-col", { y: 760 }, { y: -380, duration: 3.8, ease: "none" }, 0);
+    tl.fromTo("#s6-col", { y: 760 }, { y: -340, duration: 3.6, ease: "none" }, 0);
     W_IN("#s6-t1 .w", 0.05, 0.08);
-    W_IN("#s6-t2 .w", 0.4);
-    tl.fromTo("#s6-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: "power3.inOut" }, 1.0);
-    tl.to("#s6-vis", { color: "#4A4D5A", duration: 0.3 }, 1.1);
-    L_IN("#s6-t3 .lt", 1.25);
-    OUT(["#s6-t1", "#s6-t2", "#s6-t3", "#s6-win"], 3.45, 0.03);
+    W_IN("#s6-t2 .w", 1.55);
+    tl.fromTo("#s6-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: "power3.inOut" }, 1.9);
+    tl.to("#s6-vis", { color: "#4A4D5A", duration: 0.3 }, 2.0);
+    L_IN("#s6-t3 .lt", 2.25);
+    OUT(["#s6-t1", "#s6-t2", "#s6-t3", "#s6-win"], 3.3, 0.03);
 
     window.__timelines["s6"] = tl;
   </script>

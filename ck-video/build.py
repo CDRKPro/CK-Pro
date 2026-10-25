@@ -6,18 +6,18 @@ ROOT = pathlib.Path(__file__).parent
 W, H = 1080, 1920
 
 SCENES = [  # id, start, duration
-    ("s1", 0.0, 4.6),
-    ("s2", 4.6, 2.8),
-    ("s3", 7.4, 4.2),
-    ("s4", 11.6, 5.4),
-    ("s5", 17.0, 5.6),
-    ("s6", 22.6, 3.8),
-    ("s7", 26.4, 4.4),
-    ("s8", 30.8, 4.4),
-    ("s9", 35.2, 4.2),
-    ("s10", 39.4, 5.0),
+    ("s1", 0.0, 6.0),
+    ("s2", 6.0, 2.8),
+    ("s3", 8.8, 4.4),
+    ("s4", 13.2, 5.4),
+    ("s5", 18.6, 7.6),
+    ("s6", 26.2, 3.6),
+    ("s7", 29.8, 3.2),
+    ("s8", 33.0, 3.4),
+    ("s9", 36.4, 4.8),
+    ("s10", 41.2, 5.5),
 ]
-TOTAL = 44.4
+TOTAL = 46.7
 
 GRAD = "linear-gradient(90deg, #38A8F5 0%, #8E8CF6 55%, #B98AF5 100%)"
 BASE_CSS = """
@@ -118,7 +118,7 @@ files = {}
 fcss, fhtml = field("s1", 0.38)
 query = "couvreur près de chez moi"
 chars = "".join(f'<span class="ch">{html.escape(c)}</span>' for c in query)
-files["s1"] = scene("s1", 4.6, fcss + """
+files["s1"] = scene("s1", 6.0, fcss + """
 #s1-lbl { top: 300px; }
 #s1-t1 { top: 360px; } #s1-t2 { top: 442px; } #s1-t3 { top: 524px; }
 #s1-box { left: 80px; top: 700px; width: 920px; height: 116px; border-radius: 24px; }
@@ -154,24 +154,25 @@ files["s1"] = scene("s1", 4.6, fcss + """
     <div id="s1-cursor" class="cursor">{CURSOR}</div>
 """, """
     // the camera drifts slowly over the field of pages for the whole shot
-    tl.fromTo("#s1-plane", { rotationX: 55, rotationZ: -32, x: 120, y: 200 }, { rotationX: 55, rotationZ: -32, x: -60, y: -160, duration: 4.6, ease: "none" }, 0);
+    tl.fromTo("#s1-plane", { rotationX: 55, rotationZ: -32, x: 120, y: 200 }, { rotationX: 55, rotationZ: -32, x: -100, y: -260, duration: 6.0, ease: "none" }, 0);
     // frame 0: search box and label already on screen
     tl.fromTo("#s1-box", { scale: 0.96 }, { scale: 1, duration: 0.7, ease: "expo.out" }, 0);
     document.querySelectorAll("#s1-text .ch").forEach((c, i) => tl.set(c, { opacity: 1 }, 0.25 + i * 0.045));
-    W_IN("#s1-t1 .w", 0.55, 0.08);
-    W_IN("#s1-t2 .w", 1.05, 0.08);
-    L_IN("#s1-t3 .lt", 1.5);
-    tl.fromTo("#s1-drop", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 1.45);
-    tl.fromTo("#s1-drop .row", { opacity: 0 }, { opacity: 1, duration: 0.3, stagger: 0.06 }, 1.5);
-    tl.fromTo("#s1-cursor", { x: 1150, y: 1500 }, { x: 640, y: 960, duration: 0.8, ease: "expo.out" }, 1.9);
-    tl.fromTo("#s1-hl", { opacity: 0 }, { opacity: 1, duration: 0.15 }, 2.5);
-    tl.to("#s1-cursor", { x: 930, y: 760, duration: 0.55, ease: "expo.out" }, 2.95);
-    CLICK("#s1-cursor", "#s1-btn", 3.6);
-    tl.to("#s1-cursor", { opacity: 0, duration: 0.15 }, 3.8);
+    // titles land on the voice: "en ligne" (1.9 s), "vos futurs clients vous cherchent" (3.8 s)
+    L_IN("#s1-t3 .lt", 1.9);
+    W_IN("#s1-t1 .w", 3.7, 0.08);
+    W_IN("#s1-t2 .w", 4.25, 0.08);
+    tl.fromTo("#s1-drop", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 1.5);
+    tl.fromTo("#s1-drop .row", { opacity: 0 }, { opacity: 1, duration: 0.3, stagger: 0.06 }, 1.55);
+    tl.fromTo("#s1-cursor", { x: 1150, y: 1500 }, { x: 640, y: 960, duration: 0.8, ease: "expo.out" }, 2.4);
+    tl.fromTo("#s1-hl", { opacity: 0 }, { opacity: 1, duration: 0.15 }, 3.0);
+    tl.to("#s1-cursor", { x: 930, y: 760, duration: 0.55, ease: "expo.out" }, 4.4);
+    CLICK("#s1-cursor", "#s1-btn", 5.1);
+    tl.to("#s1-cursor", { opacity: 0, duration: 0.15 }, 5.3);
     // push through the search bar into the next scene
-    OUT(["#s1-lbl", "#s1-t1", "#s1-t2", "#s1-t3"], 3.8, 0.03);
-    tl.to(["#s1-box", "#s1-drop"], { scale: 1.25, opacity: 0, filter: "blur(14px)", duration: 0.4, ease: "power3.in", stagger: 0.03 }, 3.85);
-    tl.to("#s1-field", { opacity: 0, duration: 0.4, ease: "power2.in" }, 3.9);
+    OUT(["#s1-lbl", "#s1-t1", "#s1-t2", "#s1-t3"], 5.3, 0.03);
+    tl.to(["#s1-box", "#s1-drop"], { scale: 1.25, opacity: 0, filter: "blur(14px)", duration: 0.4, ease: "power3.in", stagger: 0.03 }, 5.35);
+    tl.to("#s1-field", { opacity: 0, duration: 0.4, ease: "power2.in" }, 5.4);
 """)
 
 # ---------------- S2 / S3 / S10: logo lockup ----------------
@@ -188,13 +189,13 @@ def lockup(p, dur=None):
     return f'<div id="{p}-lock"><div class="mk">{mark}</div><div class="wm t">{lt}</div></div>'
 
 files["s2"] = scene("s2", 2.8, LOCK_CSS.replace("{p}", "s2"), f"    {lockup('s2', 2.8)}", """
-    tl.fromTo("#s2-lock .l", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.25, ease: "power2.out", stagger: 0.035 }, 1.05);
+    tl.fromTo("#s2-lock .l", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.25, ease: "power2.out", stagger: 0.035 }, 0.45);
     // carry across: the lockup shrinks up to become the next scene's header
     tl.to("#s2-lock", { scale: 0.3, y: -500, duration: 0.5, ease: "power2.inOut" }, 2.25);
 """)
 
 # ---------------- S3: vitrine digitale + phone rising in 3D ----------------
-files["s3"] = scene("s3", 4.2, LOCK_CSS.replace("{p}", "s3") + """
+files["s3"] = scene("s3", 4.4, LOCK_CSS.replace("{p}", "s3") + """
 #s3-lock { transform: translateY(-500px) scale(0.3); }
 #s3-t1 { top: 410px; } #s3-t2 { top: 492px; } #s3-t3 { top: 596px; font-size: 38px; }
 #s3-stage { position: absolute; inset: 0; perspective: 1500px; perspective-origin: 50% 20%; }
@@ -209,18 +210,18 @@ files["s3"] = scene("s3", 4.2, LOCK_CSS.replace("{p}", "s3") + """
     <div id="s3-t3" class="abs center grey">{words("de votre entreprise.")}</div>
     <div id="s3-stage" data-layout-allow-overflow><div id="s3-phone"><div id="s3-screen"><img id="s3-shot" src="assets/shots/hero.jpg" alt="ckwebdesigner.fr"></div></div></div>
 """, """
-    W_IN("#s3-t1 .w", 0.05, 0.08);
-    L_IN("#s3-t2 .lt", 0.3);
-    W_IN("#s3-t3 .w", 0.9, 0.06);
     // the phone rises out of the floor, tilted back, and stands up
-    tl.fromTo("#s3-phone", { y: 900, rotationX: 58, scale: 0.92 }, { y: 0, rotationX: 0, scale: 1, duration: 1.2, ease: "expo.out" }, 0.55);
+    tl.fromTo("#s3-phone", { y: 900, rotationX: 58, scale: 0.92 }, { y: 0, rotationX: 0, scale: 1, duration: 1.2, ease: "expo.out" }, 0.15);
+    W_IN("#s3-t1 .w", 1.6, 0.08);
+    L_IN("#s3-t2 .lt", 2.25);
+    W_IN("#s3-t3 .w", 2.9, 0.06);
     // a real scroll on the site, with a smear while it moves
-    tl.fromTo("#s3-shot", { y: 0, filter: "blur(0px)" }, { y: -420, duration: 1.0, ease: "power2.inOut" }, 2.2);
-    tl.to("#s3-shot", { filter: "blur(5px)", duration: 0.5, ease: "power2.in" }, 2.2);
-    tl.to("#s3-shot", { filter: "blur(0px)", duration: 0.5, ease: "power2.out" }, 2.7);
-    tl.to("#s3-lock", { opacity: 0, duration: 0.2 }, 3.7);
-    OUT(["#s3-t1", "#s3-t2", "#s3-t3"], 3.75, 0.03);
-    tl.to("#s3-phone", { y: -300, scale: 1.35, opacity: 0, filter: "blur(16px)", duration: 0.45, ease: "power3.in" }, 3.75);
+    tl.fromTo("#s3-shot", { y: 0, filter: "blur(0px)" }, { y: -420, duration: 1.0, ease: "power2.inOut" }, 1.4);
+    tl.to("#s3-shot", { filter: "blur(5px)", duration: 0.5, ease: "power2.in" }, 1.4);
+    tl.to("#s3-shot", { filter: "blur(0px)", duration: 0.5, ease: "power2.out" }, 1.9);
+    tl.to("#s3-lock", { opacity: 0, duration: 0.2 }, 3.95);
+    OUT(["#s3-t1", "#s3-t2", "#s3-t3"], 3.95, 0.03);
+    tl.to("#s3-phone", { y: -300, scale: 1.35, opacity: 0, filter: "blur(16px)", duration: 0.45, ease: "power3.in" }, 3.95);
 """)
 
 # ---------------- S4: réalisations over the 3D field ----------------
@@ -261,13 +262,13 @@ files["s4"] = scene("s4", 5.4, fcss + """
     W_IN("#s4-t1 .w", 0.2, 0.08);
     tl.fromTo("#s4-ul i", { x: -80 }, { x: 0, duration: 0.6, ease: "expo.out" }, 0.4);
     tl.set(["#s4-w1", "#s4-w2"], { yPercent: 110, opacity: 0 }, 0);
-    tl.fromTo("#s4-w0", { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.5, ease: "expo.out" }, 0.4);
+    tl.fromTo("#s4-w0", { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.5, ease: "expo.out" }, 0.3);
     // each word brings its own page: the old one whips out, the new one lands tilted and settles
     tl.set(["#s4-f1", "#s4-f2", "#s4-c1", "#s4-c2"], { opacity: 0 }, 0);
     tl.fromTo("#s4-f0", { x: 500, rotationY: -30, rotationX: 8, opacity: 0, filter: "blur(10px)" }, { x: 0, rotationY: -12, rotationX: 4, opacity: 1, filter: "blur(0px)", duration: 0.9, ease: "expo.out" }, 0.45);
     tl.to("#s4-f0", { rotationY: -6, duration: 1.0, ease: "power2.out" }, 1.35);
     W_IN("#s4-c0", 0.9);
-    [[0, 1, 2.05], [1, 2, 3.65]].forEach(([a, b, t]) => {
+    [[0, 1, 1.3], [1, 2, 3.3]].forEach(([a, b, t]) => {
       tl.to("#s4-w" + a, { yPercent: -110, opacity: 0, filter: "blur(6px)", duration: 0.3, ease: "power3.in" }, t);
       tl.fromTo("#s4-w" + b, { yPercent: 110, opacity: 0, filter: "blur(6px)" }, { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, t + 0.15);
       tl.to("#s4-f" + a, { x: -700, rotationY: 25, opacity: 0, filter: "blur(14px)", duration: 0.35, ease: "power3.in" }, t);
@@ -287,7 +288,7 @@ sat_html = "".join(f'<div class="sat" style="transform:rotate({a}deg) translateX
 roads = "".join(f'<path d="{d}"/>' for d in [
     "M-20 50 C200 80 380 30 960 110", "M-20 180 C300 150 600 210 960 170", "M160 -20 C190 90 140 180 210 300",
     "M540 -20 C500 110 580 200 560 300", "M740 -20 C780 130 720 220 800 300"])
-files["s5"] = scene("s5", 5.6, """
+files["s5"] = scene("s5", 7.6, """
 #s5-t1 { left: 90px; top: 210px; font-size: 92px; }
 #s5-roll { left: 90px; top: 326px; width: 960px; height: 70px; overflow: hidden; }
 #s5-roll .rw { position: absolute; left: 0; top: 0; font-size: 52px; white-space: nowrap; }
@@ -353,29 +354,29 @@ files["s5"] = scene("s5", 5.6, """
     </div>
 """, """
     // the hub keeps orbiting slowly (about 4 degrees a second)
-    tl.fromTo("#s5-orb", { rotation: 0 }, { rotation: 22, duration: 5.6, ease: "none" }, 0);
-    tl.fromTo("#s5-orb .sb", { rotation: 0 }, { rotation: -22, duration: 5.6, ease: "none" }, 0);
-    tl.fromTo("#s5-comet", { rotation: -40 }, { rotation: 320, duration: 5.6, ease: "none" }, 0);
+    tl.fromTo("#s5-orb", { rotation: 0 }, { rotation: 30, duration: 7.6, ease: "none" }, 0);
+    tl.fromTo("#s5-orb .sb", { rotation: 0 }, { rotation: -30, duration: 7.6, ease: "none" }, 0);
+    tl.fromTo("#s5-comet", { rotation: -40 }, { rotation: 440, duration: 7.6, ease: "none" }, 0);
     tl.fromTo("#s5-hub", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.9, ease: "expo.out" }, 0.1);
-    tl.fromTo("#s5-t1 .w", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "power4.out" }, 0.05);
+    tl.fromTo("#s5-t1 .w", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "power4.out" }, 2.05);
     tl.set(["#s5-w1", "#s5-w2"], { yPercent: 110, opacity: 0 }, 0);
-    tl.fromTo("#s5-w0", { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.45, ease: "expo.out" }, 0.35);
-    [[0, 1, 1.85], [1, 2, 3.35]].forEach(([a, b, t]) => {
+    tl.fromTo("#s5-w0", { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.45, ease: "expo.out" }, 3.6);
+    [[0, 1, 4.45], [1, 2, 5.6]].forEach(([a, b, t]) => {
       tl.to("#s5-w" + a, { yPercent: -110, opacity: 0, filter: "blur(6px)", duration: 0.3, ease: "power3.in" }, t);
       tl.fromTo("#s5-w" + b, { yPercent: 110, opacity: 0, filter: "blur(6px)" }, { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, t + 0.15);
     });
     // each card is sent out from the hub
     const CARD = (sel, t) => tl.fromTo(sel, { y: 380, scale: 0.7, opacity: 0, filter: "blur(12px)" }, { y: 0, scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.7, ease: "expo.out" }, t);
-    CARD("#s5-a", 0.5);
-    tl.fromTo("#s5-a .st", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 0.5, ease: "power2.out" }, 0.95);
-    CARD("#s5-b", 2.0);
-    tl.fromTo("#s5-pin", { y: -70, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "expo.out" }, 2.4);
-    tl.fromTo("#s5-pl", { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 0.35, ease: "power4.out" }, 2.65);
-    CARD("#s5-c", 3.3);
-    tl.fromTo("#s5-q", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 3.5);
-    tl.fromTo("#s5-ans .w", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, stagger: 0.07 }, 3.8);
-    OUT(["#s5-t1", "#s5-roll", "#s5-hub"], 5.25);
-    tl.to(["#s5-a", "#s5-b", "#s5-c"], { y: -60, opacity: 0, filter: "blur(10px)", duration: 0.3, ease: "power3.in", stagger: 0.04 }, 5.25);
+    CARD("#s5-a", 3.65);
+    tl.fromTo("#s5-a .st", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 0.5, ease: "power2.out" }, 4.05);
+    CARD("#s5-b", 4.55);
+    tl.fromTo("#s5-pin", { y: -70, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "expo.out" }, 4.9);
+    tl.fromTo("#s5-pl", { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 0.35, ease: "power4.out" }, 5.1);
+    CARD("#s5-c", 5.7);
+    tl.fromTo("#s5-q", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 5.9);
+    tl.fromTo("#s5-ans .w", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, stagger: 0.07 }, 6.2);
+    OUT(["#s5-t1", "#s5-roll", "#s5-hub"], 7.25);
+    tl.to(["#s5-a", "#s5-b", "#s5-c"], { y: -60, opacity: 0, filter: "blur(10px)", duration: 0.3, ease: "power3.in", stagger: 0.04 }, 7.25);
 """)
 
 # ---------------- S6: visiteurs -> clients, live feed ----------------
@@ -394,7 +395,7 @@ feed = [
 frows = "".join(
     f'<div class="fr c2" style="top:{i * 118}px"><div class="tile">{ic(P[k])}</div><div class="a">{html.escape(a)}</div>'
     f'<div class="b grey">{html.escape(b)}</div><div class="tm grey">{html.escape(t)}</div></div>' for i, (k, a, b, t) in enumerate(feed))
-files["s6"] = scene("s6", 3.8, """
+files["s6"] = scene("s6", 3.6, """
 #s6-t1 { left: 90px; top: 210px; } #s6-t2 { left: 90px; top: 292px; } #s6-t3 { left: 90px; top: 374px; }
 #s6-vis { position: relative; }
 #s6-strike { position: absolute; left: 0; right: 14px; top: 56%; height: 5px; border-radius: 3px; background: linear-gradient(90deg, #38A8F5, #B98AF5); transform-origin: 0 50%; }
@@ -413,19 +414,19 @@ files["s6"] = scene("s6", 3.8, """
     <div id="s6-win" data-layout-allow-overflow><div id="s6-col">{frows}</div></div>
 """, """
     // the feed scrolls up continuously: new requests keep arriving
-    tl.fromTo("#s6-col", { y: 760 }, { y: -380, duration: 3.8, ease: "none" }, 0);
+    tl.fromTo("#s6-col", { y: 760 }, { y: -340, duration: 3.6, ease: "none" }, 0);
     W_IN("#s6-t1 .w", 0.05, 0.08);
-    W_IN("#s6-t2 .w", 0.4);
-    tl.fromTo("#s6-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: "power3.inOut" }, 1.0);
-    tl.to("#s6-vis", { color: "#4A4D5A", duration: 0.3 }, 1.1);
-    L_IN("#s6-t3 .lt", 1.25);
-    OUT(["#s6-t1", "#s6-t2", "#s6-t3", "#s6-win"], 3.45, 0.03);
+    W_IN("#s6-t2 .w", 1.55);
+    tl.fromTo("#s6-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: "power3.inOut" }, 1.9);
+    tl.to("#s6-vis", { color: "#4A4D5A", duration: 0.3 }, 2.0);
+    L_IN("#s6-t3 .lt", 2.25);
+    OUT(["#s6-t1", "#s6-t2", "#s6-t3", "#s6-win"], 3.3, 0.03);
 """)
 
 # ---------------- S7: votre interlocuteur (real quote + method) ----------------
 steps = ["Échange", "Maquette", "Création", "En ligne"]
 dots = "".join(f'<div id="s7-d{i}" class="sd" style="left:{i * 280}px"><i></i><span>{s}</span></div>' for i, s in enumerate(steps))
-files["s7"] = scene("s7", 4.4, """
+files["s7"] = scene("s7", 3.2, """
 #s7-lbl { top: 300px; }
 #s7-card { left: 90px; top: 380px; width: 900px; height: 420px; }
 #s7-av { position: absolute; left: 36px; top: 36px; width: 96px; height: 96px; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, #38A8F5, #B98AF5); }
@@ -453,22 +454,22 @@ files["s7"] = scene("s7", 4.4, """
     <div id="s7-line" class="abs"><div id="s7-fill"></div>{dots}</div>
 """, """
     W_IN("#s7-lbl", 0.0);
-    tl.fromTo("#s7-card", { y: 60, opacity: 0, filter: "blur(10px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.7, ease: "expo.out" }, 0.1);
-    tl.fromTo("#s7-card", { borderColor: "#232634" }, { borderColor: "#5D5BC9", duration: 0.5 }, 0.6);
-    tl.fromTo("#s7-q .w", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.22, stagger: 0.07 }, 0.6);
-    tl.fromTo("#s7-big", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.6, ease: "expo.out" }, 1.6);
-    W_IN("#s7-bl", 1.8);
-    tl.fromTo("#s7-line", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 2.0);
-    tl.fromTo("#s7-fill", { scaleX: 0 }, { scaleX: 1, duration: 1.4, ease: "power2.inOut" }, 2.1);
+    tl.fromTo("#s7-card", { y: 60, opacity: 0, filter: "blur(10px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.6, ease: "expo.out" }, 0.0);
+    tl.fromTo("#s7-q .w", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, stagger: 0.05 }, 0.3);
+    tl.fromTo("#s7-big", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.6, ease: "expo.out" }, 0.15);
+    W_IN("#s7-bl", 0.3);
+    tl.fromTo("#s7-card", { borderColor: "#232634" }, { borderColor: "#5D5BC9", duration: 0.5 }, 1.0);
+    tl.fromTo("#s7-line", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 1.2);
+    tl.fromTo("#s7-fill", { scaleX: 0 }, { scaleX: 1, duration: 1.2, ease: "power2.inOut" }, 1.3);
     [0, 1, 2, 3].forEach((i) => {
-      tl.to(`#s7-d${i} i`, { background: "#8E8CF6", scale: 1.3, duration: 0.2 }, 2.1 + i * 0.45);
-      tl.to(`#s7-d${i} span`, { color: "#ffffff", duration: 0.2 }, 2.1 + i * 0.45);
+      tl.to(`#s7-d${i} i`, { background: "#8E8CF6", scale: 1.3, duration: 0.2 }, 1.3 + i * 0.38);
+      tl.to(`#s7-d${i} span`, { color: "#ffffff", duration: 0.2 }, 1.3 + i * 0.38);
     });
-    OUT(["#s7-lbl", "#s7-card", "#s7-big", "#s7-bl", "#s7-line"], 4.05, 0.03);
+    OUT(["#s7-lbl", "#s7-card", "#s7-big", "#s7-bl", "#s7-line"], 2.9, 0.03);
 """)
 
 # ---------------- S8: on s'occupe de tout (depth-of-field pass, then the grid assembles) ----------------
-files["s8"] = scene("s8", 4.4, """
+files["s8"] = scene("s8", 3.4, """
 #s8-t1 { top: 220px; } #s8-t2 { top: 302px; }
 #s8-grid { position: absolute; inset: 0; transform-origin: 50% 50%; }
 #root .bx .hd2 { position: absolute; left: 28px; top: 24px; display: flex; gap: 16px; align-items: center; font: 600 34px 'Syne'; white-space: nowrap; }
@@ -510,23 +511,23 @@ files["s8"] = scene("s8", 4.4, """
     // pass 1: the camera glides close over the cards, out of focus except the one it passes
     const off = { "#s8-a": [-120, -90, 3], "#s8-b": [-160, 60, 6], "#s8-c": [140, 40, 0], "#s8-d": [-90, 140, 9], "#s8-e": [170, 120, 5] };
     Object.entries(off).forEach(([s, [x, y, b]]) => {
-      tl.fromTo(s, { x: x, y: y, filter: `blur(${b}px)`, opacity: 0.85 }, { x: x * 0.8, y: y * 0.8, filter: `blur(${b}px)`, opacity: 0.85, duration: 1.7, ease: "none" }, 0);
-      tl.to(s, { x: 0, y: 0, filter: "blur(0px)", opacity: 1, duration: 0.8, ease: "expo.out" }, 1.7);
+      tl.fromTo(s, { x: x, y: y, filter: `blur(${b}px)`, opacity: 0.85 }, { x: x * 0.8, y: y * 0.8, filter: `blur(${b}px)`, opacity: 0.85, duration: 1.6, ease: "none" }, 0);
+      tl.to(s, { x: 0, y: 0, filter: "blur(0px)", opacity: 1, duration: 0.8, ease: "expo.out" }, 1.6);
     });
-    tl.fromTo("#s8-grid", { scale: 1.75, x: -330, y: 120 }, { scale: 1.6, x: -230, y: 60, duration: 1.7, ease: "none" }, 0);
+    tl.fromTo("#s8-grid", { scale: 1.75, x: -330, y: 120 }, { scale: 1.6, x: -230, y: 60, duration: 1.6, ease: "none" }, 0);
     // pass 2: pull back, everything lands in the grid
-    tl.to("#s8-grid", { scale: 1, x: 0, y: 0, duration: 0.9, ease: "expo.out" }, 1.7);
-    W_IN("#s8-t1 .w", 2.15, 0.08);
-    L_IN("#s8-t2 .lt", 2.35);
+    tl.to("#s8-grid", { scale: 1, x: 0, y: 0, duration: 0.9, ease: "expo.out" }, 1.6);
+    W_IN("#s8-t1 .w", 2.2, 0.08);
+    L_IN("#s8-t2 .lt", 2.45);
     const n = { v: 0 }; const el = document.getElementById("s8-num");
-    tl.fromTo(n, { v: 0 }, { v: 599, duration: 1.0, ease: "power2.out", onUpdate: () => { el.textContent = Math.round(n.v); } }, 1.9);
-    tl.fromTo("#s8-bars i", { scaleY: 0.1 }, { scaleY: 1, duration: 0.6, ease: "expo.out", stagger: 0.06 }, 2.0);
-    OUT(["#s8-t1", "#s8-t2"], 4.05);
-    tl.to(".bx", { opacity: 0, scale: 0.92, filter: "blur(12px)", duration: 0.3, ease: "power3.in", stagger: 0.03 }, 4.05);
+    tl.fromTo(n, { v: 0 }, { v: 599, duration: 1.0, ease: "power2.out", onUpdate: () => { el.textContent = Math.round(n.v); } }, 1.6);
+    tl.fromTo("#s8-bars i", { scaleY: 0.1 }, { scaleY: 1, duration: 0.6, ease: "expo.out", stagger: 0.06 }, 1.8);
+    OUT(["#s8-t1", "#s8-t2"], 3.15);
+    tl.to(".bx", { opacity: 0, scale: 0.92, filter: "blur(12px)", duration: 0.3, ease: "power3.in", stagger: 0.03 }, 3.1);
 """)
 
 # ---------------- S9: CTA ----------------
-files["s9"] = scene("s9", 4.2, """
+files["s9"] = scene("s9", 4.8, """
 #s9-e1 { top: 300px; } #s9-e2 { top: 382px; }
 #s9-stage { position: absolute; inset: 0; perspective: 1500px; perspective-origin: 50% 20%; }
 #s9-phone { position: absolute; left: 260px; top: 560px; width: 560px; height: 1140px; border-radius: 62px; background: #14161E; padding: 11px; border: 1px solid #2A2E3C; transform-origin: 50% 0; }
@@ -540,8 +541,8 @@ files["s9"] = scene("s9", 4.2, """
 #s9-sub { top: 990px; font-size: 30px; }
 #s9-cursor { z-index: 50; }
 """, f"""
-    <div id="s9-e1" class="abs center t">{words("Envie d'en faire")}</div>
-    <div id="s9-e2" class="abs center t">{letters("autant ?")}</div>
+    <div id="s9-e1" class="abs center t">{words("Prêt à passer au")}</div>
+    <div id="s9-e2" class="abs center t">{letters("niveau supérieur ?")}</div>
     <div id="s9-stage" data-layout-allow-overflow><div id="s9-phone"><div><img src="assets/shots/projets.jpg" alt=""></div></div></div>
     <div id="s9-r1" class="abs center t">{words("Réservez votre")}</div>
     <div id="s9-r2" class="abs center t">{letters("rendez-vous.")}</div>
@@ -549,44 +550,44 @@ files["s9"] = scene("s9", 4.2, """
     <div id="s9-sub" class="abs center grey">{words("Vous choisissez l'heure, je vous appelle.")}</div>
     <div id="s9-cursor" class="cursor">{CURSOR}</div>
 """, """
-    W_IN("#s9-e1 .w", 0.05, 0.08);
-    L_IN("#s9-e2 .lt", 0.3);
-    tl.fromTo("#s9-phone", { y: 900, rotationX: 55 }, { y: 0, rotationX: 0, duration: 1.0, ease: "expo.out" }, 0.25);
-    OUT(["#s9-e1", "#s9-e2"], 1.35, 0.03);
-    tl.to("#s9-phone", { y: 700, rotationX: 40, opacity: 0, filter: "blur(10px)", duration: 0.4, ease: "power3.in" }, 1.35);
-    W_IN("#s9-r1 .w", 1.6, 0.08);
-    L_IN("#s9-r2 .lt", 1.8);
-    tl.fromTo("#s9-btn", { opacity: 0, scale: 0.8, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.6, ease: "expo.out" }, 2.0);
-    W_IN("#s9-sub .w", 2.2, 0.05);
+    W_IN("#s9-e1 .w", 0.15, 0.08);
+    L_IN("#s9-e2 .lt", 0.7);
+    tl.fromTo("#s9-phone", { y: 900, rotationX: 55 }, { y: 0, rotationX: 0, duration: 1.0, ease: "expo.out" }, 0.3);
+    OUT(["#s9-e1", "#s9-e2"], 2.25, 0.03);
+    tl.to("#s9-phone", { y: 700, rotationX: 40, opacity: 0, filter: "blur(10px)", duration: 0.4, ease: "power3.in" }, 2.25);
+    W_IN("#s9-r1 .w", 2.6, 0.08);
+    L_IN("#s9-r2 .lt", 2.85);
+    tl.fromTo("#s9-btn", { opacity: 0, scale: 0.8, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.6, ease: "expo.out" }, 2.9);
+    W_IN("#s9-sub .w", 3.05, 0.04);
     tl.set("#s9-b2", { opacity: 0 }, 0);
-    tl.fromTo("#s9-cursor", { x: 1150, y: 1550 }, { x: 620, y: 900, duration: 0.6, ease: "expo.out" }, 2.25);
-    CLICK("#s9-cursor", "#s9-btn", 3.0);
-    tl.to("#s9-b1", { opacity: 0, duration: 0.12 }, 3.05);
-    tl.to("#s9-b2", { opacity: 1, duration: 0.2 }, 3.1);
-    tl.to("#s9-cursor", { opacity: 0, duration: 0.2 }, 3.45);
-    OUT(["#s9-r1", "#s9-r2", "#s9-btn", "#s9-sub"], 3.95, 0.03);
+    tl.fromTo("#s9-cursor", { x: 1150, y: 1550 }, { x: 620, y: 900, duration: 0.5, ease: "expo.out" }, 3.0);
+    CLICK("#s9-cursor", "#s9-btn", 3.55);
+    tl.to("#s9-b1", { opacity: 0, duration: 0.12 }, 3.6);
+    tl.to("#s9-b2", { opacity: 1, duration: 0.2 }, 3.65);
+    tl.to("#s9-cursor", { opacity: 0, duration: 0.2 }, 3.95);
+    OUT(["#s9-r1", "#s9-r2", "#s9-btn", "#s9-sub"], 4.55, 0.03);
 """)
 
 # ---------------- S10: end card ----------------
 mq_items = ["Sites vitrines", "Boutiques en ligne", "Portfolios", "Applications", "Référencement", "Identité visuelle", "Refonte de site", "Logiciel"]
 mq = "".join(f'<span>{html.escape(m)}</span><i></i>' for m in mq_items * 3)
-files["s10"] = scene("s10", 5.0, LOCK_CSS.replace("{p}", "s10") + """
+files["s10"] = scene("s10", 5.5, LOCK_CSS.replace("{p}", "s10") + """
 #s10-lock { top: 500px; }
 #s10-tag { top: 900px; font-size: 44px; }
 #s10-ct { top: 990px; }
 #s10-mq { position: absolute; left: 0; top: 1240px; display: flex; align-items: center; gap: 28px; white-space: nowrap; font-size: 30px; color: #8C8F9C; }
 #s10-mq i { display: block; width: 10px; height: 10px; border-radius: 50%; background: #8E8CF6; }
 """, f"""
-    {lockup("s10", 5.0)}
+    {lockup("s10", 5.5)}
     <div id="s10-tag" class="abs center">{words("Un site qui vous")} <span class="w g" style="font-weight:600">ressemble.</span></div>
     <div id="s10-ct" class="abs center lbl grey">ckwebdesigner.fr · 06 34 36 61 70</div>
     <div id="s10-mq" data-layout-allow-overflow>{mq}</div>
 """, """
-    tl.fromTo("#s10-lock .l", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.25, ease: "power2.out", stagger: 0.035 }, 1.05);
-    W_IN("#s10-tag .w", 1.65, 0.08);
-    W_IN("#s10-ct", 2.1);
-    tl.fromTo("#s10-mq", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 1.6);
-    tl.fromTo("#s10-mq", { x: 0 }, { x: -1600, duration: 5.0, ease: "none" }, 0);
+    tl.fromTo("#s10-lock .l", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.25, ease: "power2.out", stagger: 0.035 }, 0.25);
+    W_IN("#s10-tag .w", 1.85, 0.08);
+    W_IN("#s10-ct", 2.6);
+    tl.fromTo("#s10-mq", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 2.2);
+    tl.fromTo("#s10-mq", { x: 0 }, { x: -1760, duration: 5.5, ease: "none" }, 0);
 """)
 
 # ---------------- index ----------------
@@ -610,6 +611,7 @@ index = f"""<!doctype html>
     <div id="root" data-composition-id="main" data-start="0" data-duration="{TOTAL}" data-width="{W}" data-height="{H}">
       <div id="bg"></div>
 {hosts}
+      <audio id="vo" class="clip" src="assets/vo.wav" data-start="0" data-duration="{TOTAL}" data-track-index="3" data-volume="1"></audio>
     </div>
     <script>
       const tl = gsap.timeline({{ paused: true }});

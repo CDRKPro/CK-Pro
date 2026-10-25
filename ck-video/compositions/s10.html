@@ -32,10 +32,10 @@
 #s10-mq { position: absolute; left: 0; top: 1240px; display: flex; align-items: center; gap: 28px; white-space: nowrap; font-size: 30px; color: #8C8F9C; }
 #s10-mq i { display: block; width: 10px; height: 10px; border-radius: 50%; background: #8E8CF6; }
 </style>
-  <div id="root" data-composition-id="s10" data-start="0" data-duration="5.0" data-width="1080" data-height="1920">
+  <div id="root" data-composition-id="s10" data-start="0" data-duration="5.5" data-width="1080" data-height="1920">
     <div class="arc a1"></div><div class="arc a2"></div>
 
-    <div id="s10-lock"><div class="mk"><video id="s10-logo" class="clip" src="assets/logo-anime.webm" data-start="0" data-duration="5.0" data-track-index="2" muted playsinline></video></div><div class="wm t"><span class="w l">C</span><span class="w l">K</span><span class="w l"> </span><span class="w l">W</span><span class="w l">e</span><span class="w l">b</span><span class="w l"> </span><span class="w l">D</span><span class="w l">e</span><span class="w l">s</span><span class="w l">i</span><span class="w l">g</span><span class="w l">n</span><span class="w l">e</span><span class="w l">r</span></div></div>
+    <div id="s10-lock"><div class="mk"><video id="s10-logo" class="clip" src="assets/logo-anime.webm" data-start="0" data-duration="5.5" data-track-index="2" muted playsinline></video></div><div class="wm t"><span class="w l">C</span><span class="w l">K</span><span class="w l"> </span><span class="w l">W</span><span class="w l">e</span><span class="w l">b</span><span class="w l"> </span><span class="w l">D</span><span class="w l">e</span><span class="w l">s</span><span class="w l">i</span><span class="w l">g</span><span class="w l">n</span><span class="w l">e</span><span class="w l">r</span></div></div>
     <div id="s10-tag" class="abs center"><span class="w">Un </span><span class="w">site </span><span class="w">qui </span><span class="w">vous</span> <span class="w g" style="font-weight:600">ressemble.</span></div>
     <div id="s10-ct" class="abs center lbl grey">ckwebdesigner.fr · 06 34 36 61 70</div>
     <div id="s10-mq" data-layout-allow-overflow><span>Sites vitrines</span><i></i><span>Boutiques en ligne</span><i></i><span>Portfolios</span><i></i><span>Applications</span><i></i><span>Référencement</span><i></i><span>Identité visuelle</span><i></i><span>Refonte de site</span><i></i><span>Logiciel</span><i></i><span>Sites vitrines</span><i></i><span>Boutiques en ligne</span><i></i><span>Portfolios</span><i></i><span>Applications</span><i></i><span>Référencement</span><i></i><span>Identité visuelle</span><i></i><span>Refonte de site</span><i></i><span>Logiciel</span><i></i><span>Sites vitrines</span><i></i><span>Boutiques en ligne</span><i></i><span>Portfolios</span><i></i><span>Applications</span><i></i><span>Référencement</span><i></i><span>Identité visuelle</span><i></i><span>Refonte de site</span><i></i><span>Logiciel</span><i></i></div>
@@ -53,11 +53,11 @@
       tl.to(target, { scale: 0.94, duration: 0.07, ease: "power2.in" }, t); tl.to(target, { scale: 1, duration: 0.12, ease: "power2.out" }, t + 0.07);
     };
 
-    tl.fromTo("#s10-lock .l", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.25, ease: "power2.out", stagger: 0.035 }, 1.05);
-    W_IN("#s10-tag .w", 1.65, 0.08);
-    W_IN("#s10-ct", 2.1);
-    tl.fromTo("#s10-mq", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 1.6);
-    tl.fromTo("#s10-mq", { x: 0 }, { x: -1600, duration: 5.0, ease: "none" }, 0);
+    tl.fromTo("#s10-lock .l", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.25, ease: "power2.out", stagger: 0.035 }, 0.25);
+    W_IN("#s10-tag .w", 1.85, 0.08);
+    W_IN("#s10-ct", 2.6);
+    tl.fromTo("#s10-mq", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 2.2);
+    tl.fromTo("#s10-mq", { x: 0 }, { x: -1760, duration: 5.5, ease: "none" }, 0);
 
     window.__timelines["s10"] = tl;
   </script>

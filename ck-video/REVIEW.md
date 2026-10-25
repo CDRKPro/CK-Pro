@@ -9,3 +9,10 @@
 - Featured pages in S4 are ckwebdesigner.fr pages (no client-site screenshots available yet).
 - Warnings kept: film_silent (no music yet), per-letter titles counted as words, feed rows scrolling past (decorative), mini brand tag in S3.
 - Edit copy/timings in build.py, then `python3 build.py`.
+
+## Voix off (v3)
+- Source: ElevenLabs Voice Design preview sent by Cédric (screen recording), audio only. It paraphrases the script (51 s).
+- Cut "Bonjour à tous." and "on va parler de quelque chose de super important pour votre business,"; gaps tightened; 13 pieces placed in assets/vo.wav (46.7 s), -16 LUFS, peak -2.4 dBFS.
+- Scenes retimed to the voice (film now 46.7 s); S9 on-screen text changed to "Prêt à passer au niveau supérieur ?" to match the voice.
+- Checked by re-transcribing the rendered file (Whisper small, local): every line present, in order. Measured, not heard.
+- Still no music bed.

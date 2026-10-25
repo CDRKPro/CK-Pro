@@ -34,7 +34,7 @@
 #s3-screen { width: 100%; height: 100%; border-radius: 58px; overflow: hidden; background: #000; position: relative; }
 #s3-shot { position: absolute; left: 0; top: 0; width: 616px; }
 </style>
-  <div id="root" data-composition-id="s3" data-start="0" data-duration="4.2" data-width="1080" data-height="1920">
+  <div id="root" data-composition-id="s3" data-start="0" data-duration="4.4" data-width="1080" data-height="1920">
     <div class="arc a1"></div><div class="arc a2"></div>
 
     <div id="s3-lock"><div class="mk"><img id="s3-logo" src="assets/logo-still.png" alt="CK Web Designer"></div><div class="wm t"><span class="w l">C</span><span class="w l">K</span><span class="w l"> </span><span class="w l">W</span><span class="w l">e</span><span class="w l">b</span><span class="w l"> </span><span class="w l">D</span><span class="w l">e</span><span class="w l">s</span><span class="w l">i</span><span class="w l">g</span><span class="w l">n</span><span class="w l">e</span><span class="w l">r</span></div></div>
@@ -56,18 +56,18 @@
       tl.to(target, { scale: 0.94, duration: 0.07, ease: "power2.in" }, t); tl.to(target, { scale: 1, duration: 0.12, ease: "power2.out" }, t + 0.07);
     };
 
-    W_IN("#s3-t1 .w", 0.05, 0.08);
-    L_IN("#s3-t2 .lt", 0.3);
-    W_IN("#s3-t3 .w", 0.9, 0.06);
     // the phone rises out of the floor, tilted back, and stands up
-    tl.fromTo("#s3-phone", { y: 900, rotationX: 58, scale: 0.92 }, { y: 0, rotationX: 0, scale: 1, duration: 1.2, ease: "expo.out" }, 0.55);
+    tl.fromTo("#s3-phone", { y: 900, rotationX: 58, scale: 0.92 }, { y: 0, rotationX: 0, scale: 1, duration: 1.2, ease: "expo.out" }, 0.15);
+    W_IN("#s3-t1 .w", 1.6, 0.08);
+    L_IN("#s3-t2 .lt", 2.25);
+    W_IN("#s3-t3 .w", 2.9, 0.06);
     // a real scroll on the site, with a smear while it moves
-    tl.fromTo("#s3-shot", { y: 0, filter: "blur(0px)" }, { y: -420, duration: 1.0, ease: "power2.inOut" }, 2.2);
-    tl.to("#s3-shot", { filter: "blur(5px)", duration: 0.5, ease: "power2.in" }, 2.2);
-    tl.to("#s3-shot", { filter: "blur(0px)", duration: 0.5, ease: "power2.out" }, 2.7);
-    tl.to("#s3-lock", { opacity: 0, duration: 0.2 }, 3.7);
-    OUT(["#s3-t1", "#s3-t2", "#s3-t3"], 3.75, 0.03);
-    tl.to("#s3-phone", { y: -300, scale: 1.35, opacity: 0, filter: "blur(16px)", duration: 0.45, ease: "power3.in" }, 3.75);
+    tl.fromTo("#s3-shot", { y: 0, filter: "blur(0px)" }, { y: -420, duration: 1.0, ease: "power2.inOut" }, 1.4);
+    tl.to("#s3-shot", { filter: "blur(5px)", duration: 0.5, ease: "power2.in" }, 1.4);
+    tl.to("#s3-shot", { filter: "blur(0px)", duration: 0.5, ease: "power2.out" }, 1.9);
+    tl.to("#s3-lock", { opacity: 0, duration: 0.2 }, 3.95);
+    OUT(["#s3-t1", "#s3-t2", "#s3-t3"], 3.95, 0.03);
+    tl.to("#s3-phone", { y: -300, scale: 1.35, opacity: 0, filter: "blur(16px)", duration: 0.45, ease: "power3.in" }, 3.95);
 
     window.__timelines["s3"] = tl;
   </script>

@@ -41,7 +41,7 @@
 #s8-bars i { flex: 1; border-radius: 6px; background: #262A38; transform-origin: 50% 100%; }
 #s8-bars i:last-child { background: linear-gradient(180deg, #B98AF5, #38A8F5); }
 </style>
-  <div id="root" data-composition-id="s8" data-start="0" data-duration="4.4" data-width="1080" data-height="1920">
+  <div id="root" data-composition-id="s8" data-start="0" data-duration="3.4" data-width="1080" data-height="1920">
     <div class="arc a1"></div><div class="arc a2"></div>
 
     <div id="s8-t1" class="abs center t"><span class="w">On </span><span class="w">s&#x27;occupe</span></div>
@@ -78,19 +78,19 @@
     // pass 1: the camera glides close over the cards, out of focus except the one it passes
     const off = { "#s8-a": [-120, -90, 3], "#s8-b": [-160, 60, 6], "#s8-c": [140, 40, 0], "#s8-d": [-90, 140, 9], "#s8-e": [170, 120, 5] };
     Object.entries(off).forEach(([s, [x, y, b]]) => {
-      tl.fromTo(s, { x: x, y: y, filter: `blur(${b}px)`, opacity: 0.85 }, { x: x * 0.8, y: y * 0.8, filter: `blur(${b}px)`, opacity: 0.85, duration: 1.7, ease: "none" }, 0);
-      tl.to(s, { x: 0, y: 0, filter: "blur(0px)", opacity: 1, duration: 0.8, ease: "expo.out" }, 1.7);
+      tl.fromTo(s, { x: x, y: y, filter: `blur(${b}px)`, opacity: 0.85 }, { x: x * 0.8, y: y * 0.8, filter: `blur(${b}px)`, opacity: 0.85, duration: 1.6, ease: "none" }, 0);
+      tl.to(s, { x: 0, y: 0, filter: "blur(0px)", opacity: 1, duration: 0.8, ease: "expo.out" }, 1.6);
     });
-    tl.fromTo("#s8-grid", { scale: 1.75, x: -330, y: 120 }, { scale: 1.6, x: -230, y: 60, duration: 1.7, ease: "none" }, 0);
+    tl.fromTo("#s8-grid", { scale: 1.75, x: -330, y: 120 }, { scale: 1.6, x: -230, y: 60, duration: 1.6, ease: "none" }, 0);
     // pass 2: pull back, everything lands in the grid
-    tl.to("#s8-grid", { scale: 1, x: 0, y: 0, duration: 0.9, ease: "expo.out" }, 1.7);
-    W_IN("#s8-t1 .w", 2.15, 0.08);
-    L_IN("#s8-t2 .lt", 2.35);
+    tl.to("#s8-grid", { scale: 1, x: 0, y: 0, duration: 0.9, ease: "expo.out" }, 1.6);
+    W_IN("#s8-t1 .w", 2.2, 0.08);
+    L_IN("#s8-t2 .lt", 2.45);
     const n = { v: 0 }; const el = document.getElementById("s8-num");
-    tl.fromTo(n, { v: 0 }, { v: 599, duration: 1.0, ease: "power2.out", onUpdate: () => { el.textContent = Math.round(n.v); } }, 1.9);
-    tl.fromTo("#s8-bars i", { scaleY: 0.1 }, { scaleY: 1, duration: 0.6, ease: "expo.out", stagger: 0.06 }, 2.0);
-    OUT(["#s8-t1", "#s8-t2"], 4.05);
-    tl.to(".bx", { opacity: 0, scale: 0.92, filter: "blur(12px)", duration: 0.3, ease: "power3.in", stagger: 0.03 }, 4.05);
+    tl.fromTo(n, { v: 0 }, { v: 599, duration: 1.0, ease: "power2.out", onUpdate: () => { el.textContent = Math.round(n.v); } }, 1.6);
+    tl.fromTo("#s8-bars i", { scaleY: 0.1 }, { scaleY: 1, duration: 0.6, ease: "expo.out", stagger: 0.06 }, 1.8);
+    OUT(["#s8-t1", "#s8-t2"], 3.15);
+    tl.to(".bx", { opacity: 0, scale: 0.92, filter: "blur(12px)", duration: 0.3, ease: "power3.in", stagger: 0.03 }, 3.1);
 
     window.__timelines["s8"] = tl;
   </script>

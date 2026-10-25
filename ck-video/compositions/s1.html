@@ -43,7 +43,7 @@
 #s1-r0 { top: 20px; } #s1-r1 { top: 98px; } #s1-r2 { top: 176px; }
 #s1-hl { position: absolute; left: 20px; right: 20px; top: 98px; height: 76px; border-radius: 16px; background: #1A1D2A; }
 </style>
-  <div id="root" data-composition-id="s1" data-start="0" data-duration="4.6" data-width="1080" data-height="1920">
+  <div id="root" data-composition-id="s1" data-start="0" data-duration="6.0" data-width="1080" data-height="1920">
     <div class="arc a1"></div><div class="arc a2"></div>
 
     <div id="s1-field" data-layout-ignore><div id="s1-plane"><img src="assets/shots/services.jpg" alt=""><img src="assets/shots/form.jpg" alt=""><img src="assets/shots/tarifs3.jpg" alt=""><img src="assets/shots/faq.jpg" alt=""><img src="assets/shots/contact.jpg" alt=""><img src="assets/shots/tarifs2.jpg" alt=""><img src="assets/shots/rdv.jpg" alt=""><img src="assets/shots/demos.jpg" alt=""><img src="assets/shots/services2.jpg" alt=""><img src="assets/shots/method.jpg" alt=""><img src="assets/shots/estim.jpg" alt=""><img src="assets/shots/services.jpg" alt=""><img src="assets/shots/form.jpg" alt=""><img src="assets/shots/tarifs3.jpg" alt=""><img src="assets/shots/faq.jpg" alt=""><img src="assets/shots/contact.jpg" alt=""><img src="assets/shots/tarifs2.jpg" alt=""><img src="assets/shots/rdv.jpg" alt=""><img src="assets/shots/demos.jpg" alt=""><img src="assets/shots/services2.jpg" alt=""><img src="assets/shots/method.jpg" alt=""><img src="assets/shots/estim.jpg" alt=""><img src="assets/shots/services.jpg" alt=""><img src="assets/shots/form.jpg" alt=""><img src="assets/shots/tarifs3.jpg" alt=""><img src="assets/shots/faq.jpg" alt=""><img src="assets/shots/contact.jpg" alt=""><img src="assets/shots/tarifs2.jpg" alt=""><img src="assets/shots/rdv.jpg" alt=""><img src="assets/shots/demos.jpg" alt=""><img src="assets/shots/services2.jpg" alt=""><img src="assets/shots/method.jpg" alt=""><img src="assets/shots/estim.jpg" alt=""><img src="assets/shots/services.jpg" alt=""><img src="assets/shots/form.jpg" alt=""></div></div><div class="vig"></div>
@@ -78,24 +78,25 @@
     };
 
     // the camera drifts slowly over the field of pages for the whole shot
-    tl.fromTo("#s1-plane", { rotationX: 55, rotationZ: -32, x: 120, y: 200 }, { rotationX: 55, rotationZ: -32, x: -60, y: -160, duration: 4.6, ease: "none" }, 0);
+    tl.fromTo("#s1-plane", { rotationX: 55, rotationZ: -32, x: 120, y: 200 }, { rotationX: 55, rotationZ: -32, x: -100, y: -260, duration: 6.0, ease: "none" }, 0);
     // frame 0: search box and label already on screen
     tl.fromTo("#s1-box", { scale: 0.96 }, { scale: 1, duration: 0.7, ease: "expo.out" }, 0);
     document.querySelectorAll("#s1-text .ch").forEach((c, i) => tl.set(c, { opacity: 1 }, 0.25 + i * 0.045));
-    W_IN("#s1-t1 .w", 0.55, 0.08);
-    W_IN("#s1-t2 .w", 1.05, 0.08);
-    L_IN("#s1-t3 .lt", 1.5);
-    tl.fromTo("#s1-drop", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 1.45);
-    tl.fromTo("#s1-drop .row", { opacity: 0 }, { opacity: 1, duration: 0.3, stagger: 0.06 }, 1.5);
-    tl.fromTo("#s1-cursor", { x: 1150, y: 1500 }, { x: 640, y: 960, duration: 0.8, ease: "expo.out" }, 1.9);
-    tl.fromTo("#s1-hl", { opacity: 0 }, { opacity: 1, duration: 0.15 }, 2.5);
-    tl.to("#s1-cursor", { x: 930, y: 760, duration: 0.55, ease: "expo.out" }, 2.95);
-    CLICK("#s1-cursor", "#s1-btn", 3.6);
-    tl.to("#s1-cursor", { opacity: 0, duration: 0.15 }, 3.8);
+    // titles land on the voice: "en ligne" (1.9 s), "vos futurs clients vous cherchent" (3.8 s)
+    L_IN("#s1-t3 .lt", 1.9);
+    W_IN("#s1-t1 .w", 3.7, 0.08);
+    W_IN("#s1-t2 .w", 4.25, 0.08);
+    tl.fromTo("#s1-drop", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 1.5);
+    tl.fromTo("#s1-drop .row", { opacity: 0 }, { opacity: 1, duration: 0.3, stagger: 0.06 }, 1.55);
+    tl.fromTo("#s1-cursor", { x: 1150, y: 1500 }, { x: 640, y: 960, duration: 0.8, ease: "expo.out" }, 2.4);
+    tl.fromTo("#s1-hl", { opacity: 0 }, { opacity: 1, duration: 0.15 }, 3.0);
+    tl.to("#s1-cursor", { x: 930, y: 760, duration: 0.55, ease: "expo.out" }, 4.4);
+    CLICK("#s1-cursor", "#s1-btn", 5.1);
+    tl.to("#s1-cursor", { opacity: 0, duration: 0.15 }, 5.3);
     // push through the search bar into the next scene
-    OUT(["#s1-lbl", "#s1-t1", "#s1-t2", "#s1-t3"], 3.8, 0.03);
-    tl.to(["#s1-box", "#s1-drop"], { scale: 1.25, opacity: 0, filter: "blur(14px)", duration: 0.4, ease: "power3.in", stagger: 0.03 }, 3.85);
-    tl.to("#s1-field", { opacity: 0, duration: 0.4, ease: "power2.in" }, 3.9);
+    OUT(["#s1-lbl", "#s1-t1", "#s1-t2", "#s1-t3"], 5.3, 0.03);
+    tl.to(["#s1-box", "#s1-drop"], { scale: 1.25, opacity: 0, filter: "blur(14px)", duration: 0.4, ease: "power3.in", stagger: 0.03 }, 5.35);
+    tl.to("#s1-field", { opacity: 0, duration: 0.4, ease: "power2.in" }, 5.4);
 
     window.__timelines["s1"] = tl;
   </script>
