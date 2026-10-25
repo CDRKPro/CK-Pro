@@ -1,0 +1,81 @@
+<template>
+  <style>
+@font-face { font-family: 'Syne'; src: url('assets/fonts/syne.woff2') format('woff2'); font-weight: 400 800; }
+@font-face { font-family: 'Bricolage Grotesque'; src: url('assets/fonts/bricolage.woff2') format('woff2'); font-weight: 200 800; }
+#root { position: absolute; inset: 0; background: #000; color: #fff; overflow: hidden;
+  font-family: 'Bricolage Grotesque', sans-serif; }
+#root .syne { font-family: 'Syne', sans-serif; letter-spacing: -0.01em; line-height: 1.04; }
+#root .q { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 60px; line-height: 1.12; }
+#root .g { background: linear-gradient(90deg, #38A8F5 0%, #8E8CF6 55%, #B98AF5 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent; }
+#root .w { display: inline-block; white-space: pre; }
+#root .grey { color: #9A9AA0; }
+#root .abs { position: absolute; }
+#root .center { left: 0; right: 0; text-align: center; }
+#root .card { position: absolute; background: #111113; border-radius: 32px; }
+#root .card::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 2px;
+  background: linear-gradient(135deg, #38A8F5, #8E8CF6 55%, #B98AF5);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
+#root .tile { width: 110px; height: 110px; border-radius: 30px; display: flex; align-items: center;
+  justify-content: center; background: linear-gradient(135deg, #38A8F5, #8E8CF6 55%, #B98AF5); }
+#root .tile svg { width: 50%; height: 50%; }
+#root .arc { position: absolute; left: 50%; width: 2200px; height: 2200px; margin-left: -1100px;
+  border-radius: 50%; border: 2px solid rgba(142, 140, 246, 0.16); }
+#root .cursor { position: absolute; width: 72px; height: 72px; z-index: 50; }
+
+#s4-pill { left: 96px; top: 210px; display: flex; align-items: center; gap: 22px; font-size: 40px; }
+#s4-pill .n { padding: 6px 26px; border-radius: 30px; background: linear-gradient(90deg, #38A8F5, #B98AF5); color: #000; font-weight: 800; font-family: 'Syne'; font-size: 32px; }
+#s4-pill .s { font-family: 'Syne'; font-weight: 700; }
+#s4-t1 { left: 96px; top: 300px; }
+#s4-roll { left: 96px; top: 372px; height: 104px; width: 950px; overflow: hidden; }
+#s4-roll .rw { position: absolute; left: 0; top: 0; font-size: 84px; font-weight: 800; white-space: nowrap; }
+#root .prow { left: 70px; width: 940px; }
+#root .prow .nm { position: absolute; left: 44px; top: 26px; font-size: 38px; font-weight: 700; }
+#root .prow .chip { position: absolute; left: 44px; top: 82px; padding: 4px 18px; border-radius: 20px; background: #fff; color: #000;
+  font-size: 28px; font-weight: 600; letter-spacing: 0.1em; }
+#root .prow .plus { position: absolute; right: 30px; top: 50%; margin-top: -32px; width: 64px; height: 64px; border-radius: 50%;
+  border: 2px solid #3A3A42; display: flex; align-items: center; justify-content: center; font-size: 40px; }
+#root .prow .plus span { display: block; line-height: 1; margin-top: -4px; }
+</style>
+  <div id="root" data-composition-id="s4" data-start="0" data-duration="5.0" data-width="1080" data-height="1920">
+
+    <div class="arc" style="top:1560px"></div>
+    <div id="s4-pill" class="abs"><span class="n">01</span><span class="s">Sites réalisés</span></div>
+    <div id="s4-t1" class="abs q"><span class="w">Un </span><span class="w">site</span></div>
+    <div id="s4-roll" class="abs" data-layout-allow-overflow>
+      <div id="s4-w0" class="rw syne g">sur mesure.</div>
+      <div id="s4-w1" class="rw syne g">moderne.</div>
+      <div id="s4-w2" class="rw syne g">à votre image.</div>
+    </div>
+    <div id="s4-p0" class="card prow" style="top:520px;height:96px"><div class="nm syne">BM Toiture</div><div class="plus"><span>+</span></div></div><div id="s4-p1" class="card prow" style="top:632px;height:96px"><div class="nm syne">Jung Peinture Décors</div><div class="plus"><span>+</span></div></div><div id="s4-p2" class="card prow" style="top:744px;height:96px"><div class="nm syne">StyleTech</div><div class="plus"><span>+</span></div></div><div id="s4-p3" class="card prow" style="top:856px;height:140px"><div class="nm syne">CB Alsace Toiture</div><span class="chip">SITE + APPLI + COMPTA</span><div class="plus"><span>+</span></div></div><div id="s4-p4" class="card prow" style="top:1012px;height:140px"><div class="nm syne">Design &amp; Renov</div><span class="chip">SITE + APPLI + COMPTA</span><div class="plus"><span>+</span></div></div><div id="s4-p5" class="card prow" style="top:1168px;height:140px"><div class="nm syne">Gestera Pro</div><span class="chip">SITE + LOGICIEL</span><div class="plus"><span>+</span></div></div>
+
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const W_IN = (sel, t, st = 0.07) => tl.fromTo(sel, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.35, ease: "power4.out", stagger: st }, t);
+    const OUT = (sel, t, st = 0) => tl.to(sel, { opacity: 0, filter: "blur(10px)", duration: 0.25, ease: "power3.in", stagger: st }, t);
+
+    W_IN("#s4-pill", 0.0);
+    W_IN("#s4-t1 .w", 0.15, 0.08);
+    tl.fromTo("#s4-w0", { yPercent: 100, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.45, ease: "expo.out" }, 0.35);
+    tl.set(["#s4-w1", "#s4-w2"], { yPercent: 110, opacity: 0 }, 0);
+    // slot roll
+    [[0, 1, 1.9], [1, 2, 3.3]].forEach(([a, b, t]) => {
+      tl.to("#s4-w" + a, { yPercent: -110, opacity: 0, filter: "blur(6px)", duration: 0.3, ease: "power3.in" }, t);
+      tl.fromTo("#s4-w" + b, { yPercent: 110, opacity: 0, filter: "blur(6px)" }, { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, t + 0.15);
+    });
+    tl.fromTo(".prow", { x: 180, opacity: 0, filter: "blur(8px)" }, { x: 0, opacity: 1, filter: "blur(0px)", duration: 0.6, ease: "expo.out", stagger: 0.07 }, 0.5);
+    // a project opens on each beat
+    [[0, 1.4], [3, 2.6], [5, 3.8]].forEach(([i, t]) => {
+      tl.to(`#s4-p${i}`, { backgroundColor: "#1C1C24", scale: 1.025, duration: 0.3, ease: "power2.out" }, t);
+      tl.to(`#s4-p${i} .plus span`, { rotation: 45, duration: 0.3, ease: "power2.out" }, t);
+      tl.to(`#s4-p${i}`, { backgroundColor: "#111113", scale: 1, duration: 0.3, ease: "power2.inOut" }, t + 0.9);
+      tl.to(`#s4-p${i} .plus span`, { rotation: 0, duration: 0.3, ease: "power2.inOut" }, t + 0.9);
+    });
+    tl.to(".prow", { y: -140, opacity: 0, filter: "blur(10px)", duration: 0.3, ease: "power3.in", stagger: 0.03 }, 4.55);
+    OUT(["#s4-pill", "#s4-t1", "#s4-roll"], 4.55);
+
+    window.__timelines["s4"] = tl;
+  </script>
+</template>
