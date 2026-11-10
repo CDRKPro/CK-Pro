@@ -6,7 +6,8 @@
 |---|---|
 | `index.html` | **Toute la boutique en un seul fichier** : page, panier, vue 3D (modèle intégré), appel au paiement |
 | `netlify/functions/creer-paiement.mjs` | Fonction serveur qui crée le paiement Stripe. Elle garde ta **clé secrète** à l'abri et recalcule les prix (le navigateur n'envoie que couleur / pack / quantité) |
-| `netlify.toml` | Configuration Netlify (site statique + fonction) |
+| `stats.html` + `netlify/functions/stats.mjs` | **Page de statistiques** (chiffre d'affaires, commandes, DOZR vendus, coloris, packs, pays, dernières commandes), lue directement dans Stripe |
+| `netlify.toml` | Configuration Netlify (site statique + fonctions) |
 | `page_source.html`, `construire.py` | Source de `index.html` (pour régénérer après une modification du modèle 3D) |
 
 La clé secrète Stripe ne peut pas être mise dans `index.html` : n'importe quel visiteur pourrait la lire et faire des remboursements ou des paiements à ta place. C'est pour ça que le paiement passe par la petite fonction Netlify.
@@ -22,6 +23,14 @@ La clé secrète Stripe ne peut pas être mise dans `index.html` : n'importe que
 4. **Test** : avec la clé `sk_test_…`, paye avec la carte `4242 4242 4242 4242`, date future, CVC `123`.
    Les commandes apparaissent dans ton tableau de bord Stripe (*Paiements*), avec l'adresse de livraison et le contenu du panier.
 5. Quand tout marche, remplace la clé par `sk_live_…` et redéploie.
+
+## Page de statistiques
+
+1. Dans Netlify, ajoute la variable `STATS_TOKEN` = un mot de passe long de ton choix (ex. `dozr-7f3k9q2m`).
+2. Ouvre `https://ton-site.netlify.app/stats?token=dozr-7f3k9q2m` et ajoute la page à l'écran d'accueil de ton téléphone.
+3. Sans token (ou dans l'aperçu claude.ai), la page affiche des données d'exemple.
+
+La page ne modifie rien dans Stripe : elle lit les paiements réussis de la période (7 j, 30 j, 90 j, 1 an) et se met à jour toutes les 5 minutes.
 
 ## Réglages (variables d'environnement facultatives)
 

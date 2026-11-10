@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#08090b">
+<title>Stats DOZR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+/* Tableau de bord sombre, un seul accent vert (celui de la boutique), une colonne sur téléphone. */
+:root{--bg:#08090b;--card:#111418;--card2:#161a1f;--line:#20262d;--grid:#1c2228;--txt:#f2f4f6;--mut:#98a1ab;--acc:#c6ff00;--acc-ink:#0b0d10;
+  --display:'Bebas Neue','Arial Narrow',system-ui,sans-serif;--body:Inter,system-ui,-apple-system,'Segoe UI',sans-serif;color-scheme:dark}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:14px/1.5 var(--body);color:var(--txt);background:radial-gradient(900px 500px at 90% -10%,#c6ff0012,transparent 60%),var(--bg);min-height:100vh}
+.w{max-width:1120px;margin:0 auto;padding-block:22px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.logo{font-family:var(--display);font-size:36px;letter-spacing:1px;line-height:1}.logo span{color:var(--acc)}
+.top h1{flex:1;min-width:180px;font-size:15px;font-weight:600;color:var(--mut)}
+.top h1 b{display:block;color:var(--txt);font-size:20px;font-weight:800}
+.seg{display:flex;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px}
+.seg button{border:0;background:none;color:var(--mut);font-weight:600;font-size:13px;padding:8px 13px;border-radius:9px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--acc);color:var(--acc-ink)}
+.rf{background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:12px;width:42px;height:42px;font-size:18px;cursor:pointer}
+.demo{background:#c6ff000f;border:1px dashed #c6ff0066;color:#dfe9b8;border-radius:12px;padding:10px 14px;font-size:13px;margin-bottom:14px}
+.demo[hidden]{display:none}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;min-width:0}
+.kpi .lbl{color:var(--mut);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.6px}
+.kpi .num{font-family:var(--display);font-size:42px;line-height:1.05;letter-spacing:.5px;margin-top:6px;font-variant-numeric:tabular-nums}
+.kpi .sub{color:var(--mut);font-size:12px}
+.kpi.main{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}.kpi.main .lbl,.kpi.main .sub{color:#3d4a00}
+.g2{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:12px}
+h2{font-size:15px;font-weight:800;margin-bottom:14px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+h2 small{color:var(--mut);font-weight:500;font-size:12px}
+.chart{position:relative}.chart svg{display:block;width:100%;height:240px}
+.tip{position:absolute;pointer-events:none;background:var(--card2);border:1px solid var(--line);color:var(--txt);font-size:12px;padding:7px 10px;border-radius:9px;white-space:nowrap;transform:translate(-50%,-115%);opacity:0;transition:opacity .1s;box-shadow:0 8px 24px #000a}
+.bars{display:grid;gap:12px}
+.bar .row{display:flex;justify-content:space-between;gap:8px;font-size:13px;margin-bottom:5px}
+.bar .row span{display:flex;align-items:center;gap:8px}
+.bar .row i{width:12px;height:12px;border-radius:50%;border:1px solid #3a424b;flex:none}
+.bar .row b{font-variant-numeric:tabular-nums;font-weight:600}
+.trk{height:10px;background:var(--grid);border-radius:6px;overflow:hidden}.trk em{display:block;height:100%;border-radius:4px;background:var(--acc)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;color:var(--mut);font-weight:600;font-size:12px;padding:0 10px 9px 0}
+td{border-top:1px solid var(--line);padding:10px 10px 10px 0;vertical-align:top}
+td.r,th.r{text-align:right;padding-right:0;font-variant-numeric:tabular-nums}
+.tbl{overflow-x:auto}
+.empty{color:var(--mut);text-align:center;padding:22px 0}
+.err{background:var(--card);border:1px solid #ff4d4d55;border-radius:16px;padding:28px;text-align:center;color:#ffb3b3}
+.packs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.packs div{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px 8px;text-align:center}
+.packs b{display:block;font-family:var(--display);font-size:32px;line-height:1.05;font-variant-numeric:tabular-nums}.packs small{color:var(--mut);font-size:12px}
+@media(max-width:860px){.g2{grid-template-columns:1fr}}
+@media(max-width:700px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi .num{font-size:34px}}
+</style></head><body>
+<div class="w">
+  <div class="top">
+    <div class="logo">DOZ<span>R</span></div>
+    <h1><b>Statistiques boutique</b><span id="upd">Chargement…</span></h1>
+    <div class="seg" role="group" aria-label="Période">
+      <button type="button" data-d="7">7 j</button><button type="button" data-d="30" aria-pressed="true">30 j</button><button type="button" data-d="90">90 j</button><button type="button" data-d="365">1 an</button>
+    </div>
+    <button type="button" class="rf" id="rf" aria-label="Actualiser">↻</button>
+  </div>
+  <div id="demo" class="demo" hidden>Données d'exemple. Sur ton site Netlify, ouvre <b>/stats?token=…</b> (ta valeur STATS_TOKEN) pour voir tes vraies ventes Stripe.</div>
+  <div id="app"></div>
+</div>
+<script>
+(function(){
+const P=new URLSearchParams(location.search);
+const TOKEN=P.get('token')||'';
+const COUL={gris:['Gris','#6b7078'],rouge:['Rouge','#c62828'],vert:['Vert','#2e7d32'],bleu:['Bleu','#1565c0'],blanc:['Blanc','#eeeeec']};
+const PAYS={FR:'France',BE:'Belgique',CH:'Suisse',LU:'Luxembourg',MC:'Monaco'};
+const eur=c=>(c/100).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});
+const eur0=c=>(c/100).toLocaleString('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0});
+const fr=n=>(Number(n)||0).toLocaleString('fr-FR');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let days=+(P.get('days')||30),last=null;
+
+function demo(d){let s=11;const rnd=()=>(s=(s*9301+49297)%233280)/233280;const PR={1:890,2:1590,3:2190};
+  const daily=[],colors={gris:0,rouge:0,vert:0,bleu:0,blanc:0},packs={1:0,2:0,3:0},countries={},recent=[];let rev=0,ord=0,units=0;
+  const cs=Object.keys(colors),wc=[.30,.18,.22,.2,.1];const pick=()=>{let r=rnd(),a=0;for(let i=0;i<cs.length;i++){a+=wc[i];if(r<a)return cs[i]}return cs[0]};
+  for(let i=d-1;i>=0;i--){const date=new Date(Date.now()-i*864e5);const o=Math.round(rnd()*5*(.6+(d-i)/d));let r=0;
+    for(let k=0;k<o;k++){const p=rnd()<.5?1:rnd()<.6?2:3,c=pick(),q=1;const m=PR[p]*q+(p*q<2?490:0);r+=m;packs[p]+=q;colors[c]+=p*q;units+=p*q;
+      const pays=rnd()<.86?'FR':rnd()<.6?'BE':'CH';countries[pays]=(countries[pays]||0)+1;
+      if(i<3&&recent.length<12)recent.push({date:date.getTime()-k*3.6e6,amount:m,panier:q+'× '+COUL[c][0]+' pack x'+p,country:pays})}
+    daily.push({date:date.toLocaleDateString('sv-SE'),revenue:r,orders:o});rev+=r;ord+=o}
+  recent.sort((a,b)=>b.date-a.date);
+  return{demo:true,days:d,updated:new Date().toISOString(),totals:{revenue:rev,orders:ord,aov:ord?Math.round(rev/ord):0,units},daily,colors,packs,countries,recent}}
+
+async function load(){
+  document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.d===days)));
+  let data;
+  if(!TOKEN){data=demo(days)}
+  else{
+    try{const r=await fetch('/api/stats?days='+days+'&token='+encodeURIComponent(TOKEN),{cache:'no-store'});
+      const j=await r.json().catch(()=>({}));
+      if(!r.ok){fail(j.erreur||'Impossible de charger les stats.');return}data=j}
+    catch(e){fail('Impossible de joindre le serveur. Vérifie que le site est bien déployé sur Netlify.');return}
+  }
+  document.getElementById('demo').hidden=!data.demo;render(data);
+}
+function fail(m){document.getElementById('app').innerHTML='<div class="err">'+esc(m)+'</div>';document.getElementById('upd').textContent=''}
+
+function bars(list,tot,fmt){if(!list.length||!tot)return '<div class="empty">Aucune vente sur la période</div>';const m=list[0][1]||1;
+  return '<div class="bars">'+list.map(([lab,v,dot])=>'<div class="bar"><div class="row"><span>'+(dot?'<i style="background:'+dot+'"></i>':'')+esc(lab)+'</span><b>'+fmt(v)+' · '+Math.round(v/tot*100)+' %</b></div><div class="trk"><em style="width:'+(v/m*100)+'%"></em></div></div>').join('')+'</div>'}
+
+function render(d){
+  last=d;const t=d.totals;
+  document.getElementById('upd').textContent='Mis à jour '+new Date(d.updated).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'})+' · '+d.days+' derniers jours';
+  const cl=Object.entries(d.colors).map(([k,v])=>[(COUL[k]||[k])[0],v,(COUL[k]||[])[1]]).sort((a,b)=>b[1]-a[1]);
+  const cTot=cl.reduce((s,x)=>s+x[1],0);
+  const ct=Object.entries(d.countries).map(([k,v])=>[PAYS[k]||k,v]).sort((a,b)=>b[1]-a[1]);
+  const ctTot=ct.reduce((s,x)=>s+x[1],0);
+  const pk=d.packs||{};
+  document.getElementById('app').innerHTML=
+  '<div class="kpis">'+
+   '<div class="card kpi main"><div class="lbl">Chiffre d’affaires</div><div class="num">'+eur0(t.revenue)+'</div><div class="sub">TTC, livraison incluse</div></div>'+
+   '<div class="card kpi"><div class="lbl">Commandes</div><div class="num">'+fr(t.orders)+'</div><div class="sub">'+(t.orders/d.days).toFixed(1).replace('.',',')+' par jour</div></div>'+
+   '<div class="card kpi"><div class="lbl">Panier moyen</div><div class="num">'+eur(t.aov)+'</div><div class="sub">par commande</div></div>'+
+   '<div class="card kpi"><div class="lbl">DOZR vendus</div><div class="num">'+fr(t.units)+'</div><div class="sub">'+(t.orders?(t.units/t.orders).toFixed(1).replace('.',','):'0')+' par commande</div></div>'+
+  '</div>'+
+  '<div class="g2"><div class="card"><h2>Chiffre d’affaires par jour <small>survole pour le détail</small></h2><div class="chart" id="ch"></div></div>'+
+   '<div class="card"><h2>Coloris vendus <small>en DOZR</small></h2>'+bars(cl,cTot,fr)+'</div></div>'+
+  '<div class="g2"><div class="card"><h2>Dernières commandes <small>'+d.recent.length+' plus récentes</small></h2>'+(d.recent.length?'<div class="tbl"><table><thead><tr><th>Date</th><th>Panier</th><th>Pays</th><th class="r">Montant</th></tr></thead><tbody>'+
+     d.recent.map(o=>'<tr><td>'+new Date(o.date).toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})+'</td><td>'+esc(o.panier)+'</td><td>'+esc(PAYS[o.country]||o.country||'—')+'</td><td class="r"><b>'+eur(o.amount)+'</b></td></tr>').join('')+'</tbody></table></div>':'<div class="empty">Aucune commande sur la période</div>')+'</div>'+
+   '<div class="card"><h2>Packs vendus</h2><div class="packs"><div><b>'+fr(pk[1])+'</b><small>x1</small></div><div><b>'+fr(pk[2])+'</b><small>x2</small></div><div><b>'+fr(pk[3])+'</b><small>x3</small></div></div>'+
+   '<h2 style="margin-top:22px">Pays <small>commandes</small></h2>'+bars(ct,ctTot,fr)+'</div></div>'+
+  (d.tronque?'<p class="sub" style="color:var(--mut);font-size:12px">Période très chargée : seules les 2 000 dernières commandes sont comptées.</p>':'');
+  chart(d.daily);
+}
+
+function chart(rows){
+  const el=document.getElementById('ch');if(!el)return;
+  const W=Math.max(300,el.clientWidth||600),H=240,pl=54,pr=10,pt=12,pb=26;
+  const max=Math.max(100,...rows.map(r=>r.revenue));const mag=Math.pow(10,Math.floor(Math.log10(max/4)));const step=Math.ceil(max/4/mag)*mag;const top=step*4;
+  const n=rows.length,x=i=>pl+(n<2?0:i*(W-pl-pr)/(n-1)),y=v=>pt+(H-pt-pb)*(1-v/top);
+  let g='';for(let k=0;k<=4;k++){const v=step*k,yy=y(v);g+='<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+yy+'" y2="'+yy+'" stroke="var(--grid)"/><text x="'+(pl-8)+'" y="'+(yy+4)+'" text-anchor="end" font-size="11" fill="var(--mut)">'+eur0(v)+'</text>'}
+  const lab=Math.max(1,Math.ceil(n/6));rows.forEach((r,i)=>{if(i%lab===0||i===n-1)g+='<text x="'+x(i)+'" y="'+(H-7)+'" text-anchor="'+(i===n-1?'end':i===0?'start':'middle')+'" font-size="11" fill="var(--mut)">'+r.date.slice(8,10)+'/'+r.date.slice(5,7)+'</text>'});
+  const pts=rows.map((r,i)=>x(i)+','+y(r.revenue)).join(' ');
+  const area=x(0)+','+y(0)+' '+pts+' '+x(n-1)+','+y(0);
+  const li=n-1;
+  el.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Chiffre d’affaires par jour">'+g+
+    '<polygon points="'+area+'" fill="var(--acc)" opacity=".12"/><polyline points="'+pts+'" fill="none" stroke="var(--acc)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>'+
+    '<circle cx="'+x(li)+'" cy="'+y(rows[li].revenue)+'" r="4" fill="var(--acc)" stroke="var(--card)" stroke-width="2"/>'+
+    '<line id="hl" y1="'+pt+'" y2="'+(H-pb)+'" stroke="var(--mut)" stroke-dasharray="3 3" opacity="0"/><circle id="hd" r="5" fill="var(--acc)" stroke="var(--card)" stroke-width="2" opacity="0"/>'+
+    '<rect x="'+pl+'" y="0" width="'+(W-pl-pr)+'" height="'+H+'" fill="transparent" id="hit"/></svg><div class="tip" id="tp"></div>';
+  const svg=el.querySelector('svg'),tp=el.querySelector('#tp'),hl=el.querySelector('#hl'),hd=el.querySelector('#hd');
+  const move=e=>{const b=svg.getBoundingClientRect(),mx=(e.clientX-b.left)*W/b.width;let i=Math.round((mx-pl)/((W-pl-pr)/Math.max(1,n-1)));i=Math.max(0,Math.min(n-1,i));const r=rows[i];
+    hl.setAttribute('x1',x(i));hl.setAttribute('x2',x(i));hl.setAttribute('opacity','.6');hd.setAttribute('cx',x(i));hd.setAttribute('cy',y(r.revenue));hd.setAttribute('opacity','1');
+    tp.innerHTML='<b>'+new Date(r.date+'T12:00').toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'})+'</b><br>'+eur(r.revenue)+' · '+r.orders+' commande'+(r.orders>1?'s':'');
+    tp.style.left=Math.min(Math.max(x(i)/W*b.width,70),b.width-70)+'px';tp.style.top=y(r.revenue)/H*b.height+'px';tp.style.opacity='1'};
+  svg.addEventListener('pointermove',move);svg.addEventListener('pointerdown',move);
+  svg.addEventListener('pointerleave',()=>{tp.style.opacity='0';hl.setAttribute('opacity','0');hd.setAttribute('opacity','0')});
+}
+
+document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{days=+b.dataset.d;load()}));
+document.getElementById('rf').addEventListener('click',load);
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(last)chart(last.daily)},200)});
+load();setInterval(load,5*60*1000);
+})();
+</script>
+</body></html>
