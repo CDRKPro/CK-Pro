@@ -1,0 +1,273 @@
+<title>Plan Dozr</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout : fiche technique d'atelier — une colonne, la maquette 3D d'abord, puis le plan coté sur fond papier. */
+  :root {
+    --bg: #eceef0;          /* gris atelier, légèrement bleuté */
+    --panel: #ffffff;
+    --ink: #1d232b;
+    --muted: #5b6570;
+    --line: #cfd5da;
+    --accent: #d99a1e;      /* jaune Dozr */
+    --accent-ink: #1d232b;
+    --stage: #dfe3e6;
+    --paper: #ffffff;
+    --f-display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+    --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15191e; --panel: #1d2329; --ink: #e8ecef; --muted: #9aa5af; --line: #2f3740;
+      --accent: #e6aa33; --accent-ink: #15191e; --stage: #232a31; --paper: #f4f5f6; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15191e; --panel: #1d2329; --ink: #e8ecef; --muted: #9aa5af; --line: #2f3740;
+    --accent: #e6aa33; --accent-ink: #15191e; --stage: #232a31; --paper: #f4f5f6; color-scheme: dark;
+  }
+
+  body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--f-body); }
+  .wrap {
+    max-width: 1120px; margin: 0 auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 28px 56px;
+    display: grid; gap: 28px;
+  }
+  header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; }
+  h1 { font: 700 44px/1 var(--f-display); letter-spacing: .02em; margin: 0; font-style: italic; }
+  h1 span { color: var(--accent); }
+  .sub { color: var(--muted); margin: 0; }
+  h2 { font: 600 22px/1.1 var(--f-display); letter-spacing: .06em; text-transform: uppercase; margin: 0; text-wrap: balance; }
+  .ref { font: 500 12px/1 var(--f-mono); color: var(--muted); letter-spacing: .04em; }
+
+  section { display: grid; gap: 12px; min-width: 0; }
+  .sec-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px; }
+
+  /* Maquette 3D */
+  .stage {
+    position: relative; background: var(--stage); border: 1px solid var(--line); border-radius: 6px;
+    aspect-ratio: 16 / 9; max-width: 100%; overflow: hidden; touch-action: none;
+  }
+  @media (max-width: 640px) { .stage { aspect-ratio: 4 / 5; } }
+  .stage canvas { display: block; width: 100%; height: 100%; }
+  .status {
+    position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted);
+    font: 500 13px var(--f-mono); pointer-events: none;
+  }
+  .status[hidden] { display: none; }
+  .state {
+    position: absolute; left: 12px; top: 12px; font: 500 12px/1 var(--f-mono); letter-spacing: .05em;
+    padding: 7px 10px; border-radius: 4px; background: var(--panel); border: 1px solid var(--line);
+  }
+  .state b { color: var(--accent); font-weight: 500; }
+  .hint { position: absolute; right: 12px; bottom: 10px; font: 12px var(--f-mono); color: var(--muted); }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; }
+  button {
+    font: 500 14px var(--f-body); color: var(--ink); background: var(--panel);
+    border: 1px solid var(--line); border-radius: 4px; padding: 9px 14px; cursor: pointer;
+  }
+  button:hover { border-color: var(--muted); }
+  button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* Plan coté */
+  .sheet { background: var(--paper); border: 1px solid var(--line); border-radius: 6px; overflow-x: auto; }
+  .sheet img { display: block; width: 100%; min-width: 760px; height: auto; }
+
+  /* Fiche */
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 16px 18px; min-width: 0; }
+  .card h3 { font: 600 17px/1.2 var(--f-display); letter-spacing: .06em; text-transform: uppercase; margin: 0 0 10px; }
+  dl { display: grid; grid-template-columns: 1fr auto; gap: 7px 16px; margin: 0; }
+  dt { color: var(--muted); }
+  dd { margin: 0; font: 500 14px var(--f-mono); font-variant-numeric: tabular-nums; text-align: right; }
+  ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+  .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; vertical-align: 0; margin-right: 6px; border: 1px solid var(--line); }
+  .sw.g { background: #7a7e85; } .sw.k { background: #16171a; }
+  @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>DOZR<span>.</span></h1>
+    <p class="sub">Doseur à poudre — plan d'ensemble et maquette 3D</p>
+  </header>
+
+  <section aria-labelledby="t3d">
+    <div class="sec-head">
+      <h2 id="t3d">Maquette 3D</h2>
+      <span class="ref">160,5 × 55 × 42 mm · 3 pièces</span>
+    </div>
+    <div class="stage" id="stage">
+      <div class="status" id="status">Chargement du modèle…</div>
+      <div class="state" id="state">Clapet <b>fermé</b></div>
+      <div class="hint">glisser pour tourner · pincer / molette pour zoomer</div>
+    </div>
+    <div class="controls">
+      <button id="btnClapet" type="button" aria-pressed="false">Ouvrir le clapet</button>
+      <button id="btnExplode" type="button" aria-pressed="false">Vue éclatée</button>
+      <button id="btnTop" type="button">Vue de dessus</button>
+      <button id="btnSide" type="button">Vue de côté</button>
+      <button id="btnReset" type="button">Vue 3/4</button>
+    </div>
+  </section>
+
+  <section aria-labelledby="tplan">
+    <div class="sec-head">
+      <h2 id="tplan">Plan coté</h2>
+      <span class="ref">A3 · échelle 1:1 · cotes en mm</span>
+    </div>
+    <div class="sheet"><img src="plan.png" alt="Plan coté du Dozr : vue de dessus, vue de côté, coupes clapet fermé et ouvert, nomenclature et cartouche" width="3307" height="2338"></div>
+  </section>
+
+  <section class="facts" aria-label="Fiche technique">
+    <div class="card">
+      <h3>Cotes principales</h3>
+      <dl>
+        <dt>Longueur totale</dt><dd>160,5</dd>
+        <dt>Entonnoir (haut)</dt><dd>Ø55 × 32</dd>
+        <dt>Tube (dans la bouteille)</dt><dd>Ø20 × 10</dd>
+        <dt>Passage de la poudre</dt><dd>Ø14</dd>
+        <dt>Manche</dt><dd>30 × 9</dd>
+        <dt>Fenêtre du clapet</dt><dd>17,3 × 49</dd>
+        <dt>Course du clapet</dt><dd>18</dd>
+        <dt>Trou de suspension</dt><dd>Ø6</dd>
+      </dl>
+    </div>
+    <div class="card">
+      <h3>Pièces</h3>
+      <ol>
+        <li><span class="sw g"></span>Corps : entonnoir + manche, d'un seul bloc</li>
+        <li><span class="sw g"></span>Couvercle + tube Ø20, collé sous le corps</li>
+        <li><span class="sw k"></span>Clapet complet : languette + bouton</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>Fonctionnement</h3>
+      <dl>
+        <dt>Bouton côté entonnoir</dt><dd>fermé</dd>
+        <dt>Bouton tiré de 18 mm</dt><dd>ouvert</dd>
+        <dt>Fond intérieur</dt><dd>conique 50°</dd>
+        <dt>Grille</dt><dd>aucune</dd>
+      </dl>
+    </div>
+  </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/environments/RoomEnvironment.js"></script>
+<script>
+(function () {
+  const stage = document.getElementById('stage');
+  const statusEl = document.getElementById('status');
+  const stateEl = document.getElementById('state');
+  if (!window.THREE || !THREE.GLTFLoader) { statusEl.textContent = 'La vue 3D n’a pas pu se charger.'; return; }
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 0.9;
+  stage.prepend(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(new THREE.RoomEnvironment(), 0.04).texture;
+  const sun = new THREE.DirectionalLight(0xffffff, 0.9);
+  sun.position.set(-120, 200, 160);
+  scene.add(sun);
+
+  const camera = new THREE.PerspectiveCamera(30, 16 / 9, 1, 5000);
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+  controls.minDistance = 90;
+  controls.maxDistance = 900;
+
+  // Le modèle est en Z vers le haut, manche selon +X : on le redresse (Y vers le haut).
+  const root = new THREE.Group();
+  root.rotation.x = -Math.PI / 2;
+  scene.add(root);
+
+  const center = new THREE.Vector3(52.8, 11, 0);   // milieu de l'objet, une fois redressé
+  const parts = {};
+  const target = { clapet: 0, explode: 0 };
+  const current = { clapet: 0, explode: 0 };
+
+  function resize() {
+    const w = stage.clientWidth, h = stage.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  new ResizeObserver(resize).observe(stage);
+  resize();
+
+  function view(name) {
+    const c = center;
+    const pos = {
+      tq: [c.x + 95, c.y + 120, c.z + 185],
+      top: [c.x, c.y + 330, c.z + 0.01],
+      side: [c.x, c.y + 10, c.z + 330],
+    }[name];
+    camera.position.set(pos[0], pos[1], pos[2]);
+    controls.target.copy(c);
+    controls.update();
+  }
+  view('tq');
+
+  new THREE.GLTFLoader().load('dozr_web.json', function (gltf) {
+    root.add(gltf.scene);
+    ['corps', 'couvercle', 'clapet'].forEach(function (n) {
+      const o = gltf.scene.getObjectByName(n);
+      if (o) parts[n] = { obj: o, base: o.position.clone() };
+    });
+    statusEl.hidden = true;
+  }, undefined, function () {
+    statusEl.textContent = 'Le modèle n’a pas pu se charger.';
+  });
+
+  function applyPose() {
+    // coordonnées du modèle (mm) : X = le long du manche, Z = vertical
+    const cl = parts.clapet, cv = parts.couvercle;
+    if (cl) cl.obj.position.set(cl.base.x + 18 * current.clapet, cl.base.y, cl.base.z - 22 * current.explode);
+    if (cv) cv.obj.position.set(cv.base.x, cv.base.y, cv.base.z - 46 * current.explode);
+  }
+
+  function tick() {
+    const k = reduce ? 1 : 0.12;
+    current.clapet += (target.clapet - current.clapet) * k;
+    current.explode += (target.explode - current.explode) * k;
+    applyPose();
+    controls.update();
+    renderer.render(scene, camera);
+    requestAnimationFrame(tick);
+  }
+  tick();
+
+  const btnClapet = document.getElementById('btnClapet');
+  btnClapet.addEventListener('click', function () {
+    const open = target.clapet === 0;
+    target.clapet = open ? 1 : 0;
+    btnClapet.setAttribute('aria-pressed', String(open));
+    btnClapet.textContent = open ? 'Fermer le clapet' : 'Ouvrir le clapet';
+    stateEl.innerHTML = 'Clapet <b>' + (open ? 'ouvert' : 'fermé') + '</b>';
+  });
+  const btnExplode = document.getElementById('btnExplode');
+  btnExplode.addEventListener('click', function () {
+    const on = target.explode === 0;
+    target.explode = on ? 1 : 0;
+    btnExplode.setAttribute('aria-pressed', String(on));
+  });
+  document.getElementById('btnTop').addEventListener('click', function () { view('top'); });
+  document.getElementById('btnSide').addEventListener('click', function () { view('side'); });
+  document.getElementById('btnReset').addEventListener('click', function () { view('tq'); });
+})();
+</script>

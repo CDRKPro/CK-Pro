@@ -9,6 +9,8 @@ L'entonnoir et le manche forment **une seule pièce** : aucun joint visible dess
 
 ![aperçu](apercu.png)
 
+📐 **Plan coté** : `plan.pdf` (A3, échelle 1:1) — régénéré par `python3 plan.py`. Vue 3D web : `web/index.html`.
+
 ➡️ **Pour imprimer : voir [IMPRESSION.md](IMPRESSION.md)** (plateaux `.3mf` prêts, réglages, montage).
 
 ## Fichiers
