@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>DOZR — Le doseur à clapet pour ta bouteille</title>
+<meta name="description" content="DOZR, le doseur à clapet qui verse ta poudre direct dans ta bouteille. Clapet coulissant, passage direct, tube Ø20 pour les bouteilles standard.">
+<meta name="theme-color" content="#08090b">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+/* Un seul vert d'accent, fond graphite profond avec halo et trame discrète. */
+:root{
+  --bg:#08090b; --bg2:#0d0f12; --card:#111418; --card2:#161a1f; --line:#20262d;
+  --txt:#f2f4f6; --mut:#98a1ab; --acc:#c6ff00; --acc-ink:#0b0d10; --acc-soft:#c6ff001f;
+  --display:'Bebas Neue','Arial Narrow',system-ui,sans-serif; --body:Inter,system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);color:var(--txt);overflow-x:hidden;
+  background:
+    radial-gradient(1100px 620px at 85% -8%,#c6ff0014,transparent 62%),
+    radial-gradient(900px 520px at -10% 38%,#ffffff07,transparent 60%),
+    linear-gradient(180deg,#0b0d10 0%,var(--bg) 40%,#060708 100%);
+  background-color:var(--bg);background-attachment:fixed}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+
+.bar{background:var(--acc);color:var(--acc-ink);text-align:center;font-size:12px;padding:9px 16px;font-weight:800;letter-spacing:.6px;text-transform:uppercase}
+nav{display:flex;justify-content:space-between;align-items:center;padding-block:18px;border-bottom:1px solid var(--line)}
+.logo{font-family:var(--display);font-size:38px;letter-spacing:1px;line-height:1}.logo span{color:var(--acc)}
+.cart{background:transparent;color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer;display:flex;gap:8px;align-items:center}
+.cart:hover{border-color:var(--acc)}
+.cart b{background:var(--acc);color:var(--acc-ink);border-radius:99px;min-width:22px;height:22px;display:inline-grid;place-items:center;font-size:12px;padding:0 6px}
+
+/* Hero : le texte d'abord */
+.hero{position:relative;padding-block:72px 64px}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(#ffffff10 1px,transparent 1px);background-size:26px 26px;
+  -webkit-mask-image:radial-gradient(70% 80% at 30% 40%,#000 30%,transparent 75%);mask-image:radial-gradient(70% 80% at 30% 40%,#000 30%,transparent 75%);pointer-events:none}
+.hero>*{position:relative}
+.stars{font-weight:600;margin-bottom:18px;color:var(--mut)}.stars i{color:var(--acc);font-style:normal;letter-spacing:2px;margin-right:6px}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(60px,10vw,132px);line-height:.88;letter-spacing:1px;text-transform:uppercase;max-width:11ch}
+h1 em{color:var(--acc);font-style:italic}
+.sub{font-size:19px;line-height:1.55;color:var(--mut);max-width:560px;margin:24px 0 28px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:34px}
+.chips span{border:1px solid var(--line);background:#ffffff05;border-radius:99px;padding:9px 15px;font-size:14px;font-weight:600}
+.chips span::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--acc);margin-right:9px;vertical-align:1px}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--acc);color:var(--acc-ink);border:0;border-radius:12px;padding:17px 26px;font-weight:800;font-size:16px;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;text-decoration:none;transition:transform .15s,box-shadow .15s;box-shadow:0 10px 30px #c6ff0026}
+.btn:hover{transform:translateY(-1px);box-shadow:0 14px 36px #c6ff0040}
+.btn:active{transform:translateY(1px)}
+.from{color:var(--mut);font-weight:600}.from b{color:var(--txt);font-size:20px}
+
+/* Produit : visualisation + couleurs attachées + achat */
+.produit{padding-block:24px 90px;scroll-margin-top:10px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;color:var(--acc);font-weight:800;font-size:13px;letter-spacing:1.6px;text-transform:uppercase;margin-bottom:10px}
+.eyebrow::before{content:"";width:22px;height:2px;background:var(--acc)}
+h2{font-family:var(--display);font-weight:400;font-size:clamp(42px,6vw,72px);letter-spacing:1px;text-transform:uppercase;line-height:.95;text-wrap:balance}
+.produit h2{margin-bottom:28px}
+.p-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:22px;align-items:start}
+.viewer{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.v3d{position:relative;aspect-ratio:4/3;background:radial-gradient(60% 55% at 50% 58%,#c6ff0016,transparent 70%),radial-gradient(120% 90% at 50% 0%,#1a1f25,#0c0e11 70%)}
+.v3d::after{content:"";position:absolute;left:12%;right:12%;bottom:13%;height:10%;background:radial-gradient(closest-side,#00000080,transparent);filter:blur(6px);pointer-events:none}
+.v3d canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y;cursor:grab;opacity:0;transition:opacity .5s;z-index:1}
+.v3d canvas:active{cursor:grabbing}
+.v3d .apercu{position:absolute;left:8%;top:22%;width:84%;height:auto;filter:drop-shadow(0 22px 26px #000b);transition:opacity .4s}
+.v3d.pret canvas{opacity:1}.v3d.pret .apercu{opacity:0}
+.etat{position:absolute;left:16px;top:16px;z-index:2;background:#0b0d10cc;border:1px solid var(--line);border-radius:99px;padding:7px 13px;font-size:13px;font-weight:700;backdrop-filter:blur(6px)}
+.etat b{color:var(--acc)}
+.aide{position:absolute;right:16px;top:20px;z-index:2;font-size:12px;color:var(--mut)}
+.clap{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:2;white-space:nowrap;background:#0b0d10cc;color:var(--txt);border:1px solid var(--acc);border-radius:99px;padding:11px 20px;font-weight:800;font-size:14px;cursor:pointer;backdrop-filter:blur(6px)}
+.clap[aria-pressed="true"]{background:var(--acc);color:var(--acc-ink)}
+.swatches{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;padding:18px 20px;border-top:1px solid var(--line);background:var(--card2)}
+.swatches p{font-size:14px;color:var(--mut)}.swatches p b{color:var(--txt)}
+.cols{display:flex;gap:12px}
+.cols button{width:38px;height:38px;border-radius:50%;border:3px solid var(--card2);box-shadow:0 0 0 1px #3a424b;cursor:pointer;transition:box-shadow .15s,transform .15s}
+.cols button:hover{transform:translateY(-2px)}
+.cols button.on{box-shadow:0 0 0 2px var(--acc)}
+
+.achat{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px;display:grid;gap:18px}
+.achat h3{font-size:22px;font-weight:800}.achat .ref{color:var(--mut);font-size:14px;margin-top:4px}
+.price{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}.price b{font-family:var(--display);font-size:52px;font-weight:400;line-height:1}.price s{color:#5b636c;font-size:18px}
+.badge{background:var(--acc);color:var(--acc-ink);padding:4px 9px;border-radius:7px;font-weight:800;font-size:13px}
+.packs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pack{position:relative;border:1px solid var(--line);background:var(--bg2);border-radius:12px;padding:14px 8px 12px;text-align:center;cursor:pointer;color:var(--txt);transition:border-color .15s}
+.pack b{display:block;font-size:18px}.pack small{display:block;color:var(--mut);margin-top:2px}
+.pack.on{border-color:var(--acc);background:#c6ff000d}
+.pack .tag{position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--acc);color:var(--acc-ink);font-size:9px;padding:2px 8px;border-radius:99px;font-weight:800;white-space:nowrap;letter-spacing:.4px}
+.add{width:100%;justify-content:center;font-size:17px;padding:19px}
+.ship{font-size:14px;color:var(--mut);text-align:center}.ship b{color:var(--acc)}
+.trust{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;color:var(--mut);justify-content:center}
+.specs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;border-top:1px solid var(--line);padding-top:16px}
+.specs div{text-align:center}.specs b{display:block;font-family:var(--display);font-weight:400;font-size:26px;letter-spacing:.5px}.specs span{font-size:12px;color:var(--mut)}
+
+.marq{background:var(--acc);color:var(--acc-ink);padding:15px 0;overflow:hidden;white-space:nowrap;font-family:var(--display);font-size:30px;letter-spacing:1px}
+.marq div{display:inline-block;animation:m 22s linear infinite}@keyframes m{to{transform:translateX(-50%)}}.marq span{margin:0 22px;opacity:.45}
+section.blk{padding-block:88px}
+section.blk h2{text-align:center;margin-bottom:42px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px}
+.step b{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:10px;background:var(--acc);color:var(--acc-ink);font-family:var(--display);font-size:24px;margin-bottom:16px}
+.step h3{margin-bottom:8px;font-size:19px}.step p{color:var(--mut);line-height:1.55}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:920px;margin:auto}
+.vs>div{border-radius:16px;padding:30px}.vs .bad{background:var(--card);border:1px solid var(--line);color:var(--mut)}.vs .good{background:var(--acc);color:var(--acc-ink)}
+.vs h3{font-size:20px;margin-bottom:6px}.vs li{list-style:none;margin:12px 0;font-weight:600}
+.uses{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}.uses span{border:1px solid var(--line);background:var(--card);border-radius:12px;padding:13px 20px;font-weight:700}
+.revs{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.rev{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}.rev i{color:var(--acc);font-style:normal;letter-spacing:2px}.rev p{margin:12px 0;line-height:1.55;color:#cfd5da}.rev small{color:var(--mut);font-weight:600}
+.note{text-align:center;margin-top:16px;font-size:12px;color:#6b737c}
+details{max-width:780px;margin:0 auto 12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px}summary{font-weight:800;cursor:pointer}details p{margin-top:10px;color:var(--mut);line-height:1.55}
+footer{border-top:1px solid var(--line);color:var(--mut);text-align:center;padding-block:44px;font-size:13px}footer .logo{color:var(--txt);margin-bottom:10px}
+
+.sticky{position:fixed;bottom:max(14px,env(safe-area-inset-bottom,0px));left:50%;transform:translate(-50%,140%);transition:transform .35s;background:#111418ee;border:1px solid var(--line);color:var(--txt);border-radius:99px;padding:8px 8px 8px 20px;display:flex;gap:14px;align-items:center;z-index:20;backdrop-filter:blur(10px);box-shadow:0 14px 40px #000a;white-space:nowrap}
+.sticky.show{transform:translate(-50%,0)}
+.sticky i{display:inline-block;width:14px;height:14px;border-radius:50%;vertical-align:-2px;margin-right:6px;border:1px solid #3a424b}
+.sticky button{background:var(--acc);color:var(--acc-ink);border:0;border-radius:99px;padding:12px 20px;font-weight:800;cursor:pointer}
+
+/* Page panier */
+.panier{position:fixed;inset:0;z-index:50;background:var(--bg);overflow-y:auto;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.panier[hidden]{display:none}
+.panier .wrap{padding-block:22px 60px}
+.p-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.back{background:transparent;border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
+.back:hover{border-color:var(--acc)}
+.p-body{display:grid;grid-template-columns:1.5fr 1fr;gap:24px;align-items:start}
+.p-body h2{font-size:clamp(40px,6vw,64px);margin-bottom:18px}
+.ligne{display:grid;grid-template-columns:56px 1fr auto;gap:16px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}
+.ligne .pastille{width:56px;height:56px;border-radius:12px;border:1px solid #3a424b;display:grid;place-items:center}
+.ligne .pastille::after{content:"";width:22px;height:8px;border-radius:3px;background:#0b0d10;box-shadow:0 0 0 1px #ffffff22}
+.ligne h4{font-size:16px}.ligne .det{color:var(--mut);font-size:14px;margin-top:3px}
+.qte{display:flex;align-items:center;gap:8px;margin-top:10px}
+.qte button{width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--bg2);color:var(--txt);font-size:18px;cursor:pointer;line-height:1}
+.qte span{min-width:22px;text-align:center;font-weight:800}
+.ligne .droite{text-align:right;display:grid;gap:10px;justify-items:end}
+.ligne .droite b{font-size:17px}
+.suppr{background:none;border:0;color:var(--mut);text-decoration:underline;cursor:pointer;font-size:13px}
+.vide{background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:34px;text-align:center;color:var(--mut)}
+.vide .btn{margin-top:16px}
+.recap{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;display:grid;gap:12px;position:sticky;top:20px}
+.recap h3{font-size:18px;margin-bottom:4px}
+.r-l{display:flex;justify-content:space-between;color:var(--mut)}.r-l b{color:var(--txt);font-weight:700}
+.r-tot{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);padding-top:14px;margin-top:4px}
+.r-tot span{font-weight:800}.r-tot b{font-family:var(--display);font-weight:400;font-size:40px}
+.hint{font-size:13px;color:var(--acc);text-align:center}
+.payer{width:100%;justify-content:center}
+.payer[disabled]{opacity:.5;cursor:not-allowed}
+.secu{font-size:12px;color:var(--mut);text-align:center}
+.erreur{font-size:13px;color:#ff8f8f;background:#ff4d4d14;border:1px solid #ff4d4d40;border-radius:10px;padding:10px 12px}
+.erreur[hidden]{display:none}
+
+.toast{position:fixed;left:50%;top:max(16px,env(safe-area-inset-top,0px));transform:translate(-50%,-160%);transition:transform .35s;z-index:60;background:var(--card2);border:1px solid var(--line);border-left:4px solid var(--acc);border-radius:12px;padding:14px 18px;font-weight:700;max-width:min(92vw,520px);box-shadow:0 14px 40px #000a}
+.toast.show{transform:translate(-50%,0)}
+
+@media(max-width:900px){.p-grid,.p-body{grid-template-columns:1fr}.recap{position:static}}
+@media(max-width:800px){.steps,.revs,.vs{grid-template-columns:1fr}.hero{padding-block:44px 40px}.v3d{aspect-ratio:1/1}.aide{display:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.marq div{animation:none}*{transition:none!important}}
+</style></head><body>
+<div class="bar">Livraison offerte dès 2 achetés · Expédié sous 24h</div>
+<div class="wrap"><nav><div class="logo">DOZ<span>R</span></div><button class="cart" id="cartBtn" type="button" aria-label="Ouvrir le panier">Panier <b id="cartN">0</b></button></nav></div>
+
+<header class="hero wrap">
+  <div class="stars"><i>★★★★★</i>4,9 · +3 200 sportifs conquis</div>
+  <h1>Fini la poudre <em>partout.</em></h1>
+  <p class="sub">DOZR, le doseur à clapet qui verse ton BCAA, booster ou créatine direct dans ta bouteille. Tu remplis, tu poses sur le goulot, tu ouvres le clapet. Zéro gâchis, zéro entonnoir.</p>
+  <div class="chips"><span>Clapet coulissant d'une main</span><span>Passage direct Ø14, sans grille</span><span>Tube Ø20 pour bouteilles standard</span></div>
+  <div class="cta-row"><a class="btn" href="#produit">Voir le DOZR en 3D ↓</a><span class="from">dès <b>12,90 €</b></span></div>
+</header>
+
+<section class="produit wrap" id="produit">
+  <div class="eyebrow">Visualise-le ici</div>
+  <h2>Fais-le tourner, choisis ta couleur</h2>
+  <div class="p-grid">
+    <div class="viewer">
+      <div class="v3d" id="v3d">
+        <img class="apercu" src="data:image/webp;base64,__APERCU__" alt="Doseur DOZR" width="760" height="375">
+        <div class="etat" id="etat">Clapet <b>fermé</b></div>
+        <div class="aide" id="aide">glisse pour le faire tourner</div>
+        <button type="button" class="clap" id="clap" aria-pressed="false">Ouvrir le clapet</button>
+      </div>
+      <div class="swatches">
+        <p>Coloris : <b id="colname">Gris</b></p>
+        <div class="cols" id="cols">
+          <button type="button" class="on" style="background:#6b7078" data-k="gris" aria-label="Gris"></button>
+          <button type="button" style="background:#c62828" data-k="rouge" aria-label="Rouge"></button>
+          <button type="button" style="background:#2e7d32" data-k="vert" aria-label="Vert"></button>
+          <button type="button" style="background:#1565c0" data-k="bleu" aria-label="Bleu"></button>
+          <button type="button" style="background:#eeeeec" data-k="blanc" aria-label="Blanc"></button>
+        </div>
+      </div>
+    </div>
+    <div class="achat">
+      <div><h3>DOZR — Doseur à clapet</h3><p class="ref">Coloris <span id="colname2">Gris</span> · clapet noir</p></div>
+      <div class="price"><b id="pr">12,90 €</b><s id="barre">19,90 €</s><span class="badge" id="remise">-35%</span></div>
+      <div class="packs" id="packs">
+        <button type="button" class="pack on" data-n="1"><b>x1</b><small>12,90 €</small></button>
+        <button type="button" class="pack" data-n="2"><span class="tag">POPULAIRE</span><b>x2</b><small>21,90 €</small></button>
+        <button type="button" class="pack" data-n="3"><span class="tag">MEILLEUR PRIX</span><b>x3</b><small>29,90 €</small></button>
+      </div>
+      <button type="button" class="btn add" id="add">Ajouter au panier</button>
+      <p class="ship" id="shipMsg">Livraison <b>offerte</b> dès 2 achetés</p>
+      <div class="trust"><span>🔒 Paiement sécurisé Stripe</span><span>↩️ Retour 30 jours</span><span>✅ Sans BPA</span></div>
+      <div class="specs"><div><b>Ø55</b><span>entonnoir</span></div><div><b>Ø20</b><span>tube bouteille</span></div><div><b>18 mm</b><span>course clapet</span></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="marq" aria-hidden="true"><div>BCAA <span>●</span> PRÉ-WORKOUT <span>●</span> CRÉATINE <span>●</span> ÉLECTROLYTES <span>●</span> PROTÉINE <span>●</span> BOISSON ÉNERGIE <span>●</span> BCAA <span>●</span> PRÉ-WORKOUT <span>●</span> CRÉATINE <span>●</span> ÉLECTROLYTES <span>●</span> PROTÉINE <span>●</span> BOISSON ÉNERGIE <span>●</span></div></div>
+
+<section class="blk wrap"><h2>3 secondes chrono.</h2>
+ <div class="steps">
+  <div class="step"><b>1</b><h3>Tu doses</h3><p>Plonge DOZR dans ton pot : la cuillère prend ta dose, clapet fermé.</p></div>
+  <div class="step"><b>2</b><h3>Tu poses</h3><p>L'embout s'emboîte sur le goulot de n'importe quelle bouteille ou shaker.</p></div>
+  <div class="step"><b>3</b><h3>Tu ouvres</h3><p>Fais glisser le clapet : la poudre tombe dans la bouteille. Rien à côté.</p></div>
+ </div>
+</section>
+
+<section class="blk wrap" style="padding-top:0"><h2>Avant / Avec DOZR</h2>
+ <div class="vs"><div class="bad"><h3>Sans</h3><ul><li>✗ Poudre sur le plan de travail</li><li>✗ Doseur qui rate le goulot</li><li>✗ Entonnoir à laver</li><li>✗ Produit gâché</li></ul></div>
+ <div class="good"><h3>Avec DOZR</h3><ul><li>✓ 100 % dans la bouteille</li><li>✓ Clapet anti-fuite</li><li>✓ Cuillère + entonnoir en 1</li><li>✓ Tient dans le sac de sport</li></ul></div></div>
+</section>
+
+<section class="blk wrap" style="padding-top:0"><h2>Pour toutes tes poudres</h2>
+ <div class="uses"><span>💪 BCAA</span><span>⚡ Booster</span><span>🧪 Créatine</span><span>🥛 Whey</span><span>💧 Électrolytes</span><span>🍼 Lait infantile</span></div>
+</section>
+
+<section class="blk wrap" style="padding-top:0"><h2>Ils ont lâché l'entonnoir</h2>
+ <div class="revs">
+  <div class="rev"><i>★★★★★</i><p>« Je prépare ma bouteille dans la voiture avant la salle, plus une miette sur les sièges. »</p><small>Kévin · Strasbourg</small></div>
+  <div class="rev"><i>★★★★★</i><p>« Le clapet est vraiment malin. Ma créatine finit enfin dans la bouteille et pas sur l'évier. »</p><small>Léa · Lyon</small></div>
+  <div class="rev"><i>★★★★★</i><p>« Pris le pack de 3 : un à la maison, un au taf, un dans le sac. »</p><small>Mehdi · Lille</small></div>
+ </div>
+ <p class="note">Avis d'exemple — à remplacer par tes vrais avis clients</p>
+</section>
+
+<section class="blk wrap" style="padding-top:0"><h2>Questions</h2>
+ <details><summary>Ça va sur toutes les bouteilles ?</summary><p>Oui, l'embout conique s'adapte aux goulots standards (bouteilles d'eau, gourdes, shakers).</p></details>
+ <details><summary>Quelle contenance ?</summary><p>Environ une dose (≈ 10 g selon la poudre) — parfait pour BCAA, booster ou créatine.</p></details>
+ <details><summary>Ça se lave comment ?</summary><p>Rinçage à l'eau, compatible lave-vaisselle (panier du haut).</p></details>
+ <details><summary>Délais de livraison ?</summary><p>Expédition sous 24h, réception en 3 à 7 jours ouvrés.</p></details>
+ <details><summary>Le paiement est-il sécurisé ?</summary><p>Oui, le paiement se fait sur la page sécurisée de Stripe (carte bancaire, Apple Pay, Google Pay). Tes données bancaires ne passent jamais par notre site.</p></details>
+</section>
+
+<footer class="wrap"><div class="logo">DOZ<span>R</span></div>© 2026 DOZR · CGV · Mentions légales · Contact</footer>
+
+<div class="sticky" id="sticky" aria-hidden="true"><span><i id="stickyDot" style="background:#6b7078"></i>DOZR · <b id="pr2">12,90 €</b></span><button type="button" id="stickyAdd" tabindex="-1">Ajouter au panier</button></div>
+
+<!-- Page panier -->
+<div class="panier" id="panier" hidden role="dialog" aria-modal="true" aria-labelledby="panierTitre">
+  <div class="wrap">
+    <div class="p-head"><button type="button" class="back" id="fermer">← Continuer mes achats</button><div class="logo">DOZ<span>R</span></div></div>
+    <div class="p-body">
+      <div>
+        <h2 id="panierTitre">Ton panier</h2>
+        <div id="lignes"></div>
+        <div class="vide" id="vide" hidden>Ton panier est vide.<br><button type="button" class="btn" id="vers">Choisir mon DOZR</button></div>
+      </div>
+      <aside class="recap" aria-label="Récapitulatif">
+        <h3>Récapitulatif</h3>
+        <div class="r-l"><span>Sous-total</span><b id="sousTot">0,00 €</b></div>
+        <div class="r-l"><span>Livraison</span><b id="livr">—</b></div>
+        <p class="hint" id="hint" hidden></p>
+        <div class="r-tot"><span>Total</span><b id="tot">0,00 €</b></div>
+        <button type="button" class="btn payer" id="payer">Payer en toute sécurité</button>
+        <p class="erreur" id="erreur" hidden></p>
+        <p class="secu">🔒 Paiement par carte, Apple Pay ou Google Pay sur la page sécurisée de Stripe</p>
+      </aside>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ================= Boutique : sélection, panier, paiement ================= */
+// Les prix affichés ici doivent rester identiques à ceux de netlify/functions/creer-paiement.mjs
+const PRIX={1:1290,2:2190,3:2990};            // en centimes, par pack
+const PRIX_BARRE=1990;                         // prix de référence barré, par DOZR
+const LIVRAISON=490;                           // centimes, offerte dès 2 DOZR achetés
+const SEUIL_LIVRAISON_OFFERTE=2;
+const COULEURS={gris:{nom:'Gris',hex:'#6b7078'},rouge:{nom:'Rouge',hex:'#c62828'},vert:{nom:'Vert',hex:'#2e7d32'},bleu:{nom:'Bleu',hex:'#1565c0'},blanc:{nom:'Blanc',hex:'#eeeeec'}};
+const API_PAIEMENT='/api/paiement';
+const $=id=>document.getElementById(id);
+const eur=c=>(c/100).toFixed(2).replace('.',',')+' €';
+let coloris='gris',pack=1,panier=[];
+
+function lire(){try{const p=JSON.parse(localStorage.getItem('dozr_panier')||'[]');return Array.isArray(p)?p.filter(l=>COULEURS[l.couleur]&&PRIX[l.pack]&&l.qte>0):[]}catch(e){return[]}}
+function ecrire(){try{localStorage.setItem('dozr_panier',JSON.stringify(panier))}catch(e){}}
+function unites(){return panier.reduce((s,l)=>s+l.pack*l.qte,0)}
+function sousTotal(){return panier.reduce((s,l)=>s+PRIX[l.pack]*l.qte,0)}
+function fraisLivraison(){return panier.length&&unites()<SEUIL_LIVRAISON_OFFERTE?LIVRAISON:0}
+
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('show'),2600)}
+
+/* --- Sélection couleur / pack --- */
+function choisir(k){
+  if(!COULEURS[k])return;coloris=k;
+  document.querySelectorAll('#cols button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));
+  $('colname').textContent=$('colname2').textContent=COULEURS[k].nom;$('stickyDot').style.background=COULEURS[k].hex;
+  if(window.dozr3d)window.dozr3d.couleur(k);
+}
+document.querySelectorAll('#cols button').forEach(b=>b.addEventListener('click',()=>choisir(b.dataset.k)));
+document.querySelectorAll('.pack').forEach(p=>p.addEventListener('click',()=>{
+  document.querySelectorAll('.pack').forEach(x=>x.classList.toggle('on',x===p));pack=+p.dataset.n;
+  $('pr').textContent=$('pr2').textContent=eur(PRIX[pack]);
+  const ref=PRIX_BARRE*pack;$('barre').textContent=eur(ref);$('remise').textContent='-'+Math.round((1-PRIX[pack]/ref)*100)+'%';
+}));
+
+/* --- Panier --- */
+function ajouter(){
+  const l=panier.find(x=>x.couleur===coloris&&x.pack===pack);
+  if(l)l.qte=Math.min(l.qte+1,20);else panier.push({couleur:coloris,pack,qte:1});
+  ecrire();rendre();ouvrirPanier();
+}
+function rendre(){
+  const n=panier.reduce((s,l)=>s+l.qte,0);$('cartN').textContent=n;
+  const box=$('lignes');box.innerHTML='';
+  panier.forEach((l,i)=>{
+    const c=COULEURS[l.couleur],d=document.createElement('div');d.className='ligne';
+    d.innerHTML='<div class="pastille" style="background:'+c.hex+'"></div>'+
+      '<div><h4>DOZR '+c.nom+'</h4><p class="det">Pack x'+l.pack+' · '+eur(PRIX[l.pack])+'</p>'+
+      '<div class="qte"><button type="button" aria-label="Retirer un">−</button><span>'+l.qte+'</span><button type="button" aria-label="Ajouter un">+</button></div></div>'+
+      '<div class="droite"><b>'+eur(PRIX[l.pack]*l.qte)+'</b><button type="button" class="suppr">Supprimer</button></div>';
+    const [moins,plus]=d.querySelectorAll('.qte button');
+    moins.onclick=()=>{l.qte--;if(l.qte<1)panier.splice(i,1);ecrire();rendre()};
+    plus.onclick=()=>{l.qte=Math.min(l.qte+1,20);ecrire();rendre()};
+    d.querySelector('.suppr').onclick=()=>{panier.splice(i,1);ecrire();rendre()};
+    box.appendChild(d);
+  });
+  $('vide').hidden=panier.length>0;
+  const st=sousTotal(),lv=fraisLivraison();
+  $('sousTot').textContent=eur(st);
+  $('livr').textContent=!panier.length?'—':(lv?eur(lv):'Offerte');
+  const manque=SEUIL_LIVRAISON_OFFERTE-unites();
+  $('hint').hidden=!(panier.length&&manque>0);
+  if(manque>0)$('hint').textContent='Plus que '+manque+' DOZR pour la livraison offerte';
+  $('tot').textContent=eur(st+lv);
+  $('payer').disabled=!panier.length;$('erreur').hidden=true;
+}
+function ouvrirPanier(){$('panier').hidden=false;document.body.style.overflow='hidden';$('panier').scrollTop=0;$('fermer').focus({preventScroll:true})}
+function fermerPanier(){$('panier').hidden=true;document.body.style.overflow=''}
+$('add').addEventListener('click',ajouter);
+$('stickyAdd').addEventListener('click',ajouter);
+$('cartBtn').addEventListener('click',ouvrirPanier);
+$('fermer').addEventListener('click',fermerPanier);
+$('vers').addEventListener('click',()=>{fermerPanier();$('produit').scrollIntoView()});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('panier').hidden)fermerPanier()});
+
+/* --- Paiement Stripe (via la fonction Netlify, la clé secrète reste côté serveur) --- */
+$('payer').addEventListener('click',async()=>{
+  const btn=$('payer'),err=$('erreur');err.hidden=true;btn.disabled=true;btn.textContent='Redirection vers le paiement…';
+  try{
+    const r=await fetch(API_PAIEMENT,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({items:panier.map(l=>({couleur:l.couleur,pack:l.pack,qte:l.qte}))})});
+    const data=await r.json().catch(()=>({}));
+    if(!r.ok||!data.url)throw new Error(data.erreur||'Le paiement n’a pas pu démarrer.');
+    window.location.href=data.url;
+  }catch(e){
+    err.textContent=(e&&e.message&&e.message!=='Failed to fetch')?e.message:'Le paiement n’est pas disponible ici. Il fonctionne une fois le site en ligne sur Netlify avec ta clé Stripe.';
+    err.hidden=false;btn.disabled=false;btn.textContent='Payer en toute sécurité';
+  }
+});
+
+/* --- Retour de Stripe --- */
+(function(){
+  const q=new URLSearchParams(location.search),st=q.get('paiement');
+  panier=lire();
+  if(st==='ok'){panier=[];ecrire();toast('✓ Merci ! Ton paiement est validé et ta commande est confirmée.')}
+  else if(st==='annule'){toast('Paiement annulé : ton panier est conservé.')}
+  if(st){try{history.replaceState(null,'',location.pathname+location.hash)}catch(e){}}
+  rendre();
+})();
+addEventListener('scroll',()=>$('sticky').classList.toggle('show',scrollY>900&&$('panier').hidden),{passive:true});
+</script>
+
+<!-- Modèle 3D intégré (glTF, tampons en base64) -->
+<script type="application/json" id="modele">__MODELE__</script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/environments/RoomEnvironment.js"></script>
+<script>
+/* ================= Visualisation 3D ================= */
+(function(){
+  const box=document.getElementById('v3d'),aide=document.getElementById('aide');
+  if(!window.THREE||!THREE.GLTFLoader){aide.textContent='';return}
+  function b64(b){const s=atob(b),o=new Uint8Array(s.length);for(let i=0;i<s.length;i++)o[i]=s.charCodeAt(i);return o}
+  // glTF à tampons base64 -> GLB en mémoire (aucun chargement réseau supplémentaire)
+  function versGLB(j){
+    const bins=j.buffers.map(b=>b64(b.uri.slice(b.uri.indexOf(',')+1)));const dep=[];let tot=0;
+    bins.forEach(b=>{dep.push(tot);tot+=Math.ceil(b.length/4)*4});
+    const bin=new Uint8Array(tot);bins.forEach((b,i)=>bin.set(b,dep[i]));
+    j.bufferViews.forEach(v=>{v.byteOffset=(v.byteOffset||0)+dep[v.buffer];v.buffer=0});j.buffers=[{byteLength:tot}];
+    const js=new TextEncoder().encode(JSON.stringify(j)),jl=Math.ceil(js.length/4)*4,g=new Uint8Array(28+jl+tot),dv=new DataView(g.buffer);
+    dv.setUint32(0,0x46546C67,true);dv.setUint32(4,2,true);dv.setUint32(8,g.length,true);dv.setUint32(12,jl,true);dv.setUint32(16,0x4E4F534A,true);
+    g.fill(32,20,20+jl);g.set(js,20);dv.setUint32(20+jl,tot,true);dv.setUint32(24+jl,0x004E4942,true);g.set(bin,28+jl);return g.buffer;
+  }
+  const reduit=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const r=new THREE.WebGLRenderer({antialias:true,alpha:true});r.setPixelRatio(Math.min(devicePixelRatio||1,2));
+  r.outputEncoding=THREE.sRGBEncoding;r.toneMapping=THREE.ACESFilmicToneMapping;r.domElement.setAttribute('aria-label','Vue 3D du doseur DOZR');box.prepend(r.domElement);
+  const sc=new THREE.Scene();sc.environment=new THREE.PMREMGenerator(r).fromScene(new THREE.RoomEnvironment(),0.04).texture;
+  const sun=new THREE.DirectionalLight(0xffffff,1.0);sun.position.set(-120,220,160);sc.add(sun);
+  const cam=new THREE.PerspectiveCamera(30,4/3,1,5000),ctl=new THREE.OrbitControls(cam,r.domElement);
+  ctl.enableDamping=true;ctl.dampingFactor=.08;ctl.enableZoom=false;ctl.enablePan=false;ctl.autoRotate=!reduit;ctl.autoRotateSpeed=1.2;
+  ctl.addEventListener('start',()=>{ctl.autoRotate=false});
+  const root=new THREE.Group();root.rotation.x=-Math.PI/2;sc.add(root);
+  const c=new THREE.Vector3(52.8,11,0);cam.position.set(c.x+95,c.y+120,c.z+185);ctl.target.copy(c);
+  function taille(){const w=box.clientWidth,h=box.clientHeight;if(!w||!h)return;r.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();
+    const v=THREE.MathUtils.degToRad(cam.fov)/2,hz=Math.atan(Math.tan(v)*cam.aspect),R=92,d=Math.max(R/Math.sin(v),R/Math.sin(hz))*1.02;
+    const dir=cam.position.clone().sub(ctl.target).normalize();cam.position.copy(ctl.target).add(dir.multiplyScalar(d));ctl.update()}
+  new ResizeObserver(taille).observe(box);taille();
+  const TEINTES={gris:'#6b7078',rouge:'#c62828',vert:'#2e7d32',bleu:'#1565c0',blanc:'#eeeeec'};
+  let clapet=null,base=0,cible=0,act=0;const mats=[];
+  window.dozr3d={couleur(k){const t=TEINTES[k];if(t)mats.forEach(m=>m.color.setStyle(t).convertSRGBToLinear())}};
+  try{
+    const j=JSON.parse(document.getElementById('modele').textContent);
+    new THREE.GLTFLoader().parse(versGLB(j),'',g=>{
+      root.add(g.scene);
+      ['corps','couvercle'].forEach(n=>{const o=g.scene.getObjectByName(n);if(o)o.traverse(m=>{if(m.isMesh){m.material=m.material.clone();mats.push(m.material)}})});
+      clapet=g.scene.getObjectByName('clapet');if(clapet)base=clapet.position.x;
+      window.dozr3d.couleur(typeof coloris!=='undefined'?coloris:'gris');box.classList.add('pret');
+    },()=>{aide.textContent=''});
+  }catch(e){aide.textContent=''}
+  const bt=document.getElementById('clap'),et=document.getElementById('etat');
+  bt.addEventListener('click',()=>{const o=cible===0;cible=o?1:0;bt.setAttribute('aria-pressed',String(o));bt.textContent=o?'Fermer le clapet':'Ouvrir le clapet';et.innerHTML='Clapet <b>'+(o?'ouvert':'fermé')+'</b>'});
+  (function tick(){act+=(cible-act)*(reduit?1:.12);if(clapet)clapet.position.x=base+18*act;ctl.update();r.render(sc,cam);requestAnimationFrame(tick)})();
+})();
+</script>
+</body></html>
