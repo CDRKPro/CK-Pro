@@ -135,12 +135,30 @@ def flute(m):
     return m.warp(f)
 
 
-def r_out(z):
-    """Profil extérieur : paroi presque verticale en haut qui s'arrondit en se
-    resserrant vers le tube (mélange quart d'ellipse / cône, cf. croquis)."""
+def _r_bowl(z):
     u = min(max(z / CUP_H, 0.0), 1.0)
     ell = math.sqrt(max(1 - (1 - u) ** 2, 0.0))
     return CUP_R_BOT + (CUP_R_TOP - CUP_R_BOT) * (BOWL * ell + (1 - BOWL) * u)
+
+
+def _z45():
+    """Hauteur sous laquelle la pente du bol dépasserait 45° (surplomb à l'impression)."""
+    z = 0.001
+    while (_r_bowl(z + 0.01) - _r_bowl(z)) / 0.01 > 1.0:
+        z += 0.01
+    return z
+
+
+Z45 = _z45()
+
+
+def r_out(z):
+    """Profil extérieur : paroi presque verticale en haut qui s'arrondit en se
+    resserrant vers le tube (mélange quart d'ellipse / cône, cf. croquis).
+    Les ~2 mm du bas sont un chanfrein à 45° : imprimable sans support."""
+    if z < Z45:
+        return _r_bowl(Z45) - (Z45 - z)
+    return _r_bowl(z)
 
 
 # ----------------------------------------------------------------- corps
@@ -294,6 +312,35 @@ def to_tm(m, color=None):
     return t
 
 
+def export_plates(root, printable):
+    """Plateaux prêts à trancher (orientation d'impression, posés à Z=0, centrés sur
+    un plateau 180 × 180 mm : rentre sur toutes les imprimantes courantes)."""
+    grey, black = [112, 116, 122, 255], [22, 22, 24, 255]
+    meshes = {}
+    for name, m in printable.items():
+        t = to_tm(m)
+        b = t.bounds
+        t.apply_translation((-(b[0][0] + b[1][0]) / 2, -(b[0][1] + b[1][1]) / 2, -b[0][2]))
+        meshes[name] = t
+
+    def plate(names, fname, bed=180.0, gap=8.0):
+        rows = [meshes[n] for n in names]
+        total = sum(t.extents[1] for t in rows) + gap * (len(rows) - 1)
+        y = bed / 2 - total / 2
+        sc = trimesh.Scene()
+        for n, t in zip(names, rows):
+            t = t.copy()
+            t.apply_translation((bed / 2, y + t.extents[1] / 2, 0))
+            t.visual.face_colors = black if "clapet" in n else grey
+            sc.add_geometry(t, node_name=n, geom_name=n)
+            y += t.extents[1] + gap
+        sc.export(os.path.join(root, fname))
+
+    plate(["1_corps_entonnoir_manche", "2_couvercle_bec"], "plateau_1_gris.3mf")
+    plate(["3_clapet_complet"], "plateau_2_noir.3mf")
+    plate(["1_corps_entonnoir_manche", "2_couvercle_bec", "3_clapet_complet"], "plateau_complet_multicolore.3mf")
+
+
 def main():
     root = os.path.dirname(os.path.abspath(__file__))
     out = os.path.join(root, "stl")
@@ -325,6 +372,8 @@ def main():
     scene.export(os.path.join(root, "dozr_assemblage.glb"))
     scene.export(os.path.join(root, "dozr_assemblage.3mf"))
     to_tm(union([m for _, m, _ in parts])).export(os.path.join(root, "dozr_assemblage.stl"))
+
+    export_plates(root, printable)
 
     print("interférence corps/couvercle :", round((bd ^ cv).volume(), 3), "mm3")
     fixed = bd + cv

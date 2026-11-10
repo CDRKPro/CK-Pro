@@ -9,6 +9,8 @@ L'entonnoir et le manche forment **une seule pièce** : aucun joint visible dess
 
 ![aperçu](apercu.png)
 
+➡️ **Pour imprimer : voir [IMPRESSION.md](IMPRESSION.md)** (plateaux `.3mf` prêts, réglages, montage).
+
 ## Fichiers
 
 | Fichier | Contenu | Couleur |
@@ -16,6 +18,7 @@ L'entonnoir et le manche forment **une seule pièce** : aucun joint visible dess
 | `stl/1_corps_entonnoir_manche.stl` | Entonnoir + manche d'un seul bloc (imprimé debout, dessous à plat) | gris |
 | `stl/2_couvercle_bec.stl` | Fond du canal + tube Ø20 × 10 mm (imprimé face plate sur le plateau) | gris |
 | `stl/3_clapet_complet.stl` | **Clapet d'une seule pièce** : languette qui ferme le tube + semelle noire visible dans la fenêtre + bouton | noir |
+| `plateau_1_gris.3mf`, `plateau_2_noir.3mf`, `plateau_complet_multicolore.3mf` | Plateaux prêts à trancher | |
 | `dozr_assemblage.3mf` / `.glb` / `.stl` | Vue assemblée en couleurs | |
 | `coupe_clapet.png` | Coupe clapet fermé / ouvert | |
 | `fonts/Inter-BlackItalic.otf` | Police du logo (Inter, licence SIL OFL 1.1) | |
