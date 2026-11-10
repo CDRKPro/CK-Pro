@@ -70,9 +70,8 @@ TONGUE_W = 16.0                    # languette qui passe entre l'entonnoir et le
 TONGUE_FRONT = -(BORE_D / 2 + 2.5)  # avant de la languette, clapet fermé
 WIDE_W = 21.4                      # semelle élargie sous la fenêtre (retient le clapet)
 WIDE_X0 = PILL_X0 - 2.0
-BOSS_W = PILL_W - 2 * CLR          # pilule noire visible
-BOSS_X0, BOSS_X1 = PILL_X0 + CLR, PILL_X1 - CLR - TRAVEL
-BOSS_TOP = HANDLE_T - 1.0          # dessus de la pilule 1 mm sous le manche
+BOSS_X0 = PILL_X0 + CLR
+BOSS_TOP = HANDLE_T - 1.0          # base du chapeau du bouton
 BASE_REAR = PILL_X1 + 0.5          # la semelle reste visible dans la fenêtre : tout est noir
 KNOB_X = BOSS_X0 + KNOB_D / 2 + 0.25   # bouton au bout côté entonnoir
 NARROW_CH = (TONGUE_FRONT - CLR - 0.5, WIDE_X0 + TRAVEL + 1.0, TONGUE_W + 2 * CLR)
@@ -263,9 +262,10 @@ def cover():
     return c
 
 
-def knob():
+def knob(drop=0.0):
+    """Bouton ; drop = longueur dont le fût descend sous le chapeau."""
     r, h, ch = KNOB_D / 2, KNOB_H, 0.7
-    prof = [(0, 0), (r, 0), (r, h - ch)] + arc(r - ch, h - ch, ch, 0, math.pi / 2, 10)[1:] + [(0, h)]
+    prof = [(0, -drop), (r, -drop), (r, h - ch)] + arc(r - ch, h - ch, ch, 0, math.pi / 2, 10)[1:] + [(0, h)]
     k = CrossSection([prof]).revolve(128)
     rd = KNOB_DISC_D / 2
     disc = CrossSection([[(0, h - 0.1), (rd, h - 0.1), (rd, h + 0.35), (rd - 0.25, h + 0.6), (0, h + 0.6)]]).revolve(128)
@@ -275,14 +275,14 @@ def knob():
 
 
 def clapet(open_=False):
-    """Clapet complet d'une seule pièce : languette (ferme le tube) + semelle +
-    pilule noire visible dans le manche + bouton. Fermé : bouton côté entonnoir."""
+    """Clapet complet d'une seule pièce : languette (ferme le tube) + semelle
+    noire visible dans la fenêtre du manche + bouton. Fermé : bouton côté entonnoir."""
     tongue = rrect(TONGUE_FRONT, WIDE_X0 + 1.0, TONGUE_W, TONGUE_W / 2)
     base = (tongue + rrect(WIDE_X0, BASE_REAR, WIDE_W, 2.0)).extrude(BASE_T).translate((0, 0, Z_CHAN))
     z1 = Z_CHAN + BASE_T
-    boss = rrect(BOSS_X0, BOSS_X1, BOSS_W, BOSS_W / 2).extrude(BOSS_TOP - z1 + 0.01).translate((0, 0, z1 - 0.01))
-    k = knob().translate((KNOB_X, 0, BOSS_TOP - 0.01))
-    return (base + boss + k).translate((TRAVEL if open_ else 0, 0, 0))
+    # le bouton descend jusqu'à la semelle : seul le bouton rond dépasse dans la fenêtre
+    k = knob(drop=BOSS_TOP - z1 + 0.01).translate((KNOB_X, 0, BOSS_TOP))
+    return (base + k).translate((TRAVEL if open_ else 0, 0, 0))
 
 
 # ----------------------------------------------------------------- export

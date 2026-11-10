@@ -15,7 +15,7 @@ L'entonnoir et le manche forment **une seule pièce** : aucun joint visible dess
 |---|---|---|
 | `stl/1_corps_entonnoir_manche.stl` | Entonnoir + manche d'un seul bloc (imprimé debout, dessous à plat) | gris |
 | `stl/2_couvercle_bec.stl` | Fond du canal + tube Ø20 × 10 mm (imprimé face plate sur le plateau) | gris |
-| `stl/3_clapet_complet.stl` | **Clapet d'une seule pièce** : languette qui ferme le tube + pilule noire visible + bouton | noir |
+| `stl/3_clapet_complet.stl` | **Clapet d'une seule pièce** : languette qui ferme le tube + semelle noire visible dans la fenêtre + bouton | noir |
 | `dozr_assemblage.3mf` / `.glb` / `.stl` | Vue assemblée en couleurs | |
 | `coupe_clapet.png` | Coupe clapet fermé / ouvert | |
 | `fonts/Inter-BlackItalic.otf` | Police du logo (Inter, licence SIL OFL 1.1) | |
@@ -26,7 +26,7 @@ L'entonnoir et le manche forment **une seule pièce** : aucun joint visible dess
 ![coupe](coupe_clapet.png)
 
 Une seule pièce noire coulisse dans le manche : sa languette passe entre l'entonnoir et le tube,
-sa pilule apparaît dans la fenêtre du manche et porte le bouton.
+sa semelle noire apparaît au fond de la fenêtre du manche et seul le bouton rond dépasse.
 
 - Bouton côté entonnoir : la languette couvre tout le tube → **fermé**
 - Bouton tiré de 18 mm vers le bout du manche : la languette dégage tout le tube → **ouvert**, la poudre tombe directement
@@ -52,6 +52,6 @@ Proportions relevées sur la vue de face, à l'échelle manche = 30 mm :
 
 ## Assemblage
 
-1. Retourner le corps. Poser le clapet dans le canal par dessous : la pilule et le bouton sortent par la fenêtre du manche, la languette va sous l'entonnoir.
+1. Retourner le corps. Poser le clapet dans le canal par dessous : le bouton sort par la fenêtre du manche, la languette va sous l'entonnoir.
 2. Coller le couvercle (avec le tube) dans son logement sous le corps (cyano ou époxy sur le pourtour, **pas dans le canal**).
 3. Vérifier que le clapet coulisse librement : bouton côté entonnoir = fermé.
