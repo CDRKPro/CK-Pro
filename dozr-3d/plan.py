@@ -191,7 +191,9 @@ def main():
         fig.savefig(os.path.join(ROOT, f"plan.{ext}"), dpi=200 if ext == "png" else None, facecolor="white")
     print("plan.pdf / plan.svg / plan.png")
 
-    # ---- GLB web : normales lissées, matériaux, nœuds séparés pour l'animation
+    # ---- glTF web allégé : profil simplifié à 0,01 mm, maillage plus lâche (forme identique à l'œil)
+    d.SECTION_TOL, d.REFINE_LEN, d.SEG = 0.01, 2.0, d.RIBS * 8
+    bd, cv = d.body(), d.cover()
     os.makedirs(os.path.join(ROOT, "web"), exist_ok=True)
     sc = trimesh.Scene()
     for name, m, rgba, rough in [("corps", bd, [0.17, 0.18, 0.2, 1], 0.5),

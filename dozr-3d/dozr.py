@@ -34,6 +34,8 @@ import trimesh
 
 RIBS = 48
 SEG = RIBS * 14
+REFINE_LEN = 0.8        # finesse du maillage de la paroi (mm) — plus grand = fichier plus léger
+SECTION_TOL = 0.0       # simplification du profil (mm) ; 0 = aucune (impression), 0.01 pour le web
 
 # ----------------------------------------------------------------- entonnoir
 CUP_R_TOP = 27.5        # rayon extérieur au bord (Ø55)
@@ -242,9 +244,11 @@ def logo():
 
 def body():
     sec, cav = cup_section()
+    if SECTION_TOL > 0:
+        sec = sec.simplify(SECTION_TOL)
     # le manche ne doit pas remplir le fond de l'entonnoir (zone non cannelée : forme exacte)
     hdl = handle() - cav.offset(0.05, JoinType.Round).revolve(SEG)
-    b = flute(sec.revolve(SEG).refine_to_length(0.8)) + hdl
+    b = flute(sec.revolve(SEG).refine_to_length(REFINE_LEN)) + hdl
     # passage direct : fond conique -> trou Ø14 -> clapet (pas de grille)
     b = b - cyl(FUNNEL_Z0 - Z_CHAN + 0.5, BORE_D / 2, z=Z_CHAN)
     b = b - logo()
