@@ -23,13 +23,13 @@ Le canal est fermé par dessous par le couvercle qui porte le bec
 (seul joint du modèle, invisible une fois posé sur la bouteille).
 
 Pièces : 1 corps (entonnoir + manche), 2 couvercle avec bec, 3 languette
-avec tige, 4 bouton, 5 tamis, 6 insert noir (pilule).
+avec tige, 4 bouton, 5 insert noir (pilule).
 """
 import math
 import os
 
 import numpy as np
-from manifold3d import CrossSection, Manifold, JoinType, OpType
+from manifold3d import CrossSection, Manifold, JoinType, OpType, FillRule
 import trimesh
 
 RIBS = 48
@@ -45,7 +45,7 @@ LIP_R = 0.95            # arrondi de la lèvre
 RIB_K = 1.0 / CUP_R_TOP  # profondeur des rainures (1 mm au bord)
 RIM_BAND = 1.8          # bandeau lisse sous la lèvre
 RIB_START = 15.5        # rayon à partir duquel la paroi est cannelée
-FLOOR_Z = 9.5           # fond intérieur
+FUNNEL_ANGLE = 50.0     # pente du fond (°) : la poudre descend direct vers le trou
 FLOOR_FILLET = 3.0
 
 # ----------------------------------------------------------------- bec (sur le couvercle)
@@ -66,9 +66,6 @@ INSERT_T = 1.2
 KNOB_D, KNOB_H, KNOB_DISC_D = 16.2, 5.5, 9.0
 KNOB_X = PILL_X0 + PILL_W / 2      # bouton concentrique au bout de la pilule = fermé
 
-# Tamis
-SIEVE_D, SIEVE_T = 26.0, 1.6
-
 # Mécanisme
 CLR = 0.3
 Z_CHAN, CHAN_H = 2.0, 2.4
@@ -84,6 +81,12 @@ KNOB_Z0 = Z_INSERT + INSERT_T + 0.3
 SOCKET = 3.0
 COVER_T = Z_CHAN
 COVER_DISC_R = 11.6
+FUNNEL_Z0 = Z_CHAN + CHAN_H + 1.2   # bas du fond conique (1,2 mm au-dessus du clapet)
+
+# Logo gravé en creux sur le manche
+LOGO_TEXT, LOGO_H, LOGO_DEPTH = "DOZR", 6.0, 0.8
+LOGO_X = 104.0          # centre du logo (entre la pilule et le trou)
+LOGO_FONT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fonts", "Inter-BlackItalic.otf")
 
 
 # ----------------------------------------------------------------- outils
@@ -151,16 +154,19 @@ def cup_section():
     outer_ext = [(0, 0)] + curve + [(CUP_R_TOP, CUP_H + 10), (0, CUP_H + 10)]
 
     cav = CrossSection([outer_ext]).offset(-WALL, JoinType.Round, circular_segments=96)
-    cav = cav ^ CrossSection.square((CUP_R_TOP + 10, CUP_H + 20)).translate((0, FLOOR_Z))
+    r0, top = BORE_D / 2, CUP_H + 20
+    cone = CrossSection([[(0, FUNNEL_Z0), (r0, FUNNEL_Z0),
+                          (r0 + (top - FUNNEL_Z0) / math.tan(math.radians(FUNNEL_ANGLE)), top), (0, top)]])
+    cav = cav ^ cone
     cav = cav.offset(-FLOOR_FILLET, JoinType.Round, circular_segments=64).offset(
         FLOOR_FILLET, JoinType.Round, circular_segments=64)
-    cav = cav + CrossSection.square((2 * FLOOR_FILLET + 1, CUP_H + 20)).translate((0, FLOOR_Z))
+    cav = cav + CrossSection.square((r0, top - FUNNEL_Z0)).translate((0, FUNNEL_Z0))
 
     sec = CrossSection([outer]) - cav
     sec = sec.offset(-LIP_R, JoinType.Round, circular_segments=48).offset(LIP_R, JoinType.Round, circular_segments=48)
-    sec = sec + CrossSection.square((2.5, FLOOR_Z))           # rétablit l'axe
+    sec = sec + CrossSection.square((2.5, FUNNEL_Z0))         # rétablit l'axe
     sec = sec ^ CrossSection.square((CUP_R_TOP + 5, CUP_H + 5))
-    return sec
+    return sec, cav
 
 
 def handle():
@@ -182,13 +188,49 @@ def stem_slot(h):
     return rrect(KNOB_X - STEM_S / 2 - 0.6, KNOB_X + TRAVEL + STEM_S / 2 + 0.6, STEM_S + 0.5, 1.0).extrude(h)
 
 
+def logo():
+    """« DOZR® » gravé en creux, lisible depuis le bout du manche vers l'entonnoir."""
+    from matplotlib.textpath import TextPath
+    from matplotlib.font_manager import FontProperties
+    fp = FontProperties(fname=LOGO_FONT)
+
+    def polys(txt, size, dx=0.0, dy=0.0):
+        """Contours des lettres, courbes de Bézier échantillonnées finement."""
+        from matplotlib.path import Path
+        tp = TextPath((0, 0), txt, size=size, prop=fp)
+        contours, cur = [], []
+        for seg, code in tp.iter_bezier():
+            if code == Path.MOVETO:
+                if len(cur) > 2:
+                    contours.append(cur)
+                cur = [tuple(seg.control_points[0])]
+                continue
+            if code == Path.CLOSEPOLY:
+                continue
+            n = 1 if code == Path.LINETO else 10
+            for i in range(1, n + 1):
+                cur.append(tuple(seg(i / n)))
+        if len(cur) > 2:
+            contours.append(cur)
+        return [[(x + dx, y + dy) for x, y in c] for c in contours]
+
+    main = polys(LOGO_TEXT, LOGO_H / 0.73)           # hauteur des capitales ≈ LOGO_H
+    xs = [x for p in main for x, _ in p]
+    reg = polys("®", LOGO_H * 0.55, dx=max(xs) + 0.4, dy=LOGO_H * 0.55)
+    cs = CrossSection(main + reg, FillRule.EvenOdd)
+    (x0, y0, x1, y1) = cs.bounds()
+    cs = cs.translate((-(x0 + x1) / 2, -(y0 + y1) / 2)).rotate(180).translate((LOGO_X, 0))
+    return cs.extrude(LOGO_DEPTH + 1).translate((0, 0, HANDLE_T - LOGO_DEPTH))
+
+
 def body():
-    b = flute(cup_section().revolve(SEG).refine_to_length(0.8)) + handle()
-    # passage de la poudre sous le tamis
-    z_rec = FLOOR_Z - SIEVE_T
-    b = b - cyl(SIEVE_T + 0.5, SIEVE_D / 2 + 0.2, z=z_rec)
-    b = b - cyl(z_rec - (Z_CHAN + CHAN_H + 2.6) + 0.01, BORE_D / 2, SIEVE_D / 2 - 1.5, z=Z_CHAN + CHAN_H + 2.6)
-    b = b - cyl(z_rec, BORE_D / 2, z=Z_CHAN)
+    sec, cav = cup_section()
+    # le manche ne doit pas remplir le fond de l'entonnoir (zone non cannelée : forme exacte)
+    hdl = handle() - cav.offset(0.05, JoinType.Round).revolve(SEG)
+    b = flute(sec.revolve(SEG).refine_to_length(0.8)) + hdl
+    # passage direct : fond conique -> trou Ø14 -> clapet (pas de grille)
+    b = b - cyl(FUNNEL_Z0 - Z_CHAN + 0.5, BORE_D / 2, z=Z_CHAN)
+    b = b - logo()
     # canal de la languette + logement du couvercle (par dessous)
     b = b - rrect(CH_X0, CH_X1, CH_W, 2.0).extrude(CHAN_H).translate((0, 0, Z_CHAN))
     b = b - cover_outline().offset(0.15, JoinType.Round).extrude(COVER_T + 1).translate((0, 0, -1))
@@ -250,17 +292,6 @@ def pill_insert():
     return p.translate((0, 0, Z_INSERT))
 
 
-def sieve():
-    r = SIEVE_D / 2 - 0.1
-    hole, bar = 1.2, 0.8
-    pitch = hole + bar
-    n = int(r / pitch) + 2
-    cuts = [Manifold.cube((hole, hole, SIEVE_T + 2)).translate((i * pitch - hole / 2, j * pitch - hole / 2, -1))
-            for i in range(-n, n + 1) for j in range(-n, n + 1)
-            if math.hypot(abs(i * pitch) + hole / 2, abs(j * pitch) + hole / 2) < r - 1.4]
-    return (cyl(SIEVE_T, r) - union(cuts)).translate((0, 0, FLOOR_Z - SIEVE_T))
-
-
 # ----------------------------------------------------------------- export
 def to_tm(m, color=None):
     mesh = m.to_mesh()
@@ -278,15 +309,14 @@ def main():
         os.remove(os.path.join(out, f))
 
     bd, cv = body(), cover()
-    plate, kn, sv, pill = slide_plate(), knob(), sieve(), pill_insert()
+    plate, kn, pill = slide_plate(), knob(), pill_insert()
 
     printable = {
         "1_corps_entonnoir_manche": bd,                # debout, dessous à plat
         "2_couvercle_bec": cv.rotate((180, 0, 0)),     # face plate sur le plateau, bec en l'air
         "3_languette": plate,
         "4_bouton": kn,
-        "5_tamis": sv,
-        "6_insert_noir": pill,
+        "5_insert_noir": pill,
     }
     for name, m in printable.items():
         t = to_tm(m)
@@ -296,9 +326,9 @@ def main():
         t.export(os.path.join(out, f"{name}.stl"))
         print(f"{name:28s} {t.extents.round(1)} mm  {t.volume / 1000:.1f} cm3")
 
-    grey, black, steel = [112, 116, 122, 255], [22, 22, 24, 255], [160, 162, 165, 255]
+    grey, black, _ = [112, 116, 122, 255], [22, 22, 24, 255], [160, 162, 165, 255]
     parts = [("corps", bd, grey), ("couvercle_bec", cv, grey), ("languette", plate, black),
-             ("bouton", kn, black), ("tamis", sv, steel), ("insert_noir", pill, black)]
+             ("bouton", kn, black), ("insert_noir", pill, black)]
     scene = trimesh.Scene()
     for name, m, c in parts:
         scene.add_geometry(to_tm(m, c), node_name=name, geom_name=name)
@@ -307,7 +337,7 @@ def main():
     to_tm(union([m for _, m, _ in parts])).export(os.path.join(root, "dozr_assemblage.stl"))
 
     print("interférence corps/couvercle :", round((bd ^ cv).volume(), 3), "mm3")
-    fixed = bd + cv + pill + sv
+    fixed = bd + cv + pill
     for open_ in (False, True):
         mov = slide_plate(open_) + knob(open_)
         print(f"interférence mécanisme ({'ouvert' if open_ else 'fermé'}) : {(mov ^ fixed).volume():.3f} mm3")
