@@ -8,7 +8,7 @@ Unités : mm. Origine au centre du dessous de l'entonnoir, manche selon +X,
 Z vers le haut. Le bec dépasse sous l'entonnoir (Z < 0).
 
 Forme :
-  - entonnoir CONIQUE vers le bas (Ø55 en haut -> Ø34 en bas), paroi
+  - entonnoir en bol conique (Ø55 en haut, paroi verticale qui s'arrondit vers le tube), paroi
     cannelée (cannelures visibles dehors et dedans), lèvre arrondie ;
   - bec de 10 mm sous le fond, Ø20 : rentre dans un goulot standard
     (bouteilles d'eau / shakers, passage ~21,7 mm) ;
@@ -37,9 +37,9 @@ SEG = RIBS * 14
 
 # ----------------------------------------------------------------- entonnoir
 CUP_R_TOP = 27.5        # rayon extérieur au bord (Ø55)
-CUP_R_BOT = 17.0        # rayon extérieur en bas (Ø34) : forme conique
-CUP_H = 34.0
-BOT_FILLET = 2.5        # arrondi du bord inférieur
+CUP_R_BOT = 13.0        # rayon extérieur en bas, juste au-dessus du tube (Ø26)
+BOWL = 0.65             # 0 = cône droit, 1 = bol arrondi : « légèrement arrondi, conique »
+CUP_H = 32.0
 WALL = 2.0
 LIP_R = 0.95            # arrondi de la lèvre
 RIB_K = 1.0 / CUP_R_TOP  # profondeur des rainures (1 mm au bord)
@@ -83,7 +83,7 @@ Z_INSERT = HANDLE_T - PILL_RECESS
 KNOB_Z0 = Z_INSERT + INSERT_T + 0.3
 SOCKET = 3.0
 COVER_T = Z_CHAN
-COVER_DISC_R = 12.5
+COVER_DISC_R = 11.6
 
 
 # ----------------------------------------------------------------- outils
@@ -136,17 +136,19 @@ def flute(m):
 
 
 def r_out(z):
-    return CUP_R_BOT + (CUP_R_TOP - CUP_R_BOT) * z / CUP_H
+    """Profil extérieur : paroi presque verticale en haut qui s'arrondit en se
+    resserrant vers le tube (mélange quart d'ellipse / cône, cf. croquis)."""
+    u = min(max(z / CUP_H, 0.0), 1.0)
+    ell = math.sqrt(max(1 - (1 - u) ** 2, 0.0))
+    return CUP_R_BOT + (CUP_R_TOP - CUP_R_BOT) * (BOWL * ell + (1 - BOWL) * u)
 
 
 # ----------------------------------------------------------------- corps
 def cup_section():
-    """Demi-coupe (r, z) de l'entonnoir plein : cône, fond plat, lèvre arrondie."""
-    top = (CUP_R_TOP, CUP_H)
-    corner = (CUP_R_BOT, 0.0)
-    outer = [(0, 0)] + fillet((0, 0), corner, top, BOT_FILLET) + [top, (0, CUP_H)]
-    ext = (r_out(CUP_H + 10), CUP_H + 10)
-    outer_ext = [(0, 0)] + fillet((0, 0), corner, ext, BOT_FILLET) + [ext, (0, CUP_H + 10)]
+    """Demi-coupe (r, z) de l'entonnoir plein : bol conique, lèvre arrondie."""
+    curve = [(r_out(CUP_H * (i / 80) ** 1.5), CUP_H * (i / 80) ** 1.5) for i in range(81)]
+    outer = [(0, 0)] + curve + [(0, CUP_H)]
+    outer_ext = [(0, 0)] + curve + [(CUP_R_TOP, CUP_H + 10), (0, CUP_H + 10)]
 
     cav = CrossSection([outer_ext]).offset(-WALL, JoinType.Round, circular_segments=96)
     cav = cav ^ CrossSection.square((CUP_R_TOP + 10, CUP_H + 20)).translate((0, FLOOR_Z))
@@ -210,7 +212,7 @@ def cover():
     c = cover_outline().extrude(COVER_T)
     r1, r0 = SPOUT_OD / 2, SPOUT_OD_TIP / 2
     sp = cyl(SPOUT_L - 0.8 + 0.01, r0, r1, z=-(SPOUT_L - 0.8)) + cyl(0.8, r0 - 0.8, r0, z=-SPOUT_L)
-    rf = 1.5   # congé à la racine du bec
+    rf = 1.0   # congé à la racine du tube
     root_pts = [(r1 - 0.01, 0.01), (r1 + rf, 0.01)] + arc(r1 + rf, -rf, rf, math.pi / 2, math.pi, 12)[1:] \
         + [(r1 - 0.01, -rf)]
     root = CrossSection([root_pts[::-1]]).revolve(128)

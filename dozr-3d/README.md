@@ -1,7 +1,7 @@
 # Dozr — doseur à poudre imprimable en 3D
 
-Forme calquée sur les vues de référence : entonnoir **conique vers le bas**, cannelé (côtes bombées,
-rainures fines, bandeau lisse sous la lèvre arrondie), tamis rond au centre du fond, **bec de 10 mm
+Forme calquée sur les vues de référence et le croquis de profil : entonnoir en **bol conique** (paroi presque verticale en haut qui s'arrondit en se resserrant jusqu'au tube), cannelé (côtes bombées,
+rainures fines, bandeau lisse sous la lèvre arrondie), tamis rond au centre du fond, **tube de 10 mm
 qui rentre dans le goulot** d'une bouteille standard, manche plat avec pilule noire en creux, bouton
 rond noir côté entonnoir et trou de suspension chanfreiné.
 
@@ -27,8 +27,8 @@ L'entonnoir et le manche forment **une seule pièce** : aucun joint visible dess
 Proportions relevées sur la vue de face, à l'échelle manche = 30 mm :
 
 - Longueur totale 160 mm, manche 30 × 9 mm
-- Entonnoir conique Ø55 en haut → Ø34 en bas, hauteur 34 mm (≈ 36 ml), 48 côtes
-- Bec Ø20 → Ø19,2, longueur 10 mm, passage Ø14 : rentre dans les goulots standard (passage ~21,7 mm)
+- Entonnoir en bol conique Ø55 en haut → Ø26 au départ du tube, hauteur 32 mm, 48 côtes (`BOWL` dans `dozr.py` : 0 = cône droit, 1 = bol rond)
+- Tube Ø20 → Ø19,2, longueur 10 mm, passage Ø14 : rentre dans les goulots standard (passage ~21,7 mm)
 - Pilule 17,3 × 49 mm, bouton Ø16,2, trou de suspension Ø6 (chanfrein Ø8,5)
 - Bouton côté entonnoir = **fermé** ; tiré de 18 mm vers le bout du manche = **ouvert**
 
