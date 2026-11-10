@@ -100,10 +100,35 @@ def visuel(hero, low, out, size=2000):
     bg.convert("RGB").save(out, quality=95)
 
 
+def gamme(heroes, out, W=2400, H=2400):
+    """Les coloris en grille 2 × 2 sur fond blanc, chacun avec son nom."""
+    bg = Image.new("RGBA", (W, H), (255, 255, 255, 255))
+    d = ImageDraw.Draw(bg)
+    d.text((W // 2, 150), "DOZR", font=font(F_LOGO, 190), fill=(24, 24, 26), anchor="mm")
+    d.text((W // 2, 300), f"Disponible en {len(heroes)} coloris", font=font("Inter-Medium.otf", 64),
+           fill=(110, 116, 122), anchor="mm")
+    top, cols = 400, 2
+    rows = (len(heroes) + cols - 1) // cols
+    cw, ch = W / cols, (H - top - 40) / rows
+    for k, (name, im) in enumerate(heroes):
+        r, c = divmod(k, cols)
+        obj = trim(im, 6)
+        s = min(cw * 0.86 / obj.width, (ch - 170) / obj.height)
+        obj = obj.resize((int(obj.width * s), int(obj.height * s)), Image.LANCZOS)
+        cx, cy = int(cw * (c + 0.5)), int(top + ch * r)
+        bg.alpha_composite(obj, (cx - obj.width // 2, cy + int((ch - 150 - obj.height) / 2)))
+        d.text((cx, cy + ch - 90), name, font=font("Inter-Bold.otf", 70), fill=(24, 24, 26), anchor="mm")
+    bg.convert("RGB").save(out, quality=95)
+
+
 if __name__ == "__main__":
+    # python3 images_produit.py hero.png low.png [suffixe]
     hero = Image.open(sys.argv[1]).convert("RGBA")
     low = Image.open(sys.argv[2]).convert("RGBA")
+    suf = ("_" + sys.argv[3]) if len(sys.argv) > 3 else ""
     os.makedirs(os.path.join(ROOT, "images"), exist_ok=True)
-    packshot(hero, os.path.join(ROOT, "images", "dozr_packshot.png"))
-    visuel(hero, low, os.path.join(ROOT, "images", "dozr_visuel.png"))
-    print("images/dozr_packshot.png, images/dozr_visuel.png")
+    packshot(hero, os.path.join(ROOT, "images", f"dozr_packshot{suf}.png"))
+    visuel(hero, low, os.path.join(ROOT, "images", f"dozr_visuel{suf}.png"))
+    o = trim(hero, 20)
+    o.save(os.path.join(ROOT, "images", f"dozr_detoure{suf}.png"))
+    print(f"images/dozr_*{suf}.png")
