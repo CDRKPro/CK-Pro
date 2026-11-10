@@ -14,13 +14,22 @@ L'entonnoir et le manche forment **une seule pièce** : aucun joint visible dess
 | Fichier | Contenu | Couleur |
 |---|---|---|
 | `stl/1_corps_entonnoir_manche.stl` | Entonnoir + manche d'un seul bloc (imprimé debout, dessous à plat) | gris |
-| `stl/2_couvercle_bec.stl` | Fond du canal + bec Ø20 × 10 mm (imprimé face plate sur le plateau) | gris |
-| `stl/3_languette.stl` | Languette coulissante qui ferme le passage, avec la tige du bouton | noir |
-| `stl/4_bouton.stl` | Bouton rond Ø16,2 avec disque central | noir |
-| `stl/5_insert_noir.stl` | Pilule noire de la fente | noir |
+| `stl/2_couvercle_bec.stl` | Fond du canal + tube Ø20 × 10 mm (imprimé face plate sur le plateau) | gris |
+| `stl/3_clapet_complet.stl` | **Clapet d'une seule pièce** : languette qui ferme le tube + pilule noire visible + bouton | noir |
 | `dozr_assemblage.3mf` / `.glb` / `.stl` | Vue assemblée en couleurs | |
+| `coupe_clapet.png` | Coupe clapet fermé / ouvert | |
 | `fonts/Inter-BlackItalic.otf` | Police du logo (Inter, licence SIL OFL 1.1) | |
 | `dozr.py` | Source paramétrique : modifier les cotes en tête de fichier puis `python3 dozr.py` | |
+
+## Clapet
+
+![coupe](coupe_clapet.png)
+
+Une seule pièce noire coulisse dans le manche : sa languette passe entre l'entonnoir et le tube,
+sa pilule apparaît dans la fenêtre du manche et porte le bouton.
+
+- Bouton côté entonnoir : la languette couvre tout le tube → **fermé**
+- Bouton tiré de 18 mm vers le bout du manche : la languette dégage tout le tube → **ouvert**, la poudre tombe directement
 
 ## Dimensions
 
@@ -31,18 +40,18 @@ Proportions relevées sur la vue de face, à l'échelle manche = 30 mm :
 - Tube Ø20 → Ø19,2, longueur 10 mm, passage Ø14 : rentre dans les goulots standard (passage ~21,7 mm)
 - Fond intérieur conique à 50° jusqu'au trou Ø14 : la poudre tombe directement dès que le clapet s'ouvre
 - Logo « DOZR® » gravé 0,8 mm, hauteur 6 mm, lisible du bout du manche vers l'entonnoir (`LOGO_*` dans `dozr.py`)
-- Pilule 17,3 × 49 mm, bouton Ø16,2, trou de suspension Ø6 (chanfrein Ø8,5)
+- Fenêtre du clapet 17,3 × 49 mm, bouton Ø16,2, trou de suspension Ø6 (chanfrein Ø8,5)
 - Bouton côté entonnoir = **fermé** ; tiré de 18 mm vers le bout du manche = **ouvert**
 
 ## Impression
 
 - PETG (contact alimentaire) ou PLA, buse 0,4, couches 0,2 mm, **aucun support**
-- Pièces noires en filament noir, le reste en gris
+- Clapet en filament noir, corps et couvercle en gris
 - Logo : pour l'avoir noir comme sur le visuel, passer un feutre ou de la peinture dans la gravure puis essuyer le dessus
-- Jeu de coulissement 0,3 mm par côté (`CLR` dans `dozr.py`), monter à 0,4 si la languette force
+- Jeu de coulissement 0,3 mm par côté (`CLR` dans `dozr.py`), monter à 0,4 si le clapet force
 
 ## Assemblage
 
-1. Retourner le corps. Glisser la languette dans le canal par dessous, tige vers le haut : elle sort par la fente du manche.
-2. Coller le couvercle (avec le bec) dans son logement sous le corps (cyano ou époxy sur le pourtour, **pas dans le canal**).
-3. Coller l'insert noir dans la pilule, puis emmancher le bouton sur la tige.
+1. Retourner le corps. Poser le clapet dans le canal par dessous : la pilule et le bouton sortent par la fenêtre du manche, la languette va sous l'entonnoir.
+2. Coller le couvercle (avec le tube) dans son logement sous le corps (cyano ou époxy sur le pourtour, **pas dans le canal**).
+3. Vérifier que le clapet coulisse librement : bouton côté entonnoir = fermé.

@@ -17,13 +17,13 @@ Forme :
   - pilule noire en creux, bouton rond noir en relief côté entonnoir,
     trou de suspension chanfreiné.
 
-Mécanisme caché : une languette glisse dans un canal sous le fond.
+Clapet complet d'une seule pièce noire : languette qui passe entre l'entonnoir et
+le tube + pilule visible qui coulisse dans le manche + bouton.
 Bouton côté entonnoir = fermé ; bouton tiré vers le bout du manche = ouvert.
 Le canal est fermé par dessous par le couvercle qui porte le bec
 (seul joint du modèle, invisible une fois posé sur la bouteille).
 
-Pièces : 1 corps (entonnoir + manche), 2 couvercle avec bec, 3 languette
-avec tige, 4 bouton, 5 insert noir (pilule).
+Pièces : 1 corps (entonnoir + manche), 2 couvercle avec tube, 3 clapet complet.
 """
 import math
 import os
@@ -59,26 +59,24 @@ HANDLE_X0, HANDLE_END = 0.0, 133.0
 HANDLE_CORNER, EDGE_R = 4.0, 1.6
 HANG_X, HANG_D, HANG_CSK = 124.7, 6.0, 8.5
 
-# Pilule noire (en creux) + bouton
-PILL_X0, PILL_X1, PILL_W = 37.7, 86.7, 17.3
-PILL_RECESS = 2.2
-INSERT_T = 1.2
+# Clapet complet (une seule pièce noire) : languette + pilule visible + bouton
+PILL_X0, PILL_X1, PILL_W = 37.7, 86.7, 17.3   # fenêtre en pilule dans le manche
 KNOB_D, KNOB_H, KNOB_DISC_D = 16.2, 5.5, 9.0
-KNOB_X = PILL_X0 + PILL_W / 2      # bouton concentrique au bout de la pilule = fermé
-
-# Mécanisme
 CLR = 0.3
-Z_CHAN, CHAN_H = 2.0, 2.4
-PLATE_W, PLATE_T = 14.5, 2.0
-PLATE_FRONT = -(BORE_D / 2 + 2.5)
-TRAVEL = BORE_D + 4.0              # 18 mm
-STEM_S = 5.6
-PLATE_REAR = KNOB_X + TRAVEL + 4.0
-CH_X0, CH_X1 = PLATE_FRONT - CLR - 0.5, PLATE_REAR + TRAVEL + CLR + 0.5
-CH_W = PLATE_W + 2 * CLR
-Z_INSERT = HANDLE_T - PILL_RECESS
-KNOB_Z0 = Z_INSERT + INSERT_T + 0.3
-SOCKET = 3.0
+Z_CHAN, CHAN_H = 2.0, 2.4          # canal sous le fond de l'entonnoir et dans le manche
+BASE_T = 2.0                       # semelle du clapet
+TRAVEL = BORE_D + 4.0              # 18 mm : la languette dégage tout le tube
+TONGUE_W = 16.0                    # languette qui passe entre l'entonnoir et le tube
+TONGUE_FRONT = -(BORE_D / 2 + 2.5)  # avant de la languette, clapet fermé
+WIDE_W = 21.4                      # semelle élargie sous la fenêtre (retient le clapet)
+WIDE_X0 = PILL_X0 - 2.0
+BOSS_W = PILL_W - 2 * CLR          # pilule noire visible
+BOSS_X0, BOSS_X1 = PILL_X0 + CLR, PILL_X1 - CLR - TRAVEL
+BOSS_TOP = HANDLE_T - 1.0          # dessus de la pilule 1 mm sous le manche
+BASE_REAR = PILL_X1 + 0.5          # la semelle reste visible dans la fenêtre : tout est noir
+KNOB_X = BOSS_X0 + KNOB_D / 2 + 0.25   # bouton au bout côté entonnoir
+NARROW_CH = (TONGUE_FRONT - CLR - 0.5, WIDE_X0 + TRAVEL + 1.0, TONGUE_W + 2 * CLR)
+WIDE_CH = (WIDE_X0 - CLR - 0.5, BASE_REAR + TRAVEL + CLR + 0.5, WIDE_W + 2 * CLR)
 COVER_T = Z_CHAN
 COVER_DISC_R = 11.6
 FUNNEL_Z0 = Z_CHAN + CHAN_H + 1.2   # bas du fond conique (1,2 mm au-dessus du clapet)
@@ -180,12 +178,14 @@ def handle():
                                 for x in (HANDLE_X0 + rc, HANDLE_END - rc) for s in (-1, 1)])
 
 
+def channel_outline():
+    x0, x1, w = NARROW_CH
+    X0, X1, W = WIDE_CH
+    return rrect(x0, x1, w, w / 2) + rrect(X0, X1, W, 2.0)
+
+
 def cover_outline():
-    return CrossSection.circle(COVER_DISC_R, 128) + rrect(CH_X0 - 2, CH_X1 + 2, CH_W + 4, 3.0)
-
-
-def stem_slot(h):
-    return rrect(KNOB_X - STEM_S / 2 - 0.6, KNOB_X + TRAVEL + STEM_S / 2 + 0.6, STEM_S + 0.5, 1.0).extrude(h)
+    return CrossSection.circle(COVER_DISC_R, 128) + channel_outline().offset(1.2, JoinType.Round)
 
 
 def logo():
@@ -232,15 +232,14 @@ def body():
     b = b - cyl(FUNNEL_Z0 - Z_CHAN + 0.5, BORE_D / 2, z=Z_CHAN)
     b = b - logo()
     # canal de la languette + logement du couvercle (par dessous)
-    b = b - rrect(CH_X0, CH_X1, CH_W, 2.0).extrude(CHAN_H).translate((0, 0, Z_CHAN))
+    b = b - channel_outline().extrude(CHAN_H).translate((0, 0, Z_CHAN))
     b = b - cover_outline().offset(0.15, JoinType.Round).extrude(COVER_T + 1).translate((0, 0, -1))
-    # pilule en creux avec petit chanfrein
+    # fenêtre en pilule traversante (le clapet y coulisse), petit chanfrein en haut
     L = PILL_X1 - PILL_X0
     pill = rrect(-L / 2, L / 2, PILL_W, PILL_W / 2)
-    b = b - pill.extrude(PILL_RECESS + 1).translate(((PILL_X0 + PILL_X1) / 2, 0, Z_INSERT))
+    b = b - pill.extrude(HANDLE_T).translate(((PILL_X0 + PILL_X1) / 2, 0, Z_CHAN + CHAN_H - 0.5))
     b = b - pill.extrude(0.61, scale_top=((L + 1.2) / L, (PILL_W + 1.2) / PILL_W)).translate(
         ((PILL_X0 + PILL_X1) / 2, 0, HANDLE_T - 0.6))
-    b = b - stem_slot(HANDLE_T).translate((0, 0, Z_CHAN + CHAN_H - 1))
     # trou de suspension chanfreiné des deux côtés
     c = (HANG_CSK - HANG_D) / 2
     b = b - cyl(HANDLE_T + 2, HANG_D / 2, x=HANG_X, z=-1)
@@ -264,32 +263,26 @@ def cover():
     return c
 
 
-def slide_plate(open_=False):
-    p = rrect(PLATE_FRONT, PLATE_REAR, PLATE_W, 4.0).extrude(PLATE_T).translate((0, 0, Z_CHAN))
-    h = KNOB_Z0 + SOCKET - (Z_CHAN + PLATE_T)
-    p = p + Manifold.cube((STEM_S, STEM_S, h + 0.01)).translate(
-        (KNOB_X - STEM_S / 2, -STEM_S / 2, Z_CHAN + PLATE_T - 0.01))
-    return p.translate((TRAVEL if open_ else 0, 0, 0))
-
-
-def knob(open_=False):
+def knob():
     r, h, ch = KNOB_D / 2, KNOB_H, 0.7
-    prof = [(0, 0), (r - 0.3, 0), (r, 0.3), (r, h - ch)] + arc(r - ch, h - ch, ch, 0, math.pi / 2, 10)[1:] + [(0, h)]
+    prof = [(0, 0), (r, 0), (r, h - ch)] + arc(r - ch, h - ch, ch, 0, math.pi / 2, 10)[1:] + [(0, h)]
     k = CrossSection([prof]).revolve(128)
     rd = KNOB_DISC_D / 2
     disc = CrossSection([[(0, h - 0.1), (rd, h - 0.1), (rd, h + 0.35), (rd - 0.25, h + 0.6), (0, h + 0.6)]]).revolve(128)
     groove = (CrossSection.circle(rd + 0.65, 96) - CrossSection.circle(rd + 0.1, 96)).extrude(0.6).translate(
         (0, 0, h - 0.4))
-    k = k + disc - groove
-    s = STEM_S + 0.15
-    k = k - Manifold.cube((s, s, SOCKET + 0.2)).translate((-s / 2, -s / 2, -0.2))
-    return k.translate((KNOB_X + (TRAVEL if open_ else 0), 0, KNOB_Z0))
+    return k + disc - groove
 
 
-def pill_insert():
-    p = rrect(PILL_X0 + 0.15, PILL_X1 - 0.15, PILL_W - 0.3, (PILL_W - 0.3) / 2).extrude(INSERT_T)
-    p = p - stem_slot(INSERT_T + 2).translate((0, 0, -1))
-    return p.translate((0, 0, Z_INSERT))
+def clapet(open_=False):
+    """Clapet complet d'une seule pièce : languette (ferme le tube) + semelle +
+    pilule noire visible dans le manche + bouton. Fermé : bouton côté entonnoir."""
+    tongue = rrect(TONGUE_FRONT, WIDE_X0 + 1.0, TONGUE_W, TONGUE_W / 2)
+    base = (tongue + rrect(WIDE_X0, BASE_REAR, WIDE_W, 2.0)).extrude(BASE_T).translate((0, 0, Z_CHAN))
+    z1 = Z_CHAN + BASE_T
+    boss = rrect(BOSS_X0, BOSS_X1, BOSS_W, BOSS_W / 2).extrude(BOSS_TOP - z1 + 0.01).translate((0, 0, z1 - 0.01))
+    k = knob().translate((KNOB_X, 0, BOSS_TOP - 0.01))
+    return (base + boss + k).translate((TRAVEL if open_ else 0, 0, 0))
 
 
 # ----------------------------------------------------------------- export
@@ -309,14 +302,12 @@ def main():
         os.remove(os.path.join(out, f))
 
     bd, cv = body(), cover()
-    plate, kn, pill = slide_plate(), knob(), pill_insert()
+    cl = clapet()
 
     printable = {
         "1_corps_entonnoir_manche": bd,                # debout, dessous à plat
         "2_couvercle_bec": cv.rotate((180, 0, 0)),     # face plate sur le plateau, bec en l'air
-        "3_languette": plate,
-        "4_bouton": kn,
-        "5_insert_noir": pill,
+        "3_clapet_complet": cl,                        # semelle à plat, bouton vers le haut
     }
     for name, m in printable.items():
         t = to_tm(m)
@@ -327,8 +318,7 @@ def main():
         print(f"{name:28s} {t.extents.round(1)} mm  {t.volume / 1000:.1f} cm3")
 
     grey, black, _ = [112, 116, 122, 255], [22, 22, 24, 255], [160, 162, 165, 255]
-    parts = [("corps", bd, grey), ("couvercle_bec", cv, grey), ("languette", plate, black),
-             ("bouton", kn, black), ("insert_noir", pill, black)]
+    parts = [("corps", bd, grey), ("couvercle_bec", cv, grey), ("clapet", cl, black)]
     scene = trimesh.Scene()
     for name, m, c in parts:
         scene.add_geometry(to_tm(m, c), node_name=name, geom_name=name)
@@ -337,13 +327,13 @@ def main():
     to_tm(union([m for _, m, _ in parts])).export(os.path.join(root, "dozr_assemblage.stl"))
 
     print("interférence corps/couvercle :", round((bd ^ cv).volume(), 3), "mm3")
-    fixed = bd + cv + pill
+    fixed = bd + cv
     for open_ in (False, True):
-        mov = slide_plate(open_) + knob(open_)
+        mov = clapet(open_)
         print(f"interférence mécanisme ({'ouvert' if open_ else 'fermé'}) : {(mov ^ fixed).volume():.3f} mm3")
     bore = cyl(40, BORE_D / 2 - 0.05, z=-12)
-    print("obstruction du passage — ouvert :", round((bore ^ slide_plate(True)).volume(), 2),
-          "mm3 | fermé :", round((bore ^ slide_plate(False)).volume(), 1), "mm3")
+    print("obstruction du passage — ouvert :", round((bore ^ clapet(True)).volume(), 2),
+          "mm3 | fermé :", round((bore ^ clapet(False)).volume(), 1), "mm3")
     print("encombrement :", to_tm(bd + cv).extents.round(1), "mm")
 
 
