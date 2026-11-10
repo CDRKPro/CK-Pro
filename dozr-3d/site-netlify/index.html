@@ -268,6 +268,38 @@ footer{border-top:1px solid var(--line);color:var(--mut);text-align:center;paddi
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
+/* ================= Suivi des visites (pour la page DOZR Stats) =================
+   Identifiant aléatoire stocké dans le navigateur, source de la visite, panier et paiement commencé.
+   Aucune donnée personnelle. Silencieux si le site n'est pas sur Netlify. */
+const API_SUIVI='/api/suivi';
+const VISITEUR=(()=>{try{let v=localStorage.getItem('dozr_v');if(!v){v=(crypto.randomUUID?crypto.randomUUID():Math.random().toString(36).slice(2)+Date.now().toString(36));localStorage.setItem('dozr_v',v)}return v}catch(e){return 'anon-'+Math.random().toString(36).slice(2)}})();
+const SOURCE=(()=>{
+  const q=new URLSearchParams(location.search);
+  const brut=(q.get('utm_source')||(q.get('fbclid')?'facebook':'')||(q.get('ttclid')?'tiktok':'')||(q.get('ScCid')?'snapchat':'')||(q.get('gclid')?'google':'')||'').toLowerCase();
+  const ref=(document.referrer||'').toLowerCase();
+  const map=s=>/facebook|fb|meta/.test(s)?'facebook':/instagram|ig/.test(s)?'instagram':/tiktok|tt/.test(s)?'tiktok':/snap/.test(s)?'snapchat':/google/.test(s)?'google':/pinterest/.test(s)?'pinterest':/youtube|youtu\.be/.test(s)?'youtube':'';
+  let s=map(brut)||(ref&&!ref.includes(location.hostname)?(map(ref)||'autre'):'');
+  try{const g=localStorage.getItem('dozr_src');if(s){localStorage.setItem('dozr_src',s)}else{s=g||'direct'}}catch(e){s=s||'direct'}
+  return s;
+})();
+function suivre(type,extra){
+  const corps=JSON.stringify(Object.assign({type,visiteur:VISITEUR,source:SOURCE},extra||{}));
+  try{fetch(API_SUIVI,{method:'POST',headers:{'Content-Type':'application/json'},body:corps,keepalive:true}).catch(()=>{})}catch(e){}
+}
+let ajoutEnCours=false,dernierPanier='';
+function suivrePanier(){
+  if(typeof panier==='undefined')return;
+  const n=panier.reduce((s,l)=>s+l.qte,0),total=(sousTotal()+fraisLivraison())/100;
+  const items=panier.map(l=>l.qte+'× '+COULEURS[l.couleur].nom+' · pack x'+l.pack);
+  const sig=JSON.stringify(items);
+  if(sig===dernierPanier&&!ajoutEnCours)return;
+  dernierPanier=sig;suivre('panier',{n,total,items,ajout:ajoutEnCours});ajoutEnCours=false;
+}
+suivre('vue');
+setInterval(()=>{if(!document.hidden)suivre('ping')},45000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)suivre('ping')});
+</script>
+<script>
 /* ================= Boutique : sélection, panier, paiement ================= */
 // Les prix affichés ici doivent rester identiques à ceux de netlify/functions/creer-paiement.mjs
 const PRIX={1:890,2:1590,3:2190};            // en centimes, par pack
@@ -306,7 +338,7 @@ document.querySelectorAll('.pack').forEach(p=>p.addEventListener('click',()=>{
 function ajouter(){
   const l=panier.find(x=>x.couleur===coloris&&x.pack===pack);
   if(l)l.qte=Math.min(l.qte+1,20);else panier.push({couleur:coloris,pack,qte:1});
-  ecrire();rendre();ouvrirPanier();
+  ajoutEnCours=true;ecrire();rendre();ouvrirPanier();
 }
 function rendre(){
   const n=panier.reduce((s,l)=>s+l.qte,0);$('cartN').textContent=n;
@@ -332,6 +364,7 @@ function rendre(){
   if(manque>0)$('hint').textContent='Plus que '+manque+' DOZR pour la livraison offerte';
   $('tot').textContent=eur(st+lv);
   $('payer').disabled=!panier.length;$('erreur').hidden=true;
+  suivrePanier();
 }
 function ouvrirPanier(){$('panier').hidden=false;document.body.style.overflow='hidden';$('panier').scrollTop=0;$('fermer').focus({preventScroll:true})}
 function fermerPanier(){$('panier').hidden=true;document.body.style.overflow=''}
@@ -345,9 +378,10 @@ addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('panier').hidden)fermerPa
 /* --- Paiement Stripe (via la fonction Netlify, la clé secrète reste côté serveur) --- */
 $('payer').addEventListener('click',async()=>{
   const btn=$('payer'),err=$('erreur');err.hidden=true;btn.disabled=true;btn.textContent='Redirection vers le paiement…';
+  suivre('paiement',{total:(sousTotal()+fraisLivraison())/100});
   try{
     const r=await fetch(API_PAIEMENT,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({items:panier.map(l=>({couleur:l.couleur,pack:l.pack,qte:l.qte}))})});
+      body:JSON.stringify({source:SOURCE,items:panier.map(l=>({couleur:l.couleur,pack:l.pack,qte:l.qte}))})});
     const data=await r.json().catch(()=>({}));
     if(!r.ok||!data.url)throw new Error(data.erreur||'Le paiement n’a pas pu démarrer.');
     window.location.href=data.url;
@@ -361,7 +395,7 @@ $('payer').addEventListener('click',async()=>{
 (function(){
   const q=new URLSearchParams(location.search),st=q.get('paiement');
   panier=lire();
-  if(st==='ok'){panier=[];ecrire();toast('✓ Merci ! Ton paiement est validé et ta commande est confirmée.')}
+  if(st==='ok'){panier=[];ecrire();suivre('paye');toast('✓ Merci ! Ton paiement est validé et ta commande est confirmée.')}
   else if(st==='annule'){toast('Paiement annulé : ton panier est conservé.')}
   if(st){try{history.replaceState(null,'',location.pathname+location.hash)}catch(e){}}
   rendre();

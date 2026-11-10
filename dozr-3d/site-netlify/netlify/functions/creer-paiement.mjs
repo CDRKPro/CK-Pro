@@ -62,6 +62,8 @@ export default async (req) => {
   p.append(`${o}[delivery_estimate][maximum][value]`, "7");
 
   p.append("metadata[commande]", lignes.map((l) => `${l.qte}x ${l.couleur} pack${l.pack}`).join(", ").slice(0, 490));
+  const SOURCES = ["facebook", "instagram", "tiktok", "snapchat", "google", "pinterest", "youtube", "direct", "autre"];
+  p.append("metadata[source]", SOURCES.includes(corps?.source) ? corps.source : "direct");   // pour « Ventes par source »
 
   const rep = await fetch("https://api.stripe.com/v1/checkout/sessions", {
     method: "POST",
