@@ -92,30 +92,22 @@ html,body{overflow-x:hidden;max-width:100%;overscroll-behavior:none;position:rel
 /* Rendus 3D détourés : pas de cadre photo, une ombre qui suit la forme */
 .pimg{width:100%;height:auto;border-radius:0;box-shadow:none;filter:drop-shadow(0 28px 34px #000c);transform:rotate(-4deg);transition:opacity .25s}
 .pimg.swap{opacity:0}
-/* Vue 3D */
-.v3d{position:relative;max-width:980px;margin:0 auto;aspect-ratio:16/10;background:radial-gradient(circle at 50% 60%,#ff4d0030,transparent 60%),#111418;border:1px solid #232830;border-radius:8px;overflow:hidden}
-.v3d canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+/* Vue 3D dans le hero (remplace l'image fixe une fois chargée) */
+.stage .v3d{position:absolute;inset:0;display:grid;place-items:center}
+.v3d canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y;cursor:grab;opacity:0;transition:opacity .5s}
 .v3d canvas:active{cursor:grabbing}
-.v3d .msg{position:absolute;inset:0;display:grid;place-items:center;color:#9aa3ad;font-weight:600;pointer-events:none}
-.v3d .msg[hidden]{display:none}
-.v3d .etat{position:absolute;left:14px;top:14px;background:#14171b;border:1px solid #2b3038;border-left:4px solid var(--lime);border-radius:6px;padding:7px 12px;font-weight:800;font-size:13px}
+.v3d.pret canvas{opacity:1}.v3d.pret .pimg{opacity:0;pointer-events:none}
+.v3d .pimg{position:relative;width:96%}
+.v3d .etat{position:absolute;left:50%;top:4%;transform:translateX(-50%);background:#14171b;border:1px solid #2b3038;border-left:4px solid var(--lime);border-radius:6px;padding:6px 12px;font-weight:800;font-size:13px;z-index:2;white-space:nowrap}
 .v3d .etat b{color:var(--lime)}
-.v3d .aide{position:absolute;right:14px;bottom:12px;font-size:12px;color:#7d868f}
-.v3d-ctl{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14px;margin-top:18px}
-.v3d-ctl .colors{margin:0}
-.clap{background:var(--lime);color:#0b0d10;border:0;border-radius:6px;transform:skew(-6deg);padding:13px 22px;font:800 15px Inter,sans-serif;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;box-shadow:0 4px 0 #6f8f00}
-.clap:active{transform:skew(-6deg) translateY(3px);box-shadow:0 1px 0 #6f8f00}
+.v3d .aide{position:absolute;left:50%;bottom:2%;transform:translateX(-50%);font-size:12px;color:#7d868f;white-space:nowrap;z-index:2}
+.v3d .clap{position:absolute;left:50%;bottom:9%;transform:translateX(-50%) skew(-6deg);z-index:2}
+.clap{white-space:nowrap;background:var(--lime);color:#0b0d10;border:0;border-radius:6px;padding:12px 20px;font:800 14px Inter,sans-serif;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;box-shadow:0 4px 0 #6f8f00}
+.v3d .clap:active{transform:translateX(-50%) skew(-6deg) translateY(3px);box-shadow:0 1px 0 #6f8f00}
 .clap:focus-visible{outline:2px solid #fff;outline-offset:3px}
-@media(max-width:800px){.v3d{aspect-ratio:4/5}}
+.stage.pret3d .bubble{display:none}
 .colname{font-size:13px;color:#9aa3ad;margin:-8px 0 20px;font-weight:600}.colname b{color:#fff}
-.colors button:focus-visible,.gam button:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
-.gam{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
-.gam button{background:#14171b;border:1px solid #232830;border-radius:8px;padding:18px 12px 14px;cursor:pointer;color:#fff;font:800 15px Inter,sans-serif;display:grid;gap:10px;justify-items:center;transition:.2s}
-.gam button:hover,.gam button.on{border-color:var(--lime)}
-.gam img{width:100%;height:auto;filter:drop-shadow(0 12px 14px #000b)}
-.gam i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
-.gam-note{text-align:center;color:#9aa3ad;margin:-24px 0 32px;font-size:15px}
-@media(max-width:800px){.gam{grid-template-columns:repeat(2,1fr)}.gam button:last-child{grid-column:1/-1;max-width:50%;justify-self:center}}
+.colors button:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
 </style></head><body>
 <div class="bar">🚚 Livraison <b>OFFERTE</b> dès 2 achetés · Expédié sous 24h</div>
 <nav><div class="logo">DOZ<span>R</span></div><button class="cart" id="cartBtn">Panier (0)</button></nav>
@@ -144,7 +136,12 @@ html,body{overflow-x:hidden;max-width:100%;overscroll-behavior:none;position:rel
  </div>
  <div class="stage">
   <div class="bubble b1">Clic → ça coule 💧</div><div class="bubble b2">Plus de poudre sur le plan de travail ✨</div>
-  <img src="dozr_gris.png" alt="Doseur DOZR gris" class="pimg" id="pimg" width="1100" height="543">
+  <div class="v3d" id="v3d">
+   <img src="dozr_gris.png" alt="Doseur DOZR gris" class="pimg" id="pimg" width="1100" height="543">
+   <div class="etat" id="v3detat">Clapet <b>fermé</b></div>
+   <button type="button" class="clap" id="v3dclap" aria-pressed="false">Ouvrir le clapet</button>
+   <div class="aide" id="v3daide">glisse pour le faire tourner</div>
+  </div>
  </div>
 </div>
 
@@ -155,36 +152,6 @@ html,body{overflow-x:hidden;max-width:100%;overscroll-behavior:none;position:rel
   <div class="step"><b>1</b><h3>Tu dose</h3><p>Plonge DOZR dans ton pot : la cuillère prend ta dose, clapet fermé.</p></div>
   <div class="step"><b>2</b><h3>Tu poses</h3><p>L'embout s'emboîte sur le goulot de n'importe quelle bouteille ou shaker.</p></div>
   <div class="step"><b>3</b><h3>Tu ouvres</h3><p>Fais glisser le clapet : la poudre tombe dans la bouteille. Rien à côté.</p></div>
- </div>
-</section>
-
-<section style="padding-top:0" id="vue3d"><h2>Fais-le tourner</h2>
- <p class="gam-note">Glisse pour le tourner, pince pour zoomer, et ouvre le clapet pour voir comment ça marche.</p>
- <div class="v3d" id="v3d">
-  <div class="msg" id="v3dmsg">Chargement de la vue 3D…</div>
-  <div class="etat" id="v3detat">Clapet <b>fermé</b></div>
-  <div class="aide">glisser · pincer pour zoomer</div>
- </div>
- <div class="v3d-ctl">
-  <button type="button" class="clap" id="v3dclap" aria-pressed="false">Ouvrir le clapet</button>
-  <div class="colors" id="cols3d">
-   <button class="on" style="background:#5b636e" data-k="gris" aria-label="Gris"></button>
-   <button style="background:#c62828" data-k="rouge" aria-label="Rouge"></button>
-   <button style="background:#2e7d32" data-k="vert" aria-label="Vert"></button>
-   <button style="background:#1565c0" data-k="bleu" aria-label="Bleu"></button>
-   <button style="background:#eeeeec" data-k="blanc" aria-label="Blanc"></button>
-  </div>
- </div>
-</section>
-
-<section style="padding-top:0" id="coloris"><h2>5 coloris</h2>
- <p class="gam-note">Clapet noir sur tous les modèles. Touche un coloris pour le choisir.</p>
- <div class="gam" id="gam">
-  <button type="button" data-k="gris" class="on"><img src="dozr_gris.png" alt="" width="1100" height="543" loading="lazy"><span><i style="background:#5b636e"></i>Gris</span></button>
-  <button type="button" data-k="rouge"><img src="dozr_rouge.png" alt="" width="1100" height="543" loading="lazy"><span><i style="background:#c62828"></i>Rouge</span></button>
-  <button type="button" data-k="vert"><img src="dozr_vert.png" alt="" width="1100" height="543" loading="lazy"><span><i style="background:#2e7d32"></i>Vert</span></button>
-  <button type="button" data-k="bleu"><img src="dozr_bleu.png" alt="" width="1100" height="543" loading="lazy"><span><i style="background:#1565c0"></i>Bleu</span></button>
-  <button type="button" data-k="blanc"><img src="dozr_blanc.png" alt="" width="1100" height="543" loading="lazy"><span><i style="background:#eeeeec"></i>Blanc</span></button>
  </div>
 </section>
 
@@ -224,14 +191,13 @@ function add(){n++;document.getElementById('cartBtn').textContent='Panier ('+n+'
 document.getElementById('buy').onclick=add;
 function choisir(k){
   if(!NOMS[k]||k===coloris)return;coloris=k;
-  document.querySelectorAll('#cols button,#gam button,#cols3d button').forEach(x=>x.classList.toggle('on',x.dataset.k===k));
+  document.querySelectorAll('#cols button').forEach(x=>x.classList.toggle('on',x.dataset.k===k));
   document.getElementById('colname').textContent=NOMS[k];
   if(window.dozr3d)window.dozr3d.couleur(k);
   const img=document.getElementById('pimg');img.classList.add('swap');
   setTimeout(()=>{img.src='dozr_'+k+'.png';img.alt='Doseur DOZR '+NOMS[k].toLowerCase();img.classList.remove('swap')},180);
 }
-document.querySelectorAll('#cols button,#cols3d button').forEach(b=>b.onclick=()=>choisir(b.dataset.k));
-document.querySelectorAll('#gam button').forEach(b=>b.onclick=()=>{choisir(b.dataset.k);document.getElementById('top').scrollIntoView({behavior:'smooth'})});
+document.querySelectorAll('#cols button').forEach(b=>b.onclick=()=>choisir(b.dataset.k));
 ['rouge','vert','bleu','blanc'].forEach(k=>{const i=new Image();i.src='dozr_'+k+'.png'});
 document.querySelectorAll('.pack').forEach(p=>p.onclick=()=>{document.querySelectorAll('.pack').forEach(x=>x.classList.remove('on'));p.classList.add('on');price=p.dataset.p;pr.textContent=price;pr2.textContent=price});
 const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in')}}),{threshold:.2});
@@ -241,7 +207,7 @@ addEventListener('scroll',()=>sticky.classList.toggle('show',scrollY>600));
 <script>
 /* ---------- Vue 3D : chargée quand la section arrive à l'écran ---------- */
 (function(){
-  const box=document.getElementById('v3d'), msg=document.getElementById('v3dmsg');
+  const box=document.getElementById('v3d'), aide=document.getElementById('v3daide');
   const TEINTES={gris:'#6b7078',rouge:'#c62828',vert:'#2e7d32',bleu:'#1565c0',blanc:'#eeeeec'};
   let lance=false;
   function charger(src){return new Promise((ok,ko)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=ko;document.head.appendChild(s)})}
@@ -262,18 +228,22 @@ addEventListener('scroll',()=>sticky.classList.toggle('show',scrollY>600));
       const base='https://cdn.jsdelivr.net/npm/three@0.147.0/';
       await charger(base+'build/three.min.js');
       await Promise.all([charger(base+'examples/js/loaders/GLTFLoader.js'),charger(base+'examples/js/controls/OrbitControls.js'),charger(base+'examples/js/environments/RoomEnvironment.js')]);
-    }catch(e){msg.textContent='La vue 3D n’a pas pu se charger.';return}
+    }catch(e){aide.hidden=true;return}
     const reduit=matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const r=new THREE.WebGLRenderer({antialias:true,alpha:true});r.setPixelRatio(Math.min(devicePixelRatio||1,2));
+    const r=new THREE.WebGLRenderer({antialias:true,alpha:true});r.domElement.setAttribute('aria-label','Vue 3D du doseur DOZR');r.setPixelRatio(Math.min(devicePixelRatio||1,2));
     r.outputEncoding=THREE.sRGBEncoding;r.toneMapping=THREE.ACESFilmicToneMapping;box.prepend(r.domElement);
     const sc=new THREE.Scene();sc.environment=new THREE.PMREMGenerator(r).fromScene(new THREE.RoomEnvironment(),0.04).texture;
     const sun=new THREE.DirectionalLight(0xffffff,1.0);sun.position.set(-120,220,160);sc.add(sun);
     const cam=new THREE.PerspectiveCamera(30,16/10,1,5000);const ctl=new THREE.OrbitControls(cam,r.domElement);
-    ctl.enableDamping=true;ctl.dampingFactor=.08;ctl.minDistance=110;ctl.maxDistance=650;ctl.enablePan=false;ctl.autoRotate=!reduit;ctl.autoRotateSpeed=1.2;
+    ctl.enableDamping=true;ctl.dampingFactor=.08;ctl.enableZoom=false;ctl.enablePan=false;ctl.autoRotate=!reduit;ctl.autoRotateSpeed=1.2;
     ctl.addEventListener('start',()=>{ctl.autoRotate=false});
     const root=new THREE.Group();root.rotation.x=-Math.PI/2;sc.add(root);
-    const c=new THREE.Vector3(52.8,11,0);cam.position.set(c.x+110,c.y+140,c.z+215);ctl.target.copy(c);ctl.update();
-    function taille(){const w=box.clientWidth,h=box.clientHeight;r.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
+    const c=new THREE.Vector3(52.8,11,0);cam.position.set(c.x+95,c.y+120,c.z+185);ctl.target.copy(c);ctl.update();
+    function taille(){const w=box.clientWidth,h=box.clientHeight;r.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();
+      // recule la caméra pour que tout l'objet (rayon ~92 mm) tienne dans le cadre, en gardant l'angle de vue
+      const v=THREE.MathUtils.degToRad(cam.fov)/2,hz=Math.atan(Math.tan(v)*cam.aspect),R=92;
+      const d=Math.max(R/Math.sin(v),R/Math.sin(hz))*1.02;const dir=cam.position.clone().sub(ctl.target).normalize();
+      cam.position.copy(ctl.target).add(dir.multiplyScalar(d));ctl.update()}
     new ResizeObserver(taille).observe(box);taille();
     let clapet=null,base=0,cible=0,act=0;const mats=[];
     window.dozr3d={couleur(k){const t=TEINTES[k];if(!t)return;mats.forEach(m=>m.color.setStyle(t).convertSRGBToLinear())}};
@@ -283,14 +253,13 @@ addEventListener('scroll',()=>sticky.classList.toggle('show',scrollY>600));
         root.add(g.scene);
         ['corps','couvercle'].forEach(n=>{const o=g.scene.getObjectByName(n);if(o)o.traverse(m=>{if(m.isMesh){m.material=m.material.clone();mats.push(m.material)}})});
         clapet=g.scene.getObjectByName('clapet');if(clapet)base=clapet.position.x;
-        window.dozr3d.couleur(typeof coloris!=='undefined'?coloris:'gris');msg.hidden=true;
-      },e=>{msg.textContent='La vue 3D n’a pas pu se charger.'});
-    }catch(e){msg.textContent='La vue 3D n’a pas pu se charger.'}
+        window.dozr3d.couleur(typeof coloris!=='undefined'?coloris:'gris');box.classList.add('pret');box.parentElement.classList.add('pret3d');
+      },e=>{aide.hidden=true});
+    }catch(e){aide.hidden=true}
     const bt=document.getElementById('v3dclap'),et=document.getElementById('v3detat');
     bt.onclick=()=>{const o=cible===0;cible=o?1:0;bt.setAttribute('aria-pressed',String(o));bt.textContent=o?'Fermer le clapet':'Ouvrir le clapet';et.innerHTML='Clapet <b>'+(o?'ouvert':'fermé')+'</b>'};
     (function tick(){act+=(cible-act)*(reduit?1:.12);if(clapet)clapet.position.x=base+18*act;ctl.update();r.render(sc,cam);requestAnimationFrame(tick)})();
   }
-  const io3=new IntersectionObserver(e=>{if(e.some(x=>x.isIntersecting)){io3.disconnect();demarrer()}},{rootMargin:'300px'});
-  io3.observe(box);
+  if(document.readyState==='complete')demarrer();else addEventListener('load',demarrer);
 })();
 </script></body></html>
