@@ -1,8 +1,11 @@
 # Dozr — doseur à poudre imprimable en 3D
 
-Forme calquée sur les vues de référence (face + 3/4) : entonnoir Ø55 bas à fond très arrondi, cannelé
-dehors (jusque sur l'arrondi) et dedans, tamis rond au centre, manche plat 30 mm, pilule noire en creux,
-bouton rond noir en relief côté entonnoir, trou de suspension chanfreiné au bout.
+Forme calquée sur les vues de référence : entonnoir **conique vers le bas**, cannelé (côtes bombées,
+rainures fines, bandeau lisse sous la lèvre arrondie), tamis rond au centre du fond, **bec de 10 mm
+qui rentre dans le goulot** d'une bouteille standard, manche plat avec pilule noire en creux, bouton
+rond noir côté entonnoir et trou de suspension chanfreiné.
+
+L'entonnoir et le manche forment **une seule pièce** : aucun joint visible dessus ni sur les côtés.
 
 ![aperçu](apercu.png)
 
@@ -10,40 +13,35 @@ bouton rond noir en relief côté entonnoir, trou de suspension chanfreiné au b
 
 | Fichier | Contenu | Couleur |
 |---|---|---|
-| `stl/1_corps_inferieur.stl` | Dessous : fond arrondi, canal de la languette (imprimé à l'envers) | gris |
-| `stl/2_corps_superieur_entonnoir.stl` | Entonnoir cannelé + dessus du manche | gris |
-| `stl/3_languette.stl` | Languette coulissante qui ferme le bec + tige du bouton | noir |
-| `stl/4_bouton.stl` | Bouton rond avec cercle intérieur | noir |
+| `stl/1_corps_entonnoir_manche.stl` | Entonnoir + manche d'un seul bloc (imprimé debout, dessous à plat) | gris |
+| `stl/2_couvercle_bec.stl` | Fond du canal + bec Ø20 × 10 mm (imprimé face plate sur le plateau) | gris |
+| `stl/3_languette.stl` | Languette coulissante qui ferme le passage, avec la tige du bouton | noir |
+| `stl/4_bouton.stl` | Bouton rond Ø16,2 avec disque central | noir |
 | `stl/5_tamis.stl` | Grille ronde Ø26 (trous 1,2 mm) | gris acier |
-| `stl/6_insert_noir.stl` | Pilule noire collée dans le manche | noir |
+| `stl/6_insert_noir.stl` | Pilule noire de la fente | noir |
 | `dozr_assemblage.3mf` / `.glb` / `.stl` | Vue assemblée en couleurs | |
 | `dozr.py` | Source paramétrique : modifier les cotes en tête de fichier puis `python3 dozr.py` | |
 
 ## Dimensions
 
-Relevées sur la vue de face, à l'échelle manche = 30 mm (à ajuster si tu as les vraies cotes) :
+Proportions relevées sur la vue de face, à l'échelle manche = 30 mm :
 
-- Longueur totale 160,5 mm, manche 30 × 9 mm
-- Entonnoir Ø55 × 28 mm, méplat sous le fond Ø28, 52 cannelures
-- Pilule noire 17,3 × 49 mm, commence à 38 mm du centre de l'entonnoir
-- Bouton Ø16,2 × 5,5 mm avec disque central Ø9
-- Trou de suspension Ø6 (chanfrein Ø8,5) à 125 mm
-- Tamis Ø26 ; passage de la poudre Ø14
-- Fond plat qui se pose sur le goulot (`SPOUT_L = 8` dans `dozr.py` pour ajouter un bec qui rentre dans le goulot)
-- Bouton côté entonnoir (comme sur les vues) = **fermé** ; tiré de 18 mm vers le bout du manche = **ouvert**
+- Longueur totale 160 mm, manche 30 × 9 mm
+- Entonnoir conique Ø55 en haut → Ø34 en bas, hauteur 34 mm (≈ 36 ml), 48 côtes
+- Bec Ø20 → Ø19,2, longueur 10 mm, passage Ø14 : rentre dans les goulots standard (passage ~21,7 mm)
+- Pilule 17,3 × 49 mm, bouton Ø16,2, trou de suspension Ø6 (chanfrein Ø8,5)
+- Bouton côté entonnoir = **fermé** ; tiré de 18 mm vers le bout du manche = **ouvert**
 
 ## Impression
 
-- PETG (contact alimentaire, meilleur glissement) ou PLA, buse 0,4, couches 0,2 mm, **sans supports**
-- Sans imprimante multicolore : imprimer les pièces noires en filament noir, le reste en gris
-- Le tamis : couches 0,16 mm conseillées pour des barreaux propres
-- Jeu de coulissement : 0,3 mm par côté (`CLR` dans `dozr.py`). Si la trappe force, monter à 0,4.
+- PETG (contact alimentaire) ou PLA, buse 0,4, couches 0,2 mm, **aucun support**
+- Pièces noires en filament noir, le reste en gris
+- Tamis : couches 0,16 mm conseillées
+- Jeu de coulissement 0,3 mm par côté (`CLR` dans `dozr.py`), monter à 0,4 si la languette force
 
 ## Assemblage
 
-1. Mettre la languette dans le canal du corps inférieur, tige vers le haut.
-2. Insérer 6 tiges Ø2 × 3,5 mm (bouts de filament 1,75 ou trombone) dans les trous d'alignement.
-3. Encoller le pourtour du corps inférieur (cyano ou époxy, **pas dans le canal**) et poser le corps supérieur : la tige passe dans la fente.
-4. Coller l'insert noir dans la cuvette en pilule du manche.
-5. Emmancher le bouton sur la tige (une goutte de colle si le serrage est léger).
-6. Poser le tamis dans son logement au fond de l'entonnoir (affleurant, retirable pour le nettoyage).
+1. Retourner le corps. Glisser la languette dans le canal par dessous, tige vers le haut : elle sort par la fente du manche.
+2. Coller le couvercle (avec le bec) dans son logement sous le corps (cyano ou époxy sur le pourtour, **pas dans le canal**).
+3. Coller l'insert noir dans la pilule, puis emmancher le bouton sur la tige.
+4. Poser le tamis dans son logement au fond de l'entonnoir (affleurant, retirable).
