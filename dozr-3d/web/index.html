@@ -223,16 +223,48 @@
   }
   view('tq');
 
-  new THREE.GLTFLoader().load('dozr_web.json', function (gltf) {
+  // Le glTF embarque ses tampons en base64 : on les décode ici et on assemble un GLB
+  // en mémoire, car la page n'a pas le droit de « fetch » des URI data:.
+  function b64ToBytes(b64) {
+    const s = atob(b64), out = new Uint8Array(s.length);
+    for (let i = 0; i < s.length; i++) out[i] = s.charCodeAt(i);
+    return out;
+  }
+  function toGLB(json) {
+    const bins = json.buffers.map(function (b) { return b64ToBytes(b.uri.slice(b.uri.indexOf(',') + 1)); });
+    const starts = []; let total = 0;
+    bins.forEach(function (b) { starts.push(total); total += Math.ceil(b.length / 4) * 4; });
+    const bin = new Uint8Array(total);
+    bins.forEach(function (b, i) { bin.set(b, starts[i]); });
+    json.bufferViews.forEach(function (v) { v.byteOffset = (v.byteOffset || 0) + starts[v.buffer]; v.buffer = 0; });
+    json.buffers = [{ byteLength: total }];
+    let js = new TextEncoder().encode(JSON.stringify(json));
+    const jsLen = Math.ceil(js.length / 4) * 4;
+    const glb = new Uint8Array(12 + 8 + jsLen + 8 + total);
+    const dv = new DataView(glb.buffer);
+    dv.setUint32(0, 0x46546C67, true); dv.setUint32(4, 2, true); dv.setUint32(8, glb.length, true);
+    dv.setUint32(12, jsLen, true); dv.setUint32(16, 0x4E4F534A, true);
+    glb.fill(0x20, 20, 20 + jsLen); glb.set(js, 20);
+    dv.setUint32(20 + jsLen, total, true); dv.setUint32(24 + jsLen, 0x004E4942, true);
+    glb.set(bin, 28 + jsLen);
+    return glb.buffer;
+  }
+  function onModel(gltf) {
     root.add(gltf.scene);
     ['corps', 'couvercle', 'clapet'].forEach(function (n) {
       const o = gltf.scene.getObjectByName(n);
       if (o) parts[n] = { obj: o, base: o.position.clone() };
     });
     statusEl.hidden = true;
-  }, undefined, function () {
+  }
+  function fail(e) {
     statusEl.textContent = 'Le modèle n’a pas pu se charger.';
-  });
+    if (window.console) console.error(e);
+  }
+  fetch('dozr_web.json')
+    .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function (json) { new THREE.GLTFLoader().parse(toGLB(json), '', onModel, fail); })
+    .catch(fail);
 
   function applyPose() {
     // coordonnées du modèle (mm) : X = le long du manche, Z = vertical
