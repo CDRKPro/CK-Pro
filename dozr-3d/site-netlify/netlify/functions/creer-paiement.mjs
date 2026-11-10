@@ -3,7 +3,7 @@
 // et les prix sont recalculés côté serveur : le navigateur n'envoie que couleur / pack / quantité.
 // Aucune dépendance npm : appel direct de l'API Stripe.
 
-const PRIX = { 1: 1290, 2: 2190, 3: 2990 };               // centimes, par pack (identiques à index.html)
+const PRIX = { 1: 890, 2: 1590, 3: 2190 };               // centimes, par pack (identiques à index.html)
 const COULEURS = { gris: "Gris", rouge: "Rouge", vert: "Vert", bleu: "Bleu", blanc: "Blanc" };
 const SEUIL_LIVRAISON_OFFERTE = 2;                          // nombre de DOZR à partir duquel la livraison est offerte
 const LIVRAISON = Number.parseInt(process.env.LIVRAISON_CENTIMES ?? "490", 10);

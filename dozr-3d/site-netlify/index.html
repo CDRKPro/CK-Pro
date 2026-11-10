@@ -161,7 +161,7 @@ footer{border-top:1px solid var(--line);color:var(--mut);text-align:center;paddi
   <h1>Fini la poudre <em>partout.</em></h1>
   <p class="sub">DOZR, le doseur à clapet qui verse ton BCAA, booster ou créatine direct dans ta bouteille. Tu remplis, tu poses sur le goulot, tu ouvres le clapet. Zéro gâchis, zéro entonnoir.</p>
   <div class="chips"><span>Clapet coulissant d'une main</span><span>Passage direct Ø14, sans grille</span><span>Tube Ø20 pour bouteilles standard</span></div>
-  <div class="cta-row"><a class="btn" href="#produit">Voir le DOZR en 3D ↓</a><span class="from">dès <b>12,90 €</b></span></div>
+  <div class="cta-row"><a class="btn" href="#produit">Voir le DOZR en 3D ↓</a><span class="from">dès <b>8,90 €</b></span></div>
 </header>
 
 <section class="produit wrap" id="produit">
@@ -188,11 +188,11 @@ footer{border-top:1px solid var(--line);color:var(--mut);text-align:center;paddi
     </div>
     <div class="achat">
       <div><h3>DOZR — Doseur à clapet</h3><p class="ref">Coloris <span id="colname2">Gris</span> · clapet noir</p></div>
-      <div class="price"><b id="pr">12,90 €</b><s id="barre">19,90 €</s><span class="badge" id="remise">-35%</span></div>
+      <div class="price"><b id="pr">8,90 €</b><s id="barre">19,90 €</s><span class="badge" id="remise">-55%</span></div>
       <div class="packs" id="packs">
-        <button type="button" class="pack on" data-n="1"><b>x1</b><small>12,90 €</small></button>
-        <button type="button" class="pack" data-n="2"><span class="tag">POPULAIRE</span><b>x2</b><small>21,90 €</small></button>
-        <button type="button" class="pack" data-n="3"><span class="tag">MEILLEUR PRIX</span><b>x3</b><small>29,90 €</small></button>
+        <button type="button" class="pack on" data-n="1"><b>x1</b><small>8,90 €</small></button>
+        <button type="button" class="pack" data-n="2"><span class="tag">POPULAIRE</span><b>x2</b><small>15,90 €</small></button>
+        <button type="button" class="pack" data-n="3"><span class="tag">MEILLEUR PRIX</span><b>x3</b><small>21,90 €</small></button>
       </div>
       <button type="button" class="btn add" id="add">Ajouter au panier</button>
       <p class="ship" id="shipMsg">Livraison <b>offerte</b> dès 2 achetés</p>
@@ -240,7 +240,7 @@ footer{border-top:1px solid var(--line);color:var(--mut);text-align:center;paddi
 
 <footer class="wrap"><div class="logo">DOZ<span>R</span></div>© 2026 DOZR · CGV · Mentions légales · Contact</footer>
 
-<div class="sticky" id="sticky" aria-hidden="true"><span><i id="stickyDot" style="background:#6b7078"></i>DOZR · <b id="pr2">12,90 €</b></span><button type="button" id="stickyAdd" tabindex="-1">Ajouter au panier</button></div>
+<div class="sticky" id="sticky" aria-hidden="true"><span><i id="stickyDot" style="background:#6b7078"></i>DOZR · <b id="pr2">8,90 €</b></span><button type="button" id="stickyAdd" tabindex="-1">Ajouter au panier</button></div>
 
 <!-- Page panier -->
 <div class="panier" id="panier" hidden role="dialog" aria-modal="true" aria-labelledby="panierTitre">
@@ -270,7 +270,7 @@ footer{border-top:1px solid var(--line);color:var(--mut);text-align:center;paddi
 <script>
 /* ================= Boutique : sélection, panier, paiement ================= */
 // Les prix affichés ici doivent rester identiques à ceux de netlify/functions/creer-paiement.mjs
-const PRIX={1:1290,2:2190,3:2990};            // en centimes, par pack
+const PRIX={1:890,2:1590,3:2190};            // en centimes, par pack
 const PRIX_BARRE=1990;                         // prix de référence barré, par DOZR
 const LIVRAISON=490;                           // centimes, offerte dès 2 DOZR achetés
 const SEUIL_LIVRAISON_OFFERTE=2;

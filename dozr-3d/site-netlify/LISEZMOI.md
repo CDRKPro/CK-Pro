@@ -30,7 +30,7 @@ La clé secrète Stripe ne peut pas être mise dans `index.html` : n'importe que
 | `LIVRAISON_CENTIMES` | `490` | Frais de livraison pour 1 seul DOZR (offerte dès 2). **Garde la même valeur que `LIVRAISON` dans `index.html`** |
 | `PAYS_LIVRAISON` | `FR,BE,LU,CH,MC` | Pays où tu livres |
 
-Les prix (12,90 € / 21,90 € / 29,90 €) sont définis à deux endroits qui doivent rester identiques :
+Les prix (8,90 € / 15,90 € / 21,90 €) sont définis à deux endroits qui doivent rester identiques :
 `PRIX` dans `index.html` (affichage) et `PRIX` dans `netlify/functions/creer-paiement.mjs` (montant réellement encaissé).
 
 ## Avant d'ouvrir la boutique
