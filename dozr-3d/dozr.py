@@ -1,21 +1,23 @@
 """
-Dozr — doseur à poudre (forme fidèle au visuel produit).
+Dozr — doseur à poudre, forme calquée sur les vues de référence (face + 3/4).
 
     pip install manifold3d trimesh numpy scipy networkx lxml
     python3 dozr.py   -> STL des pièces + assemblage (3MF / GLB / STL)
 
-Unités : mm. Origine au centre de l'entonnoir, manche selon +X, Z vers le haut.
+Unités : mm. Origine au centre du fond de l'entonnoir, manche selon +X,
+Z vers le haut (ouverture de l'entonnoir et bouton vers le haut).
 
-Forme (d'après la photo) :
-  - entonnoir évasé, cannelé verticalement à l'extérieur ET à l'intérieur,
-    fond arrondi, fond intérieur plat avec un tamis métallique rond au centre ;
-  - manche plat et droit, bouts arrondis, trou de suspension au bout ;
-  - longue fente noire en forme de pilule sur le manche, bouton rond noir
-    placé côté entonnoir.
+Proportions relevées sur la vue de face (échelle : manche = 30 mm) :
+  entonnoir Ø55, manche 30 mm, longueur totale ~160 mm, pilule noire
+  17,3 × 49 mm à 38 mm du centre, bouton Ø16 avec disque central Ø9,
+  trou de suspension Ø6 à 125 mm, tamis Ø26.
+Profil relevé sur la vue 3/4 : entonnoir bas (~26 mm) à fond très arrondi,
+cannelures dehors (jusque sur l'arrondi) et dedans, manche plat collé
+sous le fond, pilule noire en creux, bouton cylindrique en relief.
 
-Mécanisme (caché) : une languette glisse dans un canal sous le fond.
-Bouton côté entonnoir (position de la photo) = fermé ; bouton tiré vers
-le bout du manche = ouvert, la poudre tombe par le bec dans la bouteille.
+Mécanisme caché : une languette glisse dans un canal sous le fond.
+Bouton côté entonnoir (comme sur les vues) = fermé ; bouton tiré vers
+le bout du manche = ouvert.
 
 Pièces : 1 corps inférieur (bec + canal), 2 corps supérieur (entonnoir +
 dessus du manche), 3 languette, 4 bouton, 5 tamis, 6 insert noir (pilule).
@@ -27,47 +29,53 @@ import numpy as np
 from manifold3d import CrossSection, Manifold, JoinType, OpType
 import trimesh
 
-RIBS = 48
+RIBS = 52
 SEG = RIBS * 8
 
-# ----------------------------------------------------------------- cotes
-LENGTH = 175.0                       # longueur totale
-CUP_R_TOP, CUP_R_BOT = 28.0, 22.0    # rayons extérieurs de l'entonnoir
-CUP_H = 46.0
-CUP_FILLET = 4.0                     # arrondi du fond
-WALL = 2.2
-RIB_OUT, RIB_IN = 0.8, 0.45          # profondeur des cannelures
+# ----------------------------------------------------------------- entonnoir
+CUP_R = 27.5            # rayon extérieur au bord
+CUP_H = 28.0            # hauteur totale (fond -> bord)
+BOT_R = 14.0            # rayon du méplat sous le fond
+BOT_FILLET = 12.0       # grand arrondi du fond
+WALL = 1.8
+RIB_OUT, RIB_IN = 0.8, 0.45
+FLOOR_Z = 9.5           # fond intérieur
+FLOOR_FILLET = 4.0
 
+# ----------------------------------------------------------------- manche
 HANDLE_W, HANDLE_T = 30.0, 9.0
-HANDLE_END = LENGTH - CUP_R_TOP      # 147
-EDGE_R = 1.2                         # arrondi des arêtes du manche
-HANG_D, HANG_X = 6.0, HANDLE_END - 9.0
+HANDLE_X0, HANDLE_END = 16.0, 133.0
+HANDLE_CORNER, EDGE_R = 4.0, 1.5
+HANG_X, HANG_D, HANG_CSK = 124.7, 6.0, 8.5
 
-# Pilule noire + bouton
-PILL_X0, PILL_X1, PILL_W, PILL_DEPTH = 36.0, 100.0, 22.0, 1.5
-KNOB_D, KNOB_H = 17.0, 4.0
+# Pilule noire (en creux) + bouton
+PILL_X0, PILL_X1, PILL_W = 37.7, 86.7, 17.3
+PILL_RECESS = 2.2       # profondeur de la cuvette
+INSERT_T = 1.2          # insert noir : surface noire 1 mm sous le manche
+KNOB_D, KNOB_H = 16.2, 5.5
+KNOB_DISC_D = 9.0
+KNOB_X = PILL_X0 + PILL_W / 2   # concentrique au bout de la pilule côté entonnoir = fermé
 
-# Fond intérieur, tamis, bec
-FLOOR_Z = 11.0
-SIEVE_D, SIEVE_T = 23.0, 1.6
+# Tamis, bec
+SIEVE_D, SIEVE_T = 26.0, 1.6
 BORE_D = 14.0
-SPOUT_L, SPOUT_OD_TOP, SPOUT_OD_TIP = 10.0, 20.5, 19.0
+SPOUT_L, SPOUT_OD_TOP, SPOUT_OD_TIP = 0.0, 20.5, 19.0   # 0 = fond plat posé sur le goulot (comme les vues) ; 8 = bec qui rentre dans le goulot
 
 # Mécanisme
 CLR = 0.3
 Z_CHAN, CHAN_H = 2.0, 2.4
 Z_SPLIT = Z_CHAN + CHAN_H            # 4.4 : plan de joint
-PLATE_W, PLATE_T = 18.0, 2.0
-PLATE_FRONT = -(BORE_D / 2 + 2.5)    # -9.5 en position fermée
-TRAVEL = BORE_D + 4.0                # 18 : la languette dégage le bec
+PLATE_W, PLATE_T = 14.5, 2.0
+PLATE_FRONT = -(BORE_D / 2 + 2.5)
+TRAVEL = BORE_D + 4.0                # 18 mm
 STEM_S = 5.6
-KNOB_X = PILL_X0 + KNOB_D / 2 + 2.0  # bouton côté entonnoir (fermé)
-PLATE_REAR = KNOB_X + TRAVEL + 4.0   # couvre toute la fente : on ne voit que du noir
-KNOB_Z0 = HANDLE_T + 0.3
+PLATE_REAR = KNOB_X + TRAVEL + 4.0
+Z_INSERT = HANDLE_T - PILL_RECESS
+KNOB_Z0 = Z_INSERT + INSERT_T + 0.3
 SOCKET = 3.0
 
 PIN_D, PIN_DEPTH = 2.1, 1.8
-PINS = [(-12, 12), (-12, -12), (32, 12.2), (32, -12.2), (125, 12.2), (125, -12.2)]
+PINS = [(-12, 11), (-12, -11), (40, 11.6), (40, -11.6), (112, 11.6), (112, -11.6)]
 
 
 # ----------------------------------------------------------------- outils
@@ -85,7 +93,7 @@ def union(parts):
 
 
 def rounded_extrude(cs, h, r, steps=6):
-    """Extrusion avec arêtes haut/bas arrondies (approximation par tranches)."""
+    """Extrusion à arêtes haut/bas arrondies (tranches)."""
     parts = []
     zs = [r * (1 - math.cos(math.pi / 2 * i / steps)) for i in range(steps + 1)]
     for i in range(steps):
@@ -99,41 +107,40 @@ def rounded_extrude(cs, h, r, steps=6):
 
 
 def flute(m, k):
-    """Cannelures : modulation radiale proportionnelle selon l'angle."""
+    """Cannelures verticales : modulation radiale proportionnelle à l'angle."""
     def f(v):
         x, y, z = v
-        a = math.atan2(y, x)
-        s = 1 - k * 0.5 * (1 - math.cos(RIBS * a))
+        s = 1 - k * 0.5 * (1 - math.cos(RIBS * math.atan2(y, x)))
         return (x * s, y * s, z)
     return m.warp(f)
 
 
-def r_out(z):
-    return CUP_R_BOT + (CUP_R_TOP - CUP_R_BOT) * z / CUP_H
+def outer_profile(extend=0.0):
+    """Demi-profil extérieur (r, z) : méplat, grand arrondi, flanc légèrement évasé."""
+    pts = [(0, 0)]
+    cx, cz = BOT_R, BOT_FILLET
+    for i in range(25):
+        t = -math.pi / 2 + math.pi / 2 * i / 24
+        pts.append((cx + BOT_FILLET * math.cos(t), cz + BOT_FILLET * math.sin(t)))
+    pts += [(CUP_R, CUP_H + extend), (0, CUP_H + extend)]
+    return pts
 
 
 # ----------------------------------------------------------------- formes
 def cup_outer():
-    rf = CUP_FILLET
-    prof = [(0, 0)]
-    for i in range(13):  # arrondi du fond
-        t = -math.pi / 2 + math.pi / 2 * i / 12
-        prof.append((r_out(rf) - rf + rf * math.cos(t), rf + rf * math.sin(t)))
-    prof += [(r_out(CUP_H), CUP_H), (0, CUP_H)]
-    return flute(CrossSection([prof]).revolve(SEG), RIB_OUT / CUP_R_TOP)
+    return flute(CrossSection([outer_profile()]).revolve(SEG), RIB_OUT / CUP_R)
 
 
 def cup_cavity():
-    rf = 3.0
-    ri = lambda z: r_out(z) - WALL
-    prof = [(0, FLOOR_Z)]
-    for i in range(10):
-        t = -math.pi / 2 + math.pi / 2 * i / 9
-        prof.append((ri(FLOOR_Z + rf) - rf + rf * math.cos(t), FLOOR_Z + rf + rf * math.sin(t)))
-    prof += [(ri(CUP_H) + 0.01, CUP_H + 1), (0, CUP_H + 1)]
-    m = flute(CrossSection([prof]).revolve(SEG), -RIB_IN / CUP_R_TOP)  # nervures intérieures
+    cs = CrossSection([outer_profile(extend=10)]).offset(-WALL, JoinType.Round, circular_segments=64)
+    cs = cs ^ CrossSection.square((CUP_R + 5, CUP_H + 20)).translate((0, FLOOR_Z))
+    cs = cs.offset(-FLOOR_FILLET, JoinType.Round, circular_segments=64).offset(
+        FLOOR_FILLET, JoinType.Round, circular_segments=64)                 # congé du fond
+    cs = cs + CrossSection.square((FLOOR_FILLET * 2 + 1, CUP_H + 20)).translate((0, FLOOR_Z))  # axe
+    cs = cs ^ CrossSection.square((CUP_R + 5, CUP_H + 30)).translate((0, -1))
+    m = flute(cs.revolve(SEG), -RIB_IN / CUP_R)
     z_rec = FLOOR_Z - SIEVE_T
-    m = m + cyl(SIEVE_T + 0.5, SIEVE_D / 2 + 0.2, z=z_rec)                       # logement du tamis
+    m = m + cyl(SIEVE_T + 0.5, SIEVE_D / 2 + 0.2, z=z_rec)                  # logement du tamis
     m = m + cyl(z_rec - Z_SPLIT - 2.6 + 0.01, BORE_D / 2, SIEVE_D / 2 - 1.5, z=Z_SPLIT + 2.6)
     m = m + cyl(2.7, BORE_D / 2, z=Z_SPLIT - 0.05)
     return m
@@ -144,13 +151,19 @@ def stem_slot(h):
 
 
 def full_body():
-    body = cup_outer() + rounded_extrude(rrect(0, HANDLE_END, HANDLE_W, 6.0), HANDLE_T, EDGE_R)
-    body = body + cyl(SPOUT_L + 0.5, SPOUT_OD_TIP / 2, SPOUT_OD_TOP / 2, z=-SPOUT_L)
+    handle = rounded_extrude(rrect(HANDLE_X0, HANDLE_END, HANDLE_W, HANDLE_CORNER), HANDLE_T, EDGE_R)
+    body = cup_outer() + handle
+    if SPOUT_L > 0:
+        body = body + cyl(SPOUT_L + 0.5, SPOUT_OD_TIP / 2, SPOUT_OD_TOP / 2, z=-SPOUT_L)
     body = body - cup_cavity()
     body = body - cyl(SPOUT_L + 6, BORE_D / 2, z=-SPOUT_L - 1)
+    # trou de suspension chanfreiné des deux côtés
     body = body - cyl(HANDLE_T + 2, HANG_D / 2, x=HANG_X, z=-1)
-    body = body - rrect(PILL_X0, PILL_X1, PILL_W + 0.3, (PILL_W + 0.3) / 2).extrude(PILL_DEPTH + 1).translate(
-        (0, 0, HANDLE_T - PILL_DEPTH))
+    c = (HANG_CSK - HANG_D) / 2
+    body = body - cyl(c + 0.01, HANG_CSK / 2, HANG_D / 2, x=HANG_X, z=-0.01)
+    body = body - cyl(c + 0.01, HANG_D / 2, HANG_CSK / 2, x=HANG_X, z=HANDLE_T - c)
+    # cuvette en pilule + fente de la tige + canal
+    body = body - rrect(PILL_X0, PILL_X1, PILL_W, PILL_W / 2).extrude(PILL_RECESS + 1).translate((0, 0, Z_INSERT))
     body = body - stem_slot(HANDLE_T).translate((0, 0, Z_SPLIT - 1))
     body = body - rrect(PLATE_FRONT - CLR - 0.5, PLATE_REAR + TRAVEL + CLR + 0.5, PLATE_W + 2 * CLR, 2.0).extrude(
         CHAN_H).translate((0, 0, Z_CHAN))
@@ -175,25 +188,27 @@ def slide_plate(open_=False):
 
 
 def knob(open_=False):
-    r, hc, hd = KNOB_D / 2, KNOB_H - 1.0, 1.0
-    prof = [(0, 0), (r, 0), (r, hc - 0.6)]
-    for i in range(1, 13):  # bord arrondi + léger bombé
-        t = i / 12 * math.pi / 2
-        prof.append((r - 0.6 * (1 - math.cos(t)) - (r - 0.6) * (1 - math.cos(t)) * 0.12,
-                     hc - 0.6 + (0.6 + hd) * math.sin(t)))
-    prof.append((0, hc + hd))
-    k = CrossSection([prof]).revolve(96)
-    ring = (CrossSection.circle(5.8, 96) - CrossSection.circle(5.0, 96)).extrude(1.5).translate((0, 0, hc + hd - 0.55))
-    k = k - ring  # cercle intérieur du bouton
+    """Bouton cylindrique à dessus plat, bord adouci, disque central en relief."""
+    r, h, ch = KNOB_D / 2, KNOB_H, 0.7
+    prof = [(0, 0), (r, 0), (r, h - ch)]
+    for i in range(1, 9):
+        t = i / 8 * math.pi / 2
+        prof.append((r - ch + ch * math.cos(t), h - ch + ch * math.sin(t)))
+    prof.append((0, h))
+    k = CrossSection([prof]).revolve(128)
+    rd = KNOB_DISC_D / 2
+    disc = CrossSection([[(0, h - 0.1), (rd, h - 0.1), (rd, h + 0.35), (rd - 0.25, h + 0.6), (0, h + 0.6)]]).revolve(128)
+    groove = (CrossSection.circle(rd + 0.65, 96) - CrossSection.circle(rd + 0.1, 96)).extrude(0.6).translate((0, 0, h - 0.4))
+    k = k + disc - groove
     s = STEM_S + 0.15
     k = k - Manifold.cube((s, s, SOCKET + 0.2)).translate((-s / 2, -s / 2, -0.2))
     return k.translate((KNOB_X + (TRAVEL if open_ else 0), 0, KNOB_Z0))
 
 
 def pill_insert():
-    p = rrect(PILL_X0 + 0.1, PILL_X1 - 0.1, PILL_W, PILL_W / 2).extrude(PILL_DEPTH)
-    p = p - stem_slot(PILL_DEPTH + 2).translate((0, 0, -1))
-    return p.translate((0, 0, HANDLE_T - PILL_DEPTH))
+    p = rrect(PILL_X0 + 0.15, PILL_X1 - 0.15, PILL_W - 0.3, (PILL_W - 0.3) / 2).extrude(INSERT_T)
+    p = p - stem_slot(INSERT_T + 2).translate((0, 0, -1))
+    return p.translate((0, 0, Z_INSERT))
 
 
 def sieve():
@@ -242,7 +257,7 @@ def main():
         t.export(os.path.join(out, f"{name}.stl"))
         print(f"{name:30s} {t.extents.round(1)} mm  {t.volume / 1000:.1f} cm3")
 
-    grey, black, steel = [165, 170, 176, 255], [28, 28, 30, 255], [125, 128, 132, 255]
+    grey, black, steel = [118, 122, 128, 255], [24, 24, 26, 255], [150, 152, 155, 255]
     parts = [("corps_inferieur", lower, grey), ("corps_superieur", upper, grey), ("languette", plate, black),
              ("bouton", kn, black), ("tamis", sv, steel), ("insert_noir", pill, black)]
     scene = trimesh.Scene()
@@ -259,7 +274,8 @@ def main():
     bore = cyl(40, BORE_D / 2 - 0.05, z=-12)
     print("obstruction du bec — ouvert :", round((bore ^ slide_plate(True)).volume(), 2),
           "mm3 | fermé :", round((bore ^ slide_plate(False)).volume(), 1), "mm3")
-    print("longueur totale :", round(to_tm(lower + upper).extents[0], 1), "mm")
+    t = to_tm(lower + upper)
+    print("encombrement :", t.extents.round(1), "mm | min. paroi tamis/canal ok")
 
 
 if __name__ == "__main__":

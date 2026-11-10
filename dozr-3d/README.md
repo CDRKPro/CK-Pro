@@ -1,8 +1,8 @@
 # Dozr — doseur à poudre imprimable en 3D
 
-Reproduction de la forme du visuel produit : entonnoir évasé cannelé (dehors et dedans), fond arrondi,
-tamis rond au centre du fond, manche plat avec une longue fente noire en pilule, bouton rond noir côté
-entonnoir et trou de suspension au bout. Le bec s'emboîte dans un goulot de bouteille standard.
+Forme calquée sur les vues de référence (face + 3/4) : entonnoir Ø55 bas à fond très arrondi, cannelé
+dehors (jusque sur l'arrondi) et dedans, tamis rond au centre, manche plat 30 mm, pilule noire en creux,
+bouton rond noir en relief côté entonnoir, trou de suspension chanfreiné au bout.
 
 ![aperçu](apercu.png)
 
@@ -10,22 +10,27 @@ entonnoir et trou de suspension au bout. Le bec s'emboîte dans un goulot de bou
 
 | Fichier | Contenu | Couleur |
 |---|---|---|
-| `stl/1_corps_inferieur.stl` | Dessous : fond, bec, canal de la languette (orienté bec en l'air) | gris |
+| `stl/1_corps_inferieur.stl` | Dessous : fond arrondi, canal de la languette (imprimé à l'envers) | gris |
 | `stl/2_corps_superieur_entonnoir.stl` | Entonnoir cannelé + dessus du manche | gris |
 | `stl/3_languette.stl` | Languette coulissante qui ferme le bec + tige du bouton | noir |
 | `stl/4_bouton.stl` | Bouton rond avec cercle intérieur | noir |
-| `stl/5_tamis.stl` | Grille ronde Ø23 (trous 1,2 mm) | gris acier |
+| `stl/5_tamis.stl` | Grille ronde Ø26 (trous 1,2 mm) | gris acier |
 | `stl/6_insert_noir.stl` | Pilule noire collée dans le manche | noir |
 | `dozr_assemblage.3mf` / `.glb` / `.stl` | Vue assemblée en couleurs | |
 | `dozr.py` | Source paramétrique : modifier les cotes en tête de fichier puis `python3 dozr.py` | |
 
 ## Dimensions
 
-- Longueur totale 175 mm, manche 30 × 9 mm
-- Entonnoir Ø56 mm en haut, Ø44 mm en bas, hauteur 46 mm, 48 cannelures
-- Pilule 64 × 22 mm, bouton Ø17 mm
-- Bec Ø20,5 → 19 mm, longueur 10 mm, passage Ø14 mm
-- Bouton côté entonnoir (comme sur la photo) = **fermé** ; tiré de 18 mm vers le bout du manche = **ouvert**
+Relevées sur la vue de face, à l'échelle manche = 30 mm (à ajuster si tu as les vraies cotes) :
+
+- Longueur totale 160,5 mm, manche 30 × 9 mm
+- Entonnoir Ø55 × 28 mm, méplat sous le fond Ø28, 52 cannelures
+- Pilule noire 17,3 × 49 mm, commence à 38 mm du centre de l'entonnoir
+- Bouton Ø16,2 × 5,5 mm avec disque central Ø9
+- Trou de suspension Ø6 (chanfrein Ø8,5) à 125 mm
+- Tamis Ø26 ; passage de la poudre Ø14
+- Fond plat qui se pose sur le goulot (`SPOUT_L = 8` dans `dozr.py` pour ajouter un bec qui rentre dans le goulot)
+- Bouton côté entonnoir (comme sur les vues) = **fermé** ; tiré de 18 mm vers le bout du manche = **ouvert**
 
 ## Impression
 
